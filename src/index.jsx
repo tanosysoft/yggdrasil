@@ -1,5 +1,4 @@
-import './index.css';
-import App from './App';
-import d from '@dominant/core';
+import Game from './Game';
+import Chain from '@tanosysoft/chain';
 
-document.getElementById('root').append(<App />);
+document.getElementById('root').append(<Game />);

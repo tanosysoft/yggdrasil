@@ -1,13 +1,14 @@
 {
+  "name": "yggdrasil",
+  "version": "0.0.0",
+  "author": "Gui Prá",
+  "license": "AGPL-3.0+",
   "scripts": {
     "start": "snowpack dev",
-    "build": "snowpack build",
-    "test": "echo \"This template does not include a test runner by default.\" && exit 1",
-    "format": "prettier --write \"src/**/*.{js,jsx}\"",
-    "lint": "prettier --check \"src/**/*.{js,jsx}\""
+    "build": "snowpack build"
   },
   "dependencies": {
-    "@dominant/core": "^0.0.1"
+    "@tanosysoft/chain": "0.0.8"
   },
   "devDependencies": {
     "@babel/core": "^7.10.5",

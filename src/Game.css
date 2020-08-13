@@ -1,0 +1,26 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: monospace;
+  color: white;
+  background-color: midnightblue;
+}
+
+body {
+  margin: 0;
+}
+
+.Game {
+  display: flex;
+  flex-direction: column;
+  width: 640px;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 10px 40px 0;
+}
+
+.Game-body {
+  flex: 1;
+}
