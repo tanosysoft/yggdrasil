@@ -2,8 +2,8 @@ import { clear as chainClear } from '@tanosysoft/chain';
 
 let clear = [
   () => {
-    game.setPane('header', null);
-    game.setPane('footer', null);
+    game.setPane('top', null);
+    game.setPane('bottom', null);
   },
 
   chainClear,

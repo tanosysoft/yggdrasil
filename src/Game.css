@@ -31,20 +31,20 @@ html, body, #root {
   }
 }
 
-.Game-body {
+.Game-mainPane {
   flex: 1;
 }
 
-.Game-body h1 {
+.Game-mainPane h1 {
   text-align: center;
   font-size: 1.3rem;
   font-weight: normal;
 }
 
-.Game-body h1::before {
+.Game-mainPane h1::before {
   content: '~ ';
 }
 
-.Game-body h1::after {
+.Game-mainPane h1::after {
   content: ' ~';
 }
