@@ -12,15 +12,39 @@ body {
   margin: 0;
 }
 
+html, body, #root {
+  height: 100%;
+}
+
 .Game {
   display: flex;
   flex-direction: column;
   width: 640px;
-  min-height: 100vh;
+  min-height: 100%;
   margin: 0 auto;
   padding: 10px 40px 0;
 }
 
+@media only screen and (max-width: 640px) {
+  .Game {
+    width: 100%;
+  }
+}
+
 .Game-body {
   flex: 1;
+}
+
+.Game-body h1 {
+  text-align: center;
+  font-size: 1.3rem;
+  font-weight: normal;
+}
+
+.Game-body h1::before {
+  content: '~ ';
+}
+
+.Game-body h1::after {
+  content: ' ~';
 }

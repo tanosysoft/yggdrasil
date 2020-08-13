@@ -1,10 +1,22 @@
 import './Game.css';
-import Chain, { d } from '@tanosysoft/chain';
+import Chain, { d, sdl } from '@tanosysoft/chain';
+import clear from './clear';
+import label from './label';
+import { nanoid } from 'nanoid';
 
 class Game extends d.Component {
   constructor(props) {
     super(props);
+
     window.game = this;
+
+    this.playerId = localStorage.getItem('playerId') || nanoid();
+
+    if (location.hash.length > 1 && !this.playerId.endsWith(location.hash)) {
+      this.playerId = `${this.playerId.split('#')[0]}${location.hash}`;
+    }
+
+    localStorage.setItem('playerId', this.playerId);
   }
 
   render = () => (
@@ -12,8 +24,15 @@ class Game extends d.Component {
       {this.header = <div class="Game-header"></div>}
 
       {this.body = (
-        <Chain class="Game-body">
-          Hello, world!
+        <Chain class="Game-body" autoSave>
+          {label('title')}
+          {clear}
+          {sdl(80)}
+          <h1>Yggdrasil Dungeon</h1>
+
+          {() => this.setPane('footer', (
+            <center>Footer Placeholder</center>
+          ))}
         </Chain>
       )}
 
@@ -25,7 +44,7 @@ class Game extends d.Component {
     return this.body.model;
   }
 
-  setPaneContents(k, ...contents) {
+  setPane(k, ...contents) {
     this[k].innerHTML = '';
 
     contents = contents.flat(10).filter(Boolean);
