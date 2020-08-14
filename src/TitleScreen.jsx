@@ -43,7 +43,7 @@ class TitleScreen extends d.Component {
         {() => game.setPane('bottom', null)}
         {sdl(30)}
         <p>Are you sure you want to restart the game?{sec(0.2)}</p>
-        <p>Doing so will destroy th currently saved adventure.{sec(0.2)}</p>
+        <p>Doing so will destroy the currently saved adventure.{sec(0.2)}</p>
 
         {() => game.setPane('bottom', (
           <div class="ActionsPane">
