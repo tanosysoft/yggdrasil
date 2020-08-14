@@ -4,8 +4,10 @@
 
 html {
   font-family: monospace;
+  font-size: 17px;
   color: white;
   background-color: midnightblue;
+  line-height: 1.4rem;
 }
 
 body {
@@ -16,13 +18,33 @@ html, body, #root {
   height: 100%;
 }
 
+.Chain-waitCursor::before {
+  content: '▼';
+  position: relative;
+  top: -1px;
+  left: 5px;
+  animation-duration: 1s;
+  animation-fill-mode: both;
+  animation-iteration-count: infinite;
+  animation-name: flash;
+}
+
+.seamlessBtn {
+  outline: 0;
+  border: 0;
+  padding: 0;
+  font-size: inherit;
+  color: inherit;
+  background-color: transparent;
+}
+
 .Game {
   display: flex;
   flex-direction: column;
   width: 640px;
   min-height: 100%;
   margin: 0 auto;
-  padding: 10px 40px 0;
+  padding: 20px 40px 40px;
 }
 
 @media only screen and (max-width: 640px) {
@@ -31,14 +53,19 @@ html, body, #root {
   }
 }
 
-.Game-mainPane {
-  flex: 1;
-}
-
-.Game-mainPane h1 {
+.Game h1 {
+  margin: 20px 0;
   text-align: center;
   font-size: 1.3rem;
   font-weight: normal;
+}
+
+.Game p {
+  margin: 0.8rem 0;
+}
+
+.Game-mainPane {
+  flex: 1;
 }
 
 .Game-mainPane h1::before {
@@ -47,4 +74,22 @@ html, body, #root {
 
 .Game-mainPane h1::after {
   content: ' ~';
+}
+
+.ActionsPane {
+  display: flex;
+}
+
+.ActionsPane-btn {
+  margin: 5px;
+  outline: 0;
+  border: 2px solid white;
+  border-radius: 8px;
+  padding: 10px;
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  background-color: transparent;
+
+  flex: 1;
 }

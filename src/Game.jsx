@@ -1,6 +1,7 @@
 import './Game.css';
-import Chain, { d, sdl } from '@tanosysoft/chain';
-import clear from './clear';
+import './animate.css';
+import Chain, { d, goTo } from '@tanosysoft/chain';
+import TitleScreen from './TitleScreen';
 import label from './label';
 import { nanoid } from 'nanoid';
 
@@ -27,14 +28,8 @@ class Game extends d.Component {
 
       {this.panes.main = (
         <Chain class="Game-mainPane" autoSave>
-          {label('title')}
-          {clear}
-          {sdl(80)}
-          <h1>Yggdrasil Dungeon</h1>
-
-          {() => this.setPane('bottom', (
-            <center>Bottom Placeholder</center>
-          ))}
+          {goTo('title')}
+          <TitleScreen />
         </Chain>
       )}
 
