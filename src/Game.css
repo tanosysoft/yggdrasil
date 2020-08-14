@@ -8,6 +8,7 @@ html {
   color: white;
   background-color: midnightblue;
   line-height: 1.4rem;
+  user-select: none;
 }
 
 body {
