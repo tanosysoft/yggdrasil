@@ -14,25 +14,27 @@ class TitleScreen extends d.Component {
 
       {() => game.setPane('bottom', (
         <div class="ActionsPane">
-          <button
-            class="ActionsPane-btn"
-            onClick={() => {
-              this.loadGame = false;
-              game.chain.run('title.newGame');
-            }}
-          >
-            New Game
-          </button>
+          <div class="ActionsPane-row">
+            <button
+              class="ActionsPane-btn"
+              onClick={() => {
+                this.loadGame = false;
+                game.chain.run('title.newGame');
+              }}
+            >
+              New Game
+            </button>
 
-          <button
-            class="ActionsPane-btn"
-            onClick={() => {
-              this.loadGame = true;
-              game.chain.run('title.gameStart');
-            }}
-          >
-            Load Game
-          </button>
+            <button
+              class="ActionsPane-btn"
+              onClick={() => {
+                this.loadGame = true;
+                game.chain.run('title.gameStart');
+              }}
+            >
+              Load Game
+            </button>
+          </div>
         </div>
       ))}
 
@@ -45,19 +47,21 @@ class TitleScreen extends d.Component {
 
         {() => game.setPane('bottom', (
           <div class="ActionsPane">
-            <button
-              class="ActionsPane-btn"
-              onClick={() => game.chain.run('title.gameStart')}
-            >
-              Yes
-            </button>
+            <div class="ActionsPane-row">
+              <button
+                class="ActionsPane-btn"
+                onClick={() => game.chain.run('title.gameStart')}
+              >
+                Yes
+              </button>
 
-            <button
-              class="ActionsPane-btn"
-              onClick={() => game.chain.run('title')}
-            >
-              No
-            </button>
+              <button
+                class="ActionsPane-btn"
+                onClick={() => game.chain.run('title')}
+              >
+                No
+              </button>
+            </div>
           </div>
         ))}
       </Chain.shield>
@@ -70,13 +74,11 @@ class TitleScreen extends d.Component {
         {clear}
 
         {() => {
-          /*
           if (!this.loadGame) {
             return goTo('fyrya');
           }
 
           game.chain.loadGame();
-          */
         }}
       </Chain.shield>
     </Chain.shield>

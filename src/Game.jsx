@@ -1,6 +1,7 @@
 import './Game.css';
 import './animate.css';
 import Chain, { d, goTo } from '@tanosysoft/chain';
+import Fyrya from './Fyrya';
 import TitleScreen from './TitleScreen';
 import label from './label';
 import { nanoid } from 'nanoid';
@@ -30,6 +31,7 @@ class Game extends d.Component {
         <Chain class="Game-mainPane" autoSave>
           {goTo('title')}
           <TitleScreen />
+          <Fyrya />
         </Chain>
       )}
 

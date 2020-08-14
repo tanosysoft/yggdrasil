@@ -44,7 +44,8 @@ html, body, #root {
   width: 640px;
   min-height: 100%;
   margin: 0 auto;
-  padding: 20px 40px 40px;
+  padding: 20px 20px 40px;
+  white-space: pre-wrap;
 }
 
 @media only screen and (max-width: 640px) {
@@ -78,6 +79,12 @@ html, body, #root {
 
 .ActionsPane {
   display: flex;
+  flex-direction: column;
+}
+
+.ActionsPane-row {
+  display: flex;
+  width: 100%;
 }
 
 .ActionsPane-btn {
