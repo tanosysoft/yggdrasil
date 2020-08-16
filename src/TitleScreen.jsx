@@ -9,8 +9,9 @@ class TitleScreen extends d.Component {
     <Chain.shield class="TitleScreen">
       {label('title')}
       {clear}
+      {sec(2)}
       {sdl(80)}
-      <h1>Yggdrasil Dungeon</h1>
+      <h1>Yggdrasil Dungeon{sec(2)}</h1>
 
       {() => game.setPane('bottom', (
         <div class="ActionsPane">

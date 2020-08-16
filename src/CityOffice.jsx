@@ -7,6 +7,7 @@ class CityOffice extends d.Component {
     <Chain.shield class="CityOffice">
       {checkpoint('cityOffice')}
       {clear}
+      {sec(2)}
       {sdl(80)}
       <h1>Fyrya's City Office{sec(2)}</h1>
 

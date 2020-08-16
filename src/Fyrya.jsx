@@ -8,6 +8,7 @@ class Fyrya extends d.Component {
     <Chain.shield class="Fyrya">
       {checkpoint('fyrya')}
       {clear}
+      {sec(2)}
       {sdl(80)}
       <h1>City of Fyrya{sec(2)}</h1>
 
