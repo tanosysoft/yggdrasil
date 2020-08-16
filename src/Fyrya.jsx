@@ -1,4 +1,5 @@
 import Chain, { d, goTo, sdl, sec, w } from '@tanosysoft/chain';
+import CityOffice from './CityOffice';
 import checkpoint from './checkpoint';
 import clear from './clear';
 
@@ -8,7 +9,7 @@ class Fyrya extends d.Component {
       {checkpoint('fyrya')}
       {clear}
       {sdl(80)}
-      <h1>City of Fyrya</h1>
+      <h1>City of Fyrya{sec(2)}</h1>
 
       {checkpoint('fyrya.welcome')}
       <p>{sdl(30)} "Welcome to Fyria,{sec(0.3)} the most popular
@@ -44,7 +45,7 @@ class Fyrya extends d.Component {
       {sec(0.3)} traveler!{sec(0.8)} Do make yourself home!"{w}</p>
 
       {checkpoint('fyrya.whereTo')}
-      <p>{sdl(30)}Where are you going?{sec(0.3)}</p>
+      <p>{sdl(30)}Where are you going?{sec(1)}</p>
 
       {() => game.setPane('bottom', (
         <div class="ActionsPane">
@@ -75,12 +76,15 @@ class Fyrya extends d.Component {
           <div class="ActionsPane-row">
             <button
               class="ActionsPane-btn"
+              onClick={() => game.chain.run('cityOffice')}
             >
               To the city office
             </button>
           </div>
         </div>
       ))}
+
+      <CityOffice />
     </Chain.shield>
   );
 }

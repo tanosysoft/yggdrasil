@@ -88,7 +88,8 @@ html, body, #root {
   width: 100%;
 }
 
-.ActionsPane-btn {
+.ActionsPane-btn,
+.ActionsPane-input {
   margin: 5px;
   outline: 0;
   border: 2px solid white;
