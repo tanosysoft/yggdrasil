@@ -1,5 +1,6 @@
 import Chain, { d, goTo, sdl, sec, w } from '@tanosysoft/chain';
 import CityOffice from './CityOffice';
+import Dungeon from './Dungeon';
 import checkpoint from './checkpoint';
 import clear from './clear';
 
@@ -53,6 +54,7 @@ class Fyrya extends d.Component {
           <div class="ActionsPane-row">
             <button
               class="ActionsPane-btn"
+              onClick={() => this.chain.run('dungeon')}
             >
               To the dungeon
             </button>
@@ -86,6 +88,7 @@ class Fyrya extends d.Component {
       ))}
 
       <CityOffice />
+      <Dungeon />
     </Chain.shield>
   );
 }
