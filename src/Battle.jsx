@@ -71,18 +71,17 @@ class Battle extends d.Component {
           },
         },
 
-        turn: 'player',
+        turn: 'party',
       }}
 
       {clear}
       {sec(2)}
-      {sdl(80)}
 
       {() => game.setPane('top', (
         <div>
           <h2>
             {d.text(() => ({
-              player: 'Player turn',
+              party: 'Party turn',
               enemy: 'Enemy turn',
             }[this.btst.turn]))}
           </h2>
@@ -112,10 +111,28 @@ class Battle extends d.Component {
       {label('battle.mainLoop')}
 
       {() => {
+        if (this.actors('P').every(x => !x.active)) {
+          return (
+            <div>
+              <p>The party has fallen.{w}</p>
+              {goTo('title')}
+            </div>
+          );
+        }
+
+        if (this.actors('E').every(x => !x.active)) {
+          return (
+            <div>
+              <p>Victory!{w}</p>
+              {goTo('battle.end')}
+            </div>
+          );
+        }
+
         let { turn } = this.btst;
 
         switch (turn) {
-          case 'player': return goTo('battle.partyLoop');
+          case 'party': return goTo('battle.partyLoop');
           case 'enemy': return goTo('battle.enemyLoop');
 
           default:
@@ -141,7 +158,7 @@ class Battle extends d.Component {
               btst.turn = 'enemy';
               d.update();
 
-              return goTo('battle.enemyLoop');
+              return goTo('battle.mainLoop');
             }
 
             if (actor.active) {
@@ -151,6 +168,7 @@ class Battle extends d.Component {
           }
         }}
 
+        {sec(1)}
         {sdl(30)}
         <p>{() => this.curLabel}'s turn.{sec(1)}</p>
 
@@ -214,10 +232,10 @@ class Battle extends d.Component {
 
             if (!actor) {
               delete btst.enemyLoop;
-              btst.turn = 'enemy';
+              btst.turn = 'party';
               d.update();
 
-              return goTo('battle.partyLoop');
+              return goTo('battle.mainLoop');
             }
 
             if (actor.active) {
@@ -227,6 +245,7 @@ class Battle extends d.Component {
           }
         }}
 
+        {sec(1)}
         {sdl(30)}
         <p>{() => this.curLabel}'s turn.{sec(1)}</p>
 
@@ -283,6 +302,10 @@ class Battle extends d.Component {
         }}
 
         {goTo('battle.mainLoop')}
+      </Chain.shield>
+
+      <Chain.shield>
+        {label('battle.end')}
       </Chain.shield>
     </div>
   );
