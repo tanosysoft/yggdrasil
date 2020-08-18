@@ -54,7 +54,7 @@ class Fyrya extends d.Component {
           <div class="ActionsPane-row">
             <button
               class="ActionsPane-btn"
-              onClick={() => this.chain.run('dungeon')}
+              onClick={() => game.chain.run('dungeon')}
             >
               To the dungeon
             </button>

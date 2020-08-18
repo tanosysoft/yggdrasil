@@ -66,6 +66,13 @@ html, body, #root {
   margin: 0.8rem 0;
 }
 
+.Game-topPane {
+  position: sticky;
+  top: 0;
+  background-color: midnightblue;
+  box-shadow: 0 5px 10px midnightblue;
+}
+
 .Game-mainPane {
   flex: 1;
 }

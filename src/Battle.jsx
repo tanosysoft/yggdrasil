@@ -152,7 +152,7 @@ class Battle extends d.Component {
         }}
 
         {sdl(30)}
-        <p>{() => this.curLabel}'s turn.{sec(2)}</p>
+        <p>{() => this.curLabel}'s turn.{sec(1)}</p>
 
         {goTo('battle.playerLoop.mainMenu')}
       </Chain.shield>
@@ -228,7 +228,7 @@ class Battle extends d.Component {
         }}
 
         {sdl(30)}
-        <p>{() => this.curLabel}'s turn.{sec(2)}</p>
+        <p>{() => this.curLabel}'s turn.{sec(1)}</p>
 
         {() => void(this.btst.targetActorId = 'P1')}
         {goTo('battle.attack')}
