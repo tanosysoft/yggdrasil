@@ -84,7 +84,7 @@ class Battle extends d.Component {
             {d.text(() => ({
               player: 'Player turn',
               enemy: 'Enemy turn',
-            }[console.log(this.btst), this.btst.turn]))}
+            }[this.btst.turn]))}
           </h2>
 
           <p>
@@ -115,7 +115,7 @@ class Battle extends d.Component {
         let { turn } = this.btst;
 
         switch (turn) {
-          case 'player': return goTo('battle.playerLoop');
+          case 'player': return goTo('battle.partyLoop');
           case 'enemy': return goTo('battle.enemyLoop');
 
           default:
@@ -124,20 +124,20 @@ class Battle extends d.Component {
       }}
 
       <Chain.shield>
-        {label('battle.playerLoop')}
+        {label('battle.partyLoop')}
 
         {() => {
           let party = this.actors('P');
           let { btst } = this;
 
-          let loop = btst.playerLoop = btst.playerLoop || {};
+          let loop = btst.partyLoop = btst.partyLoop || {};
 
           while (true) {
             loop.i = (loop.i ?? -1) + 1;
             let actor = party[loop.i];
 
             if (!actor) {
-              delete btst.playerLoop;
+              delete btst.partyLoop;
               btst.turn = 'enemy';
               d.update();
 
@@ -152,7 +152,7 @@ class Battle extends d.Component {
         }}
 
         {sdl(30)}
-        <p>{() => this.curActor.name}'s turn.{sec(2)}</p>
+        <p>{() => this.curLabel}'s turn.{sec(2)}</p>
 
         {goTo('battle.playerLoop.mainMenu')}
       </Chain.shield>
@@ -200,6 +200,41 @@ class Battle extends d.Component {
       </Chain.shield>
 
       <Chain.shield>
+        {label('battle.enemyLoop')}
+
+        {() => {
+          let enemies = this.actors('E');
+          let { btst } = this;
+
+          let loop = btst.enemyLoop = btst.enemyLoop || {};
+
+          while (true) {
+            loop.i = (loop.i ?? -1) + 1;
+            let actor = enemies[loop.i];
+
+            if (!actor) {
+              delete btst.enemyLoop;
+              btst.turn = 'enemy';
+              d.update();
+
+              return goTo('battle.partyLoop');
+            }
+
+            if (actor.active) {
+              btst.curActorId = actor.id;
+              break;
+            }
+          }
+        }}
+
+        {sdl(30)}
+        <p>{() => this.curLabel}'s turn.{sec(2)}</p>
+
+        {() => void(this.btst.targetActorId = 'P1')}
+        {goTo('battle.attack')}
+      </Chain.shield>
+
+      <Chain.shield>
         {label('battle.attack')}
         {() => game.setPane('bottom', null)}
         {sdl(10)}
@@ -233,6 +268,8 @@ class Battle extends d.Component {
           if (!targetActor.hp) {
             targetActor.active = false;
           }
+
+          d.update();
 
           return (
             <div>
