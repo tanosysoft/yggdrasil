@@ -8,7 +8,7 @@
     "build": "snowpack build"
   },
   "dependencies": {
-    "@tanosysoft/chain": "0.0.13",
+    "@tanosysoft/chain": "0.0.14",
     "axios": "^0.19.2",
     "nanoid": "^3.1.12"
   },

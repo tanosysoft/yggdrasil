@@ -1,4 +1,13 @@
-import Chain, { clear, d, goTo, sdl, sec, w } from '@tanosysoft/chain';
+import Chain, {
+  cancelFastForward,
+  clear,
+  d,
+  goTo,
+  sdl,
+  sec,
+  w,
+} from '@tanosysoft/chain';
+
 import checkpoint from './checkpoint';
 import clearPanes from './clearPanes';
 import label from './label';
@@ -148,7 +157,8 @@ class Battle extends d.Component {
 
         {sec(1)}
         {sdl(30)}
-        <p>{() => this.curLabel}'s turn.{sec(1)}</p>
+        {cancelFastForward}
+        <p>It's {() => this.curLabel}'s turn.{sec(1)}</p>
 
         {goTo('battle.playerLoop.mainMenu')}
       </Chain.shield>
@@ -226,7 +236,8 @@ class Battle extends d.Component {
 
         {sec(1)}
         {sdl(30)}
-        <p>{() => this.curLabel}'s turn.{sec(1)}</p>
+        {cancelFastForward}
+        <p>It's {() => this.curLabel}'s turn.{sec(1)}</p>
 
         {() => void(this.btst.targetActorId = 'P1')}
         {goTo('battle.attack')}
