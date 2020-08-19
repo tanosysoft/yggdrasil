@@ -1,14 +1,14 @@
-import Chain, { d, goTo, sdl, sec, w } from '@tanosysoft/chain';
+import Chain, { clear, d, goTo, sdl, sec, w } from '@tanosysoft/chain';
 import CityOffice from './CityOffice';
 import Dungeon from './Dungeon';
 import checkpoint from './checkpoint';
-import clear from './clear';
+import clearPanes from './clearPanes';
 
 class Fyrya extends d.Component {
   render = () => (
     <Chain.shield class="Fyrya">
       {checkpoint('fyrya')}
-      {clear}
+      {[clear, clearPanes]}
       {sec(2)}
       {sdl(80)}
       <h1>City of Fyrya{sec(2)}</h1>

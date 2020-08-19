@@ -1,6 +1,6 @@
-import Chain, { d, goTo, sdl, sec, w } from '@tanosysoft/chain';
+import Chain, { clear, d, goTo, sdl, sec, w } from '@tanosysoft/chain';
 import checkpoint from './checkpoint';
-import clear from './clear';
+import clearPanes from './clearPanes';
 import label from './label';
 
 class Battle extends d.Component {
@@ -74,7 +74,7 @@ class Battle extends d.Component {
         turn: 'party',
       }}
 
-      {clear}
+      {[clear, clearPanes]}
       {sec(2)}
 
       {() => game.setPane('top', (
@@ -142,6 +142,7 @@ class Battle extends d.Component {
 
       <Chain.shield>
         {label('battle.partyLoop')}
+        {clear}
 
         {() => {
           let party = this.actors('P');
@@ -219,6 +220,7 @@ class Battle extends d.Component {
 
       <Chain.shield>
         {label('battle.enemyLoop')}
+        {clear}
 
         {() => {
           let enemies = this.actors('E');

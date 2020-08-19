@@ -1,12 +1,12 @@
-import Chain, { d, goTo, sdl, sec, w } from '@tanosysoft/chain';
+import Chain, { clear, d, goTo, sdl, sec, w } from '@tanosysoft/chain';
 import checkpoint from './checkpoint';
-import clear from './clear';
+import clearPanes from './clearPanes';
 
 class CityOffice extends d.Component {
   render = () => (
     <Chain.shield class="CityOffice">
       {checkpoint('cityOffice')}
-      {clear}
+      {[clear, clearPanes]}
       {sec(2)}
       {sdl(80)}
       <h1>Fyrya's City Office{sec(2)}</h1>

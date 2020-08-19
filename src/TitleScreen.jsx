@@ -1,5 +1,5 @@
-import Chain, { d, goTo, sdl, sec, w } from '@tanosysoft/chain';
-import clear from './clear';
+import Chain, { clear, d, goTo, sdl, sec, w } from '@tanosysoft/chain';
+import clearPanes from './clearPanes';
 import label from './label';
 
 class TitleScreen extends d.Component {
@@ -8,7 +8,7 @@ class TitleScreen extends d.Component {
   render = () => (
     <Chain.shield class="TitleScreen">
       {label('title')}
-      {clear}
+      {[clear, clearPanes]}
       {sec(2)}
       {sdl(80)}
       <h1>Yggdrasil Dungeon{sec(2)}</h1>
