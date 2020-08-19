@@ -13,6 +13,8 @@ class Dungeon extends d.Component {
       <h1>Fyrya Dungeons Entrance{sec(2)}</h1>
 
       <Battle />
+
+      <p>Woot!</p>
     </Chain.shield>
   );
 }

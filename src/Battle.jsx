@@ -124,7 +124,7 @@ class Battle extends d.Component {
           return (
             <div>
               <p>Victory!{w}</p>
-              {goTo('battle.end')}
+              {() => requestAnimationFrame(this.battleEnd)}
             </div>
           );
         }
@@ -306,9 +306,11 @@ class Battle extends d.Component {
         {goTo('battle.mainLoop')}
       </Chain.shield>
 
-      <Chain.shield>
-        {label('battle.end')}
-      </Chain.shield>
+      {() => new Promise(resolve => {
+        this.battleEnd = resolve;
+      })}
+
+      {[clear, clearPanes]}
     </div>
   );
 }
