@@ -173,7 +173,7 @@ class Battle extends d.Component {
 
         {() => game.setPane('bottom', (
           <div class="ActionsPane">
-            {d.map(() => this.actors('E'), x => (
+            {d.map(() => this.actors('E').filter(x => x.active), x => (
               <button
                 class="ActionsPane-btn"
                 onClick={() => {
