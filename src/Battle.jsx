@@ -4,6 +4,11 @@ import clearPanes from './clearPanes';
 import label from './label';
 
 class Battle extends d.Component {
+  constructor(props) {
+    super();
+    this.props = props;
+  }
+
   get btst() {
     return game.chain.progress.battle;
   }
@@ -40,40 +45,12 @@ class Battle extends d.Component {
 
   render = () => (
     <div class="Battle">
-      {checkpoint('battle')}
       {() => this.btst = {
-        actors: {
-          P1: {
-            name: 'Elmina',
-            active: true,
-            hp: 200, maxHp: 200,
-            mp: 10, maxMp: 10,
-            atk: 4, def: 2,
-            lv: 1, nextLvExp: 25,
-          },
-
-          E1: {
-            name: 'Slime',
-            active: true,
-            hp: 25, maxHp: 25,
-            mp: 0, maxMp: 0,
-            atk: 3, def: 1,
-            exp: 3, gp: 5,
-          },
-
-          E2: {
-            name: 'Slime',
-            active: true,
-            hp: 25, maxHp: 25,
-            mp: 0, maxMp: 0,
-            atk: 3, def: 1,
-            exp: 3, gp: 5,
-          },
-        },
-
+        actors: d.resolve(this.props.actors),
         turn: 'party',
       }}
 
+      {checkpoint('battle')}
       {[clear, clearPanes]}
       {sec(2)}
 
@@ -124,7 +101,7 @@ class Battle extends d.Component {
           return (
             <div>
               <p>Victory!{w}</p>
-              {() => requestAnimationFrame(this.battleEnd)}
+              {goTo('battle.end')}
             </div>
           );
         }
@@ -290,6 +267,7 @@ class Battle extends d.Component {
             targetActor.active = false;
           }
 
+          game.chain.autoSave && game.chain.saveGame();
           d.update();
 
           return (
@@ -306,10 +284,9 @@ class Battle extends d.Component {
         {goTo('battle.mainLoop')}
       </Chain.shield>
 
-      {() => new Promise(resolve => {
-        this.battleEnd = resolve;
-      })}
+      {Chain.halt}
 
+      {checkpoint('battle.end')}
       {[clear, clearPanes]}
     </div>
   );
