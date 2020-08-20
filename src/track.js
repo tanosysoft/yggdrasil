@@ -1,6 +1,8 @@
 import hub from './hub';
 
 let track = (msg, data = {}) => () => {
+  console.log('track:', msg, data);
+
   if (location.hostname === 'localhost') {
     return;
   }

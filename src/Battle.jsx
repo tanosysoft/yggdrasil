@@ -59,7 +59,7 @@ class Battle extends d.Component {
         turn: 'party',
       }}
 
-      {checkpoint('battle')}
+      {checkpoint(this.props.checkpoint)}
       {[clear, clearPanes]}
       {sec(2)}
 
@@ -94,7 +94,7 @@ class Battle extends d.Component {
         </div>
       ))}
 
-      {label('battle.mainLoop')}
+      {label(`${this.props.checkpoint}.mainLoop`)}
 
       {() => {
         if (this.actors('P').every(x => !x.active)) {
@@ -110,7 +110,7 @@ class Battle extends d.Component {
           return (
             <div>
               <p>Victory!{w}</p>
-              {goTo('battle.end')}
+              {goTo(`${this.props.checkpoint}.end`)}
             </div>
           );
         }
@@ -118,8 +118,8 @@ class Battle extends d.Component {
         let { turn } = this.btst;
 
         switch (turn) {
-          case 'party': return goTo('battle.partyLoop');
-          case 'enemy': return goTo('battle.enemyLoop');
+          case 'party': return goTo(`${this.props.checkpoint}.partyLoop`);
+          case 'enemy': return goTo(`${this.props.checkpoint}.enemyLoop`);
 
           default:
             throw new Error(`Invalid turn: ${turn}`);
@@ -127,7 +127,7 @@ class Battle extends d.Component {
       }}
 
       <Chain.shield>
-        {label('battle.partyLoop')}
+        {label(`${this.props.checkpoint}.partyLoop`)}
         {clear}
 
         {() => {
@@ -145,7 +145,7 @@ class Battle extends d.Component {
               btst.turn = 'enemy';
               d.update();
 
-              return goTo('battle.mainLoop');
+              return goTo(`${this.props.checkpoint}.mainLoop`);
             }
 
             if (actor.active) {
@@ -160,17 +160,19 @@ class Battle extends d.Component {
         {cancelFastForward}
         <p>It's {() => this.curLabel}'s turn.{sec(1)}</p>
 
-        {goTo('battle.playerLoop.mainMenu')}
+        {goTo(`${this.props.checkpoint}.playerLoop.mainMenu`)}
       </Chain.shield>
 
       <Chain.shield>
-        {label('battle.playerLoop.mainMenu')}
+        {label(`${this.props.checkpoint}.playerLoop.mainMenu`)}
 
         {() => game.setPane('bottom', (
           <div class="ActionsPane">
             <button
               class="ActionsPane-btn"
-              onClick={() => game.chain.run('battle.playerLoop.attackMenu')}
+              onClick={() => game.chain.run(
+                `${this.props.checkpoint}.playerLoop.attackMenu`,
+              )}
             >
               Attack
             </button>
@@ -179,7 +181,7 @@ class Battle extends d.Component {
       </Chain.shield>
 
       <Chain.shield>
-        {label('battle.playerLoop.attackMenu')}
+        {label(`${this.props.checkpoint}.playerLoop.attackMenu`)}
 
         {() => game.setPane('bottom', (
           <div class="ActionsPane">
@@ -188,7 +190,7 @@ class Battle extends d.Component {
                 class="ActionsPane-btn"
                 onClick={() => {
                   this.btst.targetActorId = x.id;
-                  game.chain.run('battle.attack');
+                  game.chain.run(`${this.props.checkpoint}.attack`);
                 }}
               >
                 {x.name}[{x.id}]
@@ -197,7 +199,9 @@ class Battle extends d.Component {
 
             <button
               class="ActionsPane-btn"
-              onClick={() => game.chain.run('battle.playerLoop.mainMenu')}
+              onClick={() => game.chain.run(
+                `${this.props.checkpoint}.playerLoop.mainMenu`,
+              )}
             >
               Back
             </button>
@@ -206,7 +210,7 @@ class Battle extends d.Component {
       </Chain.shield>
 
       <Chain.shield>
-        {label('battle.enemyLoop')}
+        {label(`${this.props.checkpoint}.enemyLoop`)}
         {clear}
 
         {() => {
@@ -224,7 +228,7 @@ class Battle extends d.Component {
               btst.turn = 'party';
               d.update();
 
-              return goTo('battle.mainLoop');
+              return goTo(`${this.props.checkpoint}.mainLoop`);
             }
 
             if (actor.active) {
@@ -240,11 +244,11 @@ class Battle extends d.Component {
         <p>It's {() => this.curLabel}'s turn.{sec(1)}</p>
 
         {() => void(this.btst.targetActorId = 'P1')}
-        {goTo('battle.attack')}
+        {goTo(`${this.props.checkpoint}.attack`)}
       </Chain.shield>
 
       <Chain.shield>
-        {label('battle.attack')}
+        {label(`${this.props.checkpoint}.attack`)}
         {() => game.setPane('bottom', null)}
         {sdl(10)}
         <div>{() => this.curLabel} attacks!{w}</div>
@@ -252,14 +256,14 @@ class Battle extends d.Component {
         {() => Math.random() >= 0.95 && (
           <div>
             <div>The attack misses {() => this.targetLabel}!{w}</div>
-            {goTo('battle.mainLoop')}
+            {goTo(`${this.props.checkpoint}.mainLoop`)}
           </div>
         )}
 
         {() => Math.random() >= 0.95 && (
           <div>
             <div>{() => this.targetLabel} evades!{w}</div>
-            {goTo('battle.mainLoop')}
+            {goTo(`${this.props.checkpoint}.mainLoop`)}
           </div>
         )}
 
@@ -292,12 +296,12 @@ class Battle extends d.Component {
           );
         }}
 
-        {goTo('battle.mainLoop')}
+        {goTo(`${this.props.checkpoint}.mainLoop`)}
       </Chain.shield>
 
       {Chain.halt}
 
-      {checkpoint('battle.end')}
+      {checkpoint(`${this.props.checkpoint}.end`)}
       {[clear, clearPanes]}
     </div>
   );
