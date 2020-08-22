@@ -80,6 +80,7 @@ class Dungeon extends d.Component {
           <Chain.shield>
             {checkpoint('dungeon.lv01.r01.t01')}
             {[clear, clearPanes]}
+            {sec(0.75)}
 
             {() => game.setPane('bottom', (
               <div class="ActionsPane">
@@ -112,6 +113,7 @@ class Dungeon extends d.Component {
 
             <Chain.shield>
               {checkpoint('dungeon.lv01.r01.t01.lookAround')}
+              {() => game.setPane('bottom', null)}
               {sdl(30)}
               You can leave the dungeon to the left.{w}<br />
               There's a corridor to the right.{w}<br />
@@ -135,6 +137,8 @@ class Dungeon extends d.Component {
             ))}
 
             {checkpoint('dungeon.lv01.r01.t02.afterBattle')}
+            {[clear, clearPanes]}
+            {sec(0.75)}
 
             {() => game.setPane('bottom', (
               <div class="ActionsPane">
@@ -167,6 +171,7 @@ class Dungeon extends d.Component {
 
             <Chain.shield>
               {checkpoint('dungeon.lv01.r01.t02.lookAround')}
+              {() => game.setPane('bottom', null)}
               {sdl(30)}
               There's a corridor to the left.{w}<br />
               There's a corridor to the right.{w}<br />
@@ -190,6 +195,8 @@ class Dungeon extends d.Component {
             ))}
 
             {checkpoint('dungeon.lv01.r01.t03.afterBattle')}
+            {[clear, clearPanes]}
+            {sec(0.75)}
 
             {() => game.setPane('bottom', (
               <div class="ActionsPane">
@@ -222,6 +229,7 @@ class Dungeon extends d.Component {
 
             <Chain.shield>
               {checkpoint('dungeon.lv01.r01.t03.lookAround')}
+              {() => game.setPane('bottom', null)}
               {sdl(30)}
               There's a corridor to the left.{w}<br />
               There's a corridor to the right.{w}<br />
@@ -245,6 +253,8 @@ class Dungeon extends d.Component {
             ))}
 
             {checkpoint('dungeon.lv01.r01.t04.afterBattle')}
+            {[clear, clearPanes]}
+            {sec(0.75)}
 
             {() => game.setPane('bottom', (
               <div class="ActionsPane">
@@ -286,8 +296,9 @@ class Dungeon extends d.Component {
 
             <Chain.shield>
               {checkpoint('dungeon.lv01.r01.t04.lookAround')}
-              {sdl(30)}
+              {() => game.setPane('bottom', null)}
               {() => this.reveal('lv01.r01.t04')}
+              {sdl(30)}
               There's a corridor up.{w}<br />
               There's a corridor to the left.{w}<br />
               There's a corridor to the right.{w}<br />
