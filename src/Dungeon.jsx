@@ -36,8 +36,6 @@ let makeActors = () => ({
 //               |   |
 // -(1)-(2)-(3)-(4)-(5)
 class Dungeon extends d.Component {
-  revealed = new Set();
-
   reveal = id => {
     if (!this.dungeonProgress.revealed.includes(id)) {
       this.dungeonProgress.revealed.push(id);
@@ -56,6 +54,9 @@ class Dungeon extends d.Component {
 
   render = () => (
     <Chain.shield class="Dungeon">
+      {checkpoint('dungeon')}
+      {[clear, clearPanes]}
+
       {() => {
         this.dungeonProgress = this.dungeonProgress || {
           revealed: [],
@@ -64,8 +65,6 @@ class Dungeon extends d.Component {
         game.chain.autoSave && game.chain.saveGame();
       }}
 
-      {checkpoint('dungeon')}
-      {[clear, clearPanes]}
       {goTo('dungeon.lv01')}
 
       <Chain.shield>
@@ -124,12 +123,16 @@ class Dungeon extends d.Component {
             {checkpoint('dungeon.lv01.r01.t02')}
             {[clear, clearPanes]}
 
-            <p>You're ambushed!{w}</p>
+            {Chain.if(() => Math.random() >= 0.7, (
+              <div>
+                <p>You're ambushed!{w}</p>
 
-            <Battle
-              checkpoint="dungeon.lv01.r01.t02.battle"
-              actors={makeActors()}
-            />
+                <Battle
+                  checkpoint="dungeon.lv01.r01.t02.battle"
+                  actors={makeActors()}
+                />
+              </div>
+            ))}
 
             {checkpoint('dungeon.lv01.r01.t02.afterBattle')}
 
@@ -175,12 +178,16 @@ class Dungeon extends d.Component {
             {checkpoint('dungeon.lv01.r01.t03')}
             {[clear, clearPanes]}
 
-            <p>You're ambushed!{w}</p>
+            {Chain.if(() => Math.random() >= 0.7, (
+              <div>
+                <p>You're ambushed!{w}</p>
 
-            <Battle
-              checkpoint="dungeon.lv01.r01.t03.battle"
-              actors={makeActors()}
-            />
+                <Battle
+                  checkpoint="dungeon.lv01.r01.t03.battle"
+                  actors={makeActors()}
+                />
+              </div>
+            ))}
 
             {checkpoint('dungeon.lv01.r01.t03.afterBattle')}
 
@@ -226,12 +233,16 @@ class Dungeon extends d.Component {
             {checkpoint('dungeon.lv01.r01.t04')}
             {[clear, clearPanes]}
 
-            <p>You're ambushed!{w}</p>
+            {Chain.if(() => Math.random() >= 0.7, (
+              <div>
+                <p>You're ambushed!{w}</p>
 
-            <Battle
-              checkpoint="dungeon.lv01.r01.t04.battle"
-              actors={makeActors()}
-            />
+                <Battle
+                  checkpoint="dungeon.lv01.r01.t04.battle"
+                  actors={makeActors()}
+                />
+              </div>
+            ))}
 
             {checkpoint('dungeon.lv01.r01.t04.afterBattle')}
 

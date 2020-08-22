@@ -10,6 +10,7 @@ import Chain, {
 
 import checkpoint from './checkpoint';
 import clearPanes from './clearPanes';
+import cloneDeep from 'lodash/cloneDeep';
 import label from './label';
 
 class Battle extends d.Component {
@@ -54,13 +55,14 @@ class Battle extends d.Component {
 
   render = () => (
     <div class="Battle">
-      {() => this.btst = {
-        actors: d.resolve(this.props.actors),
+      {checkpoint(this.props.checkpoint)}
+      {[clear, clearPanes]}
+
+      {() => this.btst = this.btst || {
+        actors: cloneDeep(d.resolve(this.props.actors)),
         turn: 'party',
       }}
 
-      {checkpoint(this.props.checkpoint)}
-      {[clear, clearPanes]}
       {sec(2)}
 
       {() => game.setPane('top', (
@@ -303,6 +305,7 @@ class Battle extends d.Component {
 
       {checkpoint(`${this.props.checkpoint}.end`)}
       {[clear, clearPanes]}
+      {() => this.btst = null}
     </div>
   );
 }
