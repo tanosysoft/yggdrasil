@@ -181,7 +181,7 @@ class DungeonLv01R01 extends d.Component {
 
         {this.renderLookAroundScript(this.id('t04.afterBattle'), (
           <>
-            {() => game.dungeon.reveal('lv01.r01.t04')}
+            {() => game.dungeon.markRevealed('lv01.r01.t04')}
             {this.lookAroundMsgs.upCorridor}{w}<br />
             {this.lookAroundMsgs.leftCorridor}{w}<br />
             {this.lookAroundMsgs.rightCorridor}{w}<br />

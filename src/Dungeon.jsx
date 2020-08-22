@@ -18,7 +18,17 @@ class Dungeon extends d.Component {
     game.chain.progress.dungeon = x;
   }
 
-  reveal = id => {
+  markVisited = id => {
+    if (!this.progress.visited.includes(id)) {
+      this.progress.visited.push(id);
+    }
+
+    d.update();
+  };
+
+  visited = id => this.progress.visited.includes(id);
+
+  markRevealed = id => {
     if (!this.progress.revealed.includes(id)) {
       this.progress.revealed.push(id);
     }
@@ -35,6 +45,7 @@ class Dungeon extends d.Component {
 
       {() => {
         this.progress = this.progress || {
+          visited: [],
           revealed: [],
         };
 
