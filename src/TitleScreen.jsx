@@ -42,6 +42,13 @@ class TitleScreen extends d.Component {
       <Chain.shield>
         {label('title.newGame')}
         {() => game.setPane('bottom', null)}
+
+        {Chain.if(() => !localStorage.getItem('chain.savedProgress'), (
+          <div>
+            {goTo('title.gameStart')}
+          </div>
+        ))}
+
         {sdl(30)}
         <p>Are you sure you want to restart the game?{sec(0.2)}</p>
         <p>Doing so will destroy the currently saved adventure.{sec(0.2)}</p>
