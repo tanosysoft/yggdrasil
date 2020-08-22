@@ -11,7 +11,8 @@
     [
       "@babel/plugin-transform-react-jsx",
       {
-        "pragma": "Chain.el"
+        "pragma": "Chain.el",
+        "pragmaFrag": "Chain.frag"
       }
     ],
     "@babel/plugin-proposal-class-properties"
