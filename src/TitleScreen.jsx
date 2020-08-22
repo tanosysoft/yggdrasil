@@ -78,7 +78,7 @@ class TitleScreen extends d.Component {
         {label('title.gameStart')}
         {sdl(10)}
         {() => game.setPane('bottom', null)}
-        <p>Game start!{w}</p>
+        <p>Game {() => !this.loadGame ? 'start' : 'loaded'}!{w}</p>
         {clear}
 
         {() => {
