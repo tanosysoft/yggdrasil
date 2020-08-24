@@ -43,6 +43,8 @@ class Game extends d.Component {
     return this.panes.main.model;
   }
 
+  run = id => this.chain.run(id);
+
   get progress() {
     return this.chain.progress;
   }

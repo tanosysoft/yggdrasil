@@ -20,7 +20,7 @@ class TitleScreen extends d.Component {
               class="ActionsPane-btn"
               onClick={() => {
                 this.loadGame = false;
-                game.chain.run('title.newGame');
+                game.run('title.newGame');
               }}
             >
               New Game
@@ -30,7 +30,7 @@ class TitleScreen extends d.Component {
               class="ActionsPane-btn"
               onClick={() => {
                 this.loadGame = true;
-                game.chain.run('title.gameStart');
+                game.run('title.gameStart');
               }}
             >
               Load Game
@@ -58,14 +58,14 @@ class TitleScreen extends d.Component {
             <div class="ActionsPane-row">
               <button
                 class="ActionsPane-btn"
-                onClick={() => game.chain.run('title.gameStart')}
+                onClick={() => game.run('title.gameStart')}
               >
                 Yes
               </button>
 
               <button
                 class="ActionsPane-btn"
-                onClick={() => game.chain.run('title')}
+                onClick={() => game.run('title')}
               >
                 No
               </button>

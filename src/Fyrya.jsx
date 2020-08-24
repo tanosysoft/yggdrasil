@@ -52,10 +52,7 @@ class Fyrya extends d.Component {
       {() => game.setPane('bottom', (
         <div class="ActionsPane">
           <div class="ActionsPane-row">
-            <button
-              class="ActionsPane-btn"
-              onClick={() => game.chain.run('dungeon')}
-            >
+            <button class="ActionsPane-btn" onClick={() => game.run('dungeon')}>
               To the dungeon
             </button>
           </div>
@@ -79,7 +76,7 @@ class Fyrya extends d.Component {
           <div class="ActionsPane-row">
             <button
               class="ActionsPane-btn"
-              onClick={() => game.chain.run('cityOffice')}
+              onClick={() => game.run('cityOffice')}
             >
               To the city office
             </button>

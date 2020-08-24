@@ -174,7 +174,7 @@ class Battle extends d.Component {
           <div class="ActionsPane">
             <button
               class="ActionsPane-btn"
-              onClick={() => game.chain.run(
+              onClick={() => game.run(
                 `${this.props.checkpoint}.playerLoop.attackMenu`,
               )}
             >
@@ -194,7 +194,7 @@ class Battle extends d.Component {
                 class="ActionsPane-btn"
                 onClick={() => {
                   this.btst.targetActorId = x.id;
-                  game.chain.run(`${this.props.checkpoint}.attack`);
+                  game.run(`${this.props.checkpoint}.attack`);
                 }}
               >
                 {x.name}[{x.id}]
@@ -203,7 +203,7 @@ class Battle extends d.Component {
 
             <button
               class="ActionsPane-btn"
-              onClick={() => game.chain.run(
+              onClick={() => game.run(
                 `${this.props.checkpoint}.playerLoop.mainMenu`,
               )}
             >
