@@ -175,8 +175,8 @@ class DungeonLv01R01 extends d.Component {
         {() => game.setPane('bottom', (
           <div class="ActionsPane">
             {this.renderDefaultActions({
-              up: game.dungeon.revealed('lv01.r01.t04.up') && (() => {
-                game.dungeon.markRevealed('lv01.r01.t06.down');
+              up: game.progressVar('lv01.r01.t04.up') && (() => {
+                game.progressVar('lv01.r01.t06.down', true);
                 game.chain.run(this.id('t06'));
               }),
 
@@ -191,7 +191,7 @@ class DungeonLv01R01 extends d.Component {
 
         {this.renderLookAroundScript(this.id('t04.afterBattle'), (
           <>
-            {() => game.dungeon.markRevealed('lv01.r01.t04.up')}
+            {() => game.progressVar('lv01.r01.t04.up', true)}
             {this.lookAroundMsgs.upCorridor}{w}<br />
             {this.lookAroundMsgs.leftCorridor}{w}<br />
             {this.lookAroundMsgs.rightCorridor}{w}<br />
@@ -221,7 +221,7 @@ class DungeonLv01R01 extends d.Component {
         {() => game.setPane('bottom', (
           <div class="ActionsPane">
             {this.renderDefaultActions({
-              up: game.dungeon.revealed('lv01.r01.t05.up') &&
+              up: game.progressVar('lv01.r01.t05.up') &&
                 (() => game.chain.run(this.id('t07'))),
 
               left: () => game.chain.run(this.id('t04')),
@@ -234,7 +234,7 @@ class DungeonLv01R01 extends d.Component {
 
         {this.renderLookAroundScript(this.id('t05.afterBattle'), (
           <>
-            {() => game.dungeon.markRevealed('lv01.r01.t05.up')}
+            {() => game.progressVar('lv01.r01.t05.up', true)}
             {this.lookAroundMsgs.upCorridor}{w}<br />
             {this.lookAroundMsgs.leftCorridor}{w}<br />
           </>
@@ -262,11 +262,17 @@ class DungeonLv01R01 extends d.Component {
 
         {() => game.setPane('bottom', (
           <div class="ActionsPane">
+            {game.progressVar('lv01.r01.t06.chest') && (
+              <button class="ActionsPane-btn">
+                Open chest
+              </button>
+            )}
+
             {this.renderDefaultActions({
-              right: game.dungeon.revealed('lv01.r01.t06.right') &&
+              right: game.progressVar('lv01.r01.t06.right') &&
                 (() => game.chain.run(this.id('t07'))),
 
-              down: game.dungeon.revealed('lv01.r01.t06.down') &&
+              down: game.progressVar('lv01.r01.t06.down') &&
                 (() => game.chain.run(this.id('t04'))),
 
               lookAround: () =>
@@ -277,8 +283,10 @@ class DungeonLv01R01 extends d.Component {
 
         {this.renderLookAroundScript(this.id('t06.afterBattle'), (
           <>
-            {() => game.dungeon.markRevealed('lv01.r01.t06.right')}
-            {() => game.dungeon.markRevealed('lv01.r01.t06.down')}
+            {() => game.progressVar('lv01.r01.t06.chest', true)}
+            {() => game.progressVar('lv01.r01.t06.right', true)}
+            {() => game.progressVar('lv01.r01.t06.down', true)}
+            You see a chest box in the corner.{w}<br />
             {this.lookAroundMsgs.rightCorridor}{w}<br />
             {this.lookAroundMsgs.downCorridor}{w}<br />
           </>
@@ -307,15 +315,15 @@ class DungeonLv01R01 extends d.Component {
         {() => game.setPane('bottom', (
           <div class="ActionsPane">
             {this.renderDefaultActions({
-              left: game.dungeon.revealed('lv01.r01.t07.left') && (() => {
-                game.dungeon.markRevealed('lv01.r01.t06.right');
+              left: game.progressVar('lv01.r01.t07.left') && (() => {
+                game.progressVar('lv01.r01.t06.right', true);
                 game.chain.run(this.id('t06'));
               }),
 
-              right: game.dungeon.revealed('lv01.r01.t07.right') &&
+              right: game.progressVar('lv01.r01.t07.right') &&
                 (() => game.chain.run(this.id('t08'))),
 
-              down: game.dungeon.revealed('lv01.r01.t07.down') &&
+              down: game.progressVar('lv01.r01.t07.down') &&
                 (() => game.chain.run(this.id('t04'))),
 
               lookAround: () =>
@@ -326,9 +334,9 @@ class DungeonLv01R01 extends d.Component {
 
         {this.renderLookAroundScript(this.id('t07.afterBattle'), (
           <>
-            {() => game.dungeon.markRevealed('lv01.r01.t07.left')}
-            {() => game.dungeon.markRevealed('lv01.r01.t07.right')}
-            {() => game.dungeon.markRevealed('lv01.r01.t07.down')}
+            {() => game.progressVar('lv01.r01.t07.left', true)}
+            {() => game.progressVar('lv01.r01.t07.right', true)}
+            {() => game.progressVar('lv01.r01.t07.down', true)}
             {this.lookAroundMsgs.leftCorridor}{w}<br />
             {this.lookAroundMsgs.rightCorridor}{w}<br />
             {this.lookAroundMsgs.downCorridor}{w}<br />
@@ -369,7 +377,7 @@ class DungeonLv01R01 extends d.Component {
 
         {this.renderLookAroundScript(this.id('t08.afterBattle'), (
           <>
-            {() => game.dungeon.markRevealed('lv01.r01.t08')}
+            {() => game.progressVar('lv01.r01.t08', true)}
             {this.lookAroundMsgs.leftCorridor}{w}<br />
             {this.lookAroundMsgs.rightCorridor}{w}<br />
           </>

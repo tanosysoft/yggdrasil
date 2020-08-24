@@ -20,11 +20,11 @@ class Battle extends d.Component {
   }
 
   get btst() {
-    return game.chain.progress.battle;
+    return game.progressVar('battle');
   }
 
   set btst(x) {
-    return game.chain.progress.battle = x;
+    return game.progressVar('battle', x);
   }
 
   actors(prefix) {
@@ -55,6 +55,8 @@ class Battle extends d.Component {
 
   render = () => (
     <div class="Battle">
+      {goTo(`${this.props.checkpoint}.end`)}
+
       {checkpoint(this.props.checkpoint)}
       {[clear, clearPanes]}
 

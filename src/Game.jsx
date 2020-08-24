@@ -43,6 +43,41 @@ class Game extends d.Component {
     return this.panes.main.model;
   }
 
+  get progress() {
+    return this.chain.progress;
+  }
+
+  progressVar = (keyPath, val) => {
+    let cursor = this.progress;
+    let parent = null;
+    let parentKey = null;
+
+    for (let k of keyPath.split('.')) {
+      if ([null, undefined].includes(cursor[k])) {
+        if (val === undefined) {
+          return;
+        }
+
+        parent = cursor;
+        parentKey = k;
+        cursor[k] = {};
+        cursor = cursor[k];
+
+        continue;
+      }
+
+      parent = cursor;
+      parentKey = k;
+      cursor = cursor[k];
+    }
+
+    if (val === undefined) {
+      return cursor;
+    }
+
+    return parent[parentKey] = val;
+  };
+
   setPane(k, ...contents) {
     this.panes[k].innerHTML = '';
 
