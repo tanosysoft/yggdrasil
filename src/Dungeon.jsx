@@ -1,13 +1,13 @@
-import Battle from './Battle';
-import Chain, { clear, d, goTo, sdl, sec, w } from '@tanosysoft/chain';
+import Chain, { clear, goTo } from '@tanosysoft/chain';
 import DungeonLv01 from './DungeonLv01.jsx';
 import checkpoint from './checkpoint';
-import clearPanes from './clearPanes';
 
 let Dungeon = () => (
   <Chain.shield class="Dungeon">
     {checkpoint('dungeon')}
-    {[clear, clearPanes]}
+    {() => game.setPane('top', null)}
+    {() => game.setPane('bottom', null)}
+    {clear}
     {goTo('dungeon.lv01')}
 
     <DungeonLv01 />

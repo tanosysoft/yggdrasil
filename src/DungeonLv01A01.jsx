@@ -35,8 +35,8 @@ let makeActors = () => ({
 //              (6)-(7)-(8)-
 //               |   |
 // -(1)-(2)-(3)-(4)-(5)
-class DungeonLv01R01 extends d.Component {
-  id = id => `dungeon.lv01.r01${id ? `.${id}` : ''}`;
+class DungeonLv01A01 extends d.Component {
+  id = id => `dungeon.lv01.a01${id ? `.${id}` : ''}`;
 
   lookAroundMsgs = {
     leaveToTheLeft: `You can leave the dungeon to the left.`,
@@ -56,10 +56,10 @@ class DungeonLv01R01 extends d.Component {
     <Chain.shield>
       {checkpoint(this.id())}
       {[clear, clearPanes]}
-      {goTo(this.id('t01'))}
+      {goTo(this.id('r01'))}
 
       <Chain.shield>
-        {checkpoint(this.id('t01'))}
+        {checkpoint(this.id('r01'))}
         {[clear, clearPanes]}
         {sec(0.75)}
 
@@ -67,13 +67,13 @@ class DungeonLv01R01 extends d.Component {
           <div class="ActionsPane">
             {this.renderDefaultActions({
               left: () => game.run('fyrya'),
-              right: () => game.run(this.id('t02')),
-              lookAround: () => game.run(this.id('t01.lookAround')),
+              right: () => game.run(this.id('r02')),
+              lookAround: () => game.run(this.id('r01.lookAround')),
             })}
           </div>
         ))}
 
-        {this.renderLookAroundScript(this.id('t01'), (
+        {this.renderLookAroundScript(this.id('r01'), (
           <>
             {this.lookAroundMsgs.leaveToTheLeft}{w}<br />
             {this.lookAroundMsgs.rightCorridor}{w}<br />
@@ -82,7 +82,7 @@ class DungeonLv01R01 extends d.Component {
       </Chain.shield>
 
       <Chain.shield>
-        {checkpoint(this.id('t02'))}
+        {checkpoint(this.id('r02'))}
         {[clear, clearPanes]}
 
         {Chain.if(() => Math.random() >= 0.7, (
@@ -90,29 +90,29 @@ class DungeonLv01R01 extends d.Component {
             <p>You're ambushed!{w}</p>
 
             <Battle
-              checkpoint={this.id('t02.battle')}
+              checkpoint={this.id('r02.battle')}
               actors={makeActors()}
             />
           </div>
         ))}
 
-        {checkpoint(this.id('t02.afterBattle'))}
+        {checkpoint(this.id('r02.afterBattle'))}
         {[clear, clearPanes]}
         {sec(0.75)}
 
         {() => game.setPane('bottom', (
           <div class="ActionsPane">
             {this.renderDefaultActions({
-              left: () => game.run(this.id('t01')),
-              right: () => game.run(this.id('t03')),
+              left: () => game.run(this.id('r01')),
+              right: () => game.run(this.id('r03')),
 
               lookAround: () =>
-                game.run(this.id('t02.afterBattle.lookAround')),
+                game.run(this.id('r02.afterBattle.lookAround')),
             })}
           </div>
         ))}
 
-        {this.renderLookAroundScript(this.id('t02.afterBattle'), (
+        {this.renderLookAroundScript(this.id('r02.afterBattle'), (
           <>
             {this.lookAroundMsgs.leftCorridor}{w}<br />
             {this.lookAroundMsgs.rightCorridor}{w}<br />
@@ -121,7 +121,7 @@ class DungeonLv01R01 extends d.Component {
       </Chain.shield>
 
       <Chain.shield>
-        {checkpoint(this.id('t03'))}
+        {checkpoint(this.id('r03'))}
         {[clear, clearPanes]}
 
         {Chain.if(() => Math.random() >= 0.7, (
@@ -129,27 +129,27 @@ class DungeonLv01R01 extends d.Component {
             <p>You're ambushed!{w}</p>
 
             <Battle
-              checkpoint={this.id('t03.battle')}
+              checkpoint={this.id('r03.battle')}
               actors={makeActors()}
             />
           </div>
         ))}
 
-        {checkpoint(this.id('t03.afterBattle'))}
+        {checkpoint(this.id('r03.afterBattle'))}
         {[clear, clearPanes]}
         {sec(0.75)}
 
         {() => game.setPane('bottom', (
           <div class="ActionsPane">
             {this.renderDefaultActions({
-              left: () => game.run(this.id('t02')),
-              right: () => game.run(this.id('t04')),
-              lookAround: () => game.run(this.id('t03.afterBattle.lookAround')),
+              left: () => game.run(this.id('r02')),
+              right: () => game.run(this.id('r04')),
+              lookAround: () => game.run(this.id('r03.afterBattle.lookAround')),
             })}
           </div>
         ))}
 
-        {this.renderLookAroundScript(this.id('t03.afterBattle'), (
+        {this.renderLookAroundScript(this.id('r03.afterBattle'), (
           <>
             {this.lookAroundMsgs.leftCorridor}{w}<br />
             {this.lookAroundMsgs.rightCorridor}{w}<br />
@@ -158,7 +158,7 @@ class DungeonLv01R01 extends d.Component {
       </Chain.shield>
 
       <Chain.shield>
-        {checkpoint(this.id('t04'))}
+        {checkpoint(this.id('r04'))}
         {[clear, clearPanes]}
 
         {Chain.if(() => Math.random() >= 0.7, (
@@ -166,34 +166,34 @@ class DungeonLv01R01 extends d.Component {
             <p>You're ambushed!{w}</p>
 
             <Battle
-              checkpoint={this.id('t04.battle')}
+              checkpoint={this.id('r04.battle')}
               actors={makeActors()}
             />
           </div>
         ))}
 
-        {checkpoint(this.id('t04.afterBattle'))}
+        {checkpoint(this.id('r04.afterBattle'))}
         {[clear, clearPanes]}
         {sec(0.75)}
 
         {() => game.setPane('bottom', (
           <div class="ActionsPane">
             {this.renderDefaultActions({
-              up: game.progressVar(this.id('t04.up')) && (() => {
-                game.progressVar(this.id('t06.down'), true);
-                game.run(this.id('t06'));
+              up: game.progressVar(this.id('r04.up')) && (() => {
+                game.progressVar(this.id('r06.down'), true);
+                game.run(this.id('r06'));
               }),
 
-              left: () => game.run(this.id('t03')),
-              right: () => game.run(this.id('t05')),
-              lookAround: () => game.run(this.id('t04.afterBattle.lookAround')),
+              left: () => game.run(this.id('r03')),
+              right: () => game.run(this.id('r05')),
+              lookAround: () => game.run(this.id('r04.afterBattle.lookAround')),
             })}
           </div>
         ))}
 
-        {this.renderLookAroundScript(this.id('t04.afterBattle'), (
+        {this.renderLookAroundScript(this.id('r04.afterBattle'), (
           <>
-            {() => game.progressVar(this.id('t04.up'), true)}
+            {() => game.progressVar(this.id('r04.up'), true)}
             {this.lookAroundMsgs.upCorridor}{w}<br />
             {this.lookAroundMsgs.leftCorridor}{w}<br />
             {this.lookAroundMsgs.rightCorridor}{w}<br />
@@ -202,7 +202,7 @@ class DungeonLv01R01 extends d.Component {
       </Chain.shield>
 
       <Chain.shield>
-        {checkpoint(this.id('t05'))}
+        {checkpoint(this.id('r05'))}
         {[clear, clearPanes]}
 
         {Chain.if(() => Math.random() >= 0.7, (
@@ -210,31 +210,31 @@ class DungeonLv01R01 extends d.Component {
             <p>You're ambushed!{w}</p>
 
             <Battle
-              checkpoint={this.id('t05.battle')}
+              checkpoint={this.id('r05.battle')}
               actors={makeActors()}
             />
           </div>
         ))}
 
-        {checkpoint(this.id('t05.afterBattle'))}
+        {checkpoint(this.id('r05.afterBattle'))}
         {[clear, clearPanes]}
         {sec(0.75)}
 
         {() => game.setPane('bottom', (
           <div class="ActionsPane">
             {this.renderDefaultActions({
-              up: game.progressVar(this.id('t05.up')) &&
-                (() => game.run(this.id('t07'))),
+              up: game.progressVar(this.id('r05.up')) &&
+                (() => game.run(this.id('r07'))),
 
-              left: () => game.run(this.id('t04')),
-              lookAround: () => game.run(this.id('t05.afterBattle.lookAround')),
+              left: () => game.run(this.id('r04')),
+              lookAround: () => game.run(this.id('r05.afterBattle.lookAround')),
             })}
           </div>
         ))}
 
-        {this.renderLookAroundScript(this.id('t05.afterBattle'), (
+        {this.renderLookAroundScript(this.id('r05.afterBattle'), (
           <>
-            {() => game.progressVar(this.id('t05.up'), true)}
+            {() => game.progressVar(this.id('r05.up'), true)}
             {this.lookAroundMsgs.upCorridor}{w}<br />
             {this.lookAroundMsgs.leftCorridor}{w}<br />
           </>
@@ -242,7 +242,7 @@ class DungeonLv01R01 extends d.Component {
       </Chain.shield>
 
       <Chain.shield>
-        {checkpoint(this.id('t06'))}
+        {checkpoint(this.id('r06'))}
         {[clear, clearPanes]}
 
         {Chain.if(() => Math.random() >= 0.7, (
@@ -250,53 +250,55 @@ class DungeonLv01R01 extends d.Component {
             <p>You're ambushed!{w}</p>
 
             <Battle
-              checkpoint={this.id('t06.battle')}
+              checkpoint={this.id('r06.battle')}
               actors={makeActors()}
             />
           </div>
         ))}
 
-        {checkpoint(this.id('t06.afterBattle'))}
+        {checkpoint(this.id('r06.afterBattle'))}
         {[clear, clearPanes]}
         {sec(0.75)}
 
         {() => game.setPane('bottom', (
           <div class="ActionsPane">
-            {game.progressVar(this.id('t06.chest')) && (
+            {game.progressVar(this.id('r06.chest')) && (
               <button
                 class="ActionsPane-btn"
-                onClick={() => game.run(this.id('t06.openChest'))}
+                onClick={() => game.run(this.id('r06.openChest'))}
               >
                 Open chest
               </button>
             )}
 
             {this.renderDefaultActions({
-              right: game.progressVar(this.id('t06.right')) &&
-                (() => game.run(this.id('t07'))),
+              right: game.progressVar(this.id('r06.right')) &&
+                (() => game.run(this.id('r07'))),
 
-              down: game.progressVar(this.id('t06.down')) &&
-                (() => game.run(this.id('t04'))),
+              down: game.progressVar(this.id('r06.down')) &&
+                (() => game.run(this.id('r04'))),
 
-              lookAround: () => game.run(this.id('t06.afterBattle.lookAround')),
+              lookAround: () => game.run(this.id('r06.afterBattle.lookAround')),
             })}
           </div>
         ))}
 
         <Chain.shield>
-          {checkpoint(this.id('t06.openChest'))}
+          {checkpoint(this.id('r06.openChest'))}
+          {() => game.setPane('bottom', null)}
+          {clear}
           {sdl(30)}
-          {() => game.progressVar('dungeon.key01', true)}
           You open the chest box...{w}<br />
-          You found a key inside!{w}<br />
-          {goTo(this.id('t06.afterBattle'))}
+          {() => game.progressVar('dungeon.key01', true)}
+          You find a key inside!{w}<br />
+          {goTo(this.id('r06.afterBattle'))}
         </Chain.shield>
 
-        {this.renderLookAroundScript(this.id('t06.afterBattle'), (
+        {this.renderLookAroundScript(this.id('r06.afterBattle'), (
           <>
-            {() => game.progressVar(this.id('t06.chest'), true)}
-            {() => game.progressVar(this.id('t06.right'), true)}
-            {() => game.progressVar(this.id('t06.down'), true)}
+            {() => game.progressVar(this.id('r06.chest'), true)}
+            {() => game.progressVar(this.id('r06.right'), true)}
+            {() => game.progressVar(this.id('r06.down'), true)}
             You see a chest box in the corner of the room.{w}<br />
             {this.lookAroundMsgs.rightCorridor}{w}<br />
             {this.lookAroundMsgs.downCorridor}{w}<br />
@@ -305,7 +307,7 @@ class DungeonLv01R01 extends d.Component {
       </Chain.shield>
 
       <Chain.shield>
-        {checkpoint(this.id('t07'))}
+        {checkpoint(this.id('r07'))}
         {[clear, clearPanes]}
 
         {Chain.if(() => Math.random() >= 0.7, (
@@ -313,40 +315,40 @@ class DungeonLv01R01 extends d.Component {
             <p>You're ambushed!{w}</p>
 
             <Battle
-              checkpoint={this.id('t07.battle')}
+              checkpoint={this.id('r07.battle')}
               actors={makeActors()}
             />
           </div>
         ))}
 
-        {checkpoint(this.id('t07.afterBattle'))}
+        {checkpoint(this.id('r07.afterBattle'))}
         {[clear, clearPanes]}
         {sec(0.75)}
 
         {() => game.setPane('bottom', (
           <div class="ActionsPane">
             {this.renderDefaultActions({
-              left: game.progressVar(this.id('t07.left')) && (() => {
-                game.progressVar(this.id('t06.right'), true);
-                game.run(this.id('t06'));
+              left: game.progressVar(this.id('r07.left')) && (() => {
+                game.progressVar(this.id('r06.right'), true);
+                game.run(this.id('r06'));
               }),
 
-              right: game.progressVar(this.id('t07.right')) &&
-                (() => game.run(this.id('t08'))),
+              right: game.progressVar(this.id('r07.right')) &&
+                (() => game.run(this.id('r08'))),
 
-              down: game.progressVar(this.id('t07.down')) &&
-                (() => game.run(this.id('t04'))),
+              down: game.progressVar(this.id('r07.down')) &&
+                (() => game.run(this.id('r04'))),
 
-              lookAround: () => game.run(this.id('t07.afterBattle.lookAround')),
+              lookAround: () => game.run(this.id('r07.afterBattle.lookAround')),
             })}
           </div>
         ))}
 
-        {this.renderLookAroundScript(this.id('t07.afterBattle'), (
+        {this.renderLookAroundScript(this.id('r07.afterBattle'), (
           <>
-            {() => game.progressVar(this.id('t07.left'), true)}
-            {() => game.progressVar(this.id('t07.right'), true)}
-            {() => game.progressVar(this.id('t07.down'), true)}
+            {() => game.progressVar(this.id('r07.left'), true)}
+            {() => game.progressVar(this.id('r07.right'), true)}
+            {() => game.progressVar(this.id('r07.down'), true)}
             {this.lookAroundMsgs.leftCorridor}{w}<br />
             {this.lookAroundMsgs.rightCorridor}{w}<br />
             {this.lookAroundMsgs.downCorridor}{w}<br />
@@ -355,7 +357,7 @@ class DungeonLv01R01 extends d.Component {
       </Chain.shield>
 
       <Chain.shield>
-        {checkpoint(this.id('t08'))}
+        {checkpoint(this.id('r08'))}
         {[clear, clearPanes]}
 
         {Chain.if(() => Math.random() >= 0.7, (
@@ -363,43 +365,43 @@ class DungeonLv01R01 extends d.Component {
             <p>You're ambushed!{w}</p>
 
             <Battle
-              checkpoint={this.id('t08.battle')}
+              checkpoint={this.id('r08.battle')}
               actors={makeActors()}
             />
           </div>
         ))}
 
-        {checkpoint(this.id('t08.afterBattle'))}
+        {checkpoint(this.id('r08.afterBattle'))}
         {[clear, clearPanes]}
         {sec(0.75)}
 
         {() => game.setPane('bottom', (
           <div class="ActionsPane">
             {this.renderDefaultActions({
-              left: () => game.run(this.id('t07')),
+              left: () => game.run(this.id('r07')),
 
               right: () => game.run(
                 !game.progressVar('dungeon.key01')
-                  ? this.id('t08.locked') : 'dungeon.lv01.r02',
+                  ? this.id('r08.locked') : 'dungeon.lv01.a02',
               ),
 
               lookAround: () =>
-                game.run(this.id('t08.afterBattle.lookAround')),
+                game.run(this.id('r08.afterBattle.lookAround')),
             })}
           </div>
         ))}
 
         <Chain.shield>
-          {checkpoint(this.id('t08.locked'))}
+          {checkpoint(this.id('r08.locked'))}
           {[clear, clearPanes]}
           {sdl(30)}
           You try to open the door but it's locked!{w}<br />
-          {goTo(this.id('t08.afterBattle'))}
+          {goTo(this.id('r08.afterBattle'))}
         </Chain.shield>
 
-        {this.renderLookAroundScript(this.id('t08.afterBattle'), (
+        {this.renderLookAroundScript(this.id('r08.afterBattle'), (
           <>
-            {() => game.progressVar(this.id('t08'), true)}
+            {() => game.progressVar(this.id('r08'), true)}
             {this.lookAroundMsgs.leftCorridor}{w}<br />
             {this.lookAroundMsgs.rightDoor}{w}<br />
           </>
@@ -457,4 +459,4 @@ class DungeonLv01R01 extends d.Component {
   );
 }
 
-export default DungeonLv01R01;
+export default DungeonLv01A01;
