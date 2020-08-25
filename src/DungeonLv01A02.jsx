@@ -6,117 +6,115 @@ import DungeonRoom from './DungeonRoom';
 import LookAround from './LookAround';
 import checkpoint from './checkpoint';
 
+let areaId = id => `dungeon.lv01.a02${id ? `.${id}` : ''}`;
+
 // -(1)-(2)-(3)
 //       |
 //      (4)-(5)-(6)-
-class DungeonLv01A02 extends d.Component {
-  id = id => `dungeon.lv01.a02${id ? `.${id}` : ''}`;
+let DungeonLv01A02 = () => (
+  <DungeonArea checkpoint={areaId()}>
+    {goTo(areaId('r01'))}
 
-  render = () => (
-    <DungeonArea checkpoint={this.id()}>
-      {goTo(this.id('r01'))}
+    <DungeonRoom checkpoint={areaId('r01')}>
+      <ActionsPane>
+        <ActionsPane.defaultActions
+          left={() => game.run('dungeon.lv01.a01.r08')}
+          right={() => game.run(areaId('r02'))}
+          lookAround={() => game.run(areaId('r01.lookAround'))}
+        />
+      </ActionsPane>
 
-      <DungeonRoom checkpoint={this.id('r01')}>
-        <ActionsPane>
-          <ActionsPane.defaultActions
-            left={() => game.run('dungeon.lv01.a01.r08')}
-            right={() => game.run(this.id('r02'))}
-            lookAround={() => game.run(this.id('r01.lookAround'))}
-          />
-        </ActionsPane>
+      <LookAround label={areaId('r01.lookAround')}>
+        {LookAround.defaultMsgs.leftCorridor}{w}<br />
+        {LookAround.defaultMsgs.rightCorridor}{w}<br />
+        {goTo(areaId('r01'))}
+      </LookAround>
+    </DungeonRoom>
 
-        <LookAround label={this.id('r01.lookAround')}>
-          {LookAround.defaultMsgs.leftCorridor}{w}<br />
-          {LookAround.defaultMsgs.rightCorridor}{w}<br />
-          {goTo(this.id('r01'))}
-        </LookAround>
-      </DungeonRoom>
+    <DungeonRoom checkpoint={areaId('r02')}>
+      <ActionsPane>
+        <ActionsPane.defaultActions
+          left={() => game.run(areaId('r01'))}
+          right={() => game.run(areaId('r03'))}
+          down={() => game.run(areaId('r04'))}
+          lookAround={() => game.run(areaId('r02.lookAround'))}
+          hidden={() => [!game.progressVar(areaId('r02-r04')) && 'down']}
+        />
+      </ActionsPane>
 
-      <DungeonRoom checkpoint={this.id('r02')}>
-        <ActionsPane>
-          <ActionsPane.defaultActions
-            left={() => game.run(this.id('r01'))}
-            right={() => game.run(this.id('r03'))}
-            down={() => game.run(this.id('r04'))}
-            lookAround={() => game.run(this.id('r02.lookAround'))}
-            hidden={() => [!game.progressVar(this.id('r02-r04')) && 'down']}
-          />
-        </ActionsPane>
+      <LookAround label={areaId('r02.lookAround')}>
+        {LookAround.defaultMsgs.leftCorridor}{w}<br />
+        {LookAround.defaultMsgs.rightCorridor}{w}<br />
+        {() => game.progressVar(areaId('r02-r04'), true)}
+        {LookAround.defaultMsgs.downCorridor}{w}<br />
+        {goTo(areaId('r02'))}
+      </LookAround>
+    </DungeonRoom>
 
-        <LookAround label={this.id('r02.lookAround')}>
-          {LookAround.defaultMsgs.leftCorridor}{w}<br />
-          {LookAround.defaultMsgs.rightCorridor}{w}<br />
-          {() => game.progressVar(this.id('r02-r04'), true)}
-          {LookAround.defaultMsgs.downCorridor}{w}<br />
-          {goTo(this.id('r02'))}
-        </LookAround>
-      </DungeonRoom>
+    <DungeonRoom checkpoint={areaId('r03')}>
+      <ActionsPane>
+        <ActionsPane.defaultActions
+          left={() => game.run(areaId('r02'))}
+          lookAround={() => game.run(areaId('r03.lookAround'))}
+        />
+      </ActionsPane>
 
-      <DungeonRoom checkpoint={this.id('r03')}>
-        <ActionsPane>
-          <ActionsPane.defaultActions
-            left={() => game.run(this.id('r02'))}
-            lookAround={() => game.run(this.id('r03.lookAround'))}
-          />
-        </ActionsPane>
+      <LookAround label={areaId('r03.lookAround')}>
+        {LookAround.defaultMsgs.leftCorridor}{w}<br />
+        {goTo(areaId('r03'))}
+      </LookAround>
+    </DungeonRoom>
 
-        <LookAround label={this.id('r03.lookAround')}>
-          {LookAround.defaultMsgs.leftCorridor}{w}<br />
-          {goTo(this.id('r03'))}
-        </LookAround>
-      </DungeonRoom>
+    <DungeonRoom checkpoint={areaId('r04')}>
+      <ActionsPane>
+        <ActionsPane.defaultActions
+          up={() => game.run(areaId('r02'))}
+          right={() => game.run(areaId('r05'))}
+          lookAround={() => game.run(areaId('r04.lookAround'))}
+          hidden={() => [!game.progressVar(areaId('r04-r05') && 'right')]}
+        />
+      </ActionsPane>
 
-      <DungeonRoom checkpoint={this.id('r04')}>
-        <ActionsPane>
-          <ActionsPane.defaultActions
-            up={() => game.run(this.id('r02'))}
-            right={() => game.run(this.id('r05'))}
-            lookAround={() => game.run(this.id('r04.lookAround'))}
-            hidden={() => [!game.progressVar(this.id('r04-r05') && 'right')]}
-          />
-        </ActionsPane>
+      <LookAround label={areaId('r04.lookAround')}>
+        {LookAround.defaultMsgs.upCorridor}{w}<br />
+        {() => game.progressVar(areaId('r04-r05'), true)}
+        {LookAround.defaultMsgs.rightCorridor}{w}<br />
+        {goTo(areaId('r04'))}
+      </LookAround>
+    </DungeonRoom>
 
-        <LookAround label={this.id('r04.lookAround')}>
-          {LookAround.defaultMsgs.upCorridor}{w}<br />
-          {() => game.progressVar(this.id('r04-r05'), true)}
-          {LookAround.defaultMsgs.rightCorridor}{w}<br />
-          {goTo(this.id('r04'))}
-        </LookAround>
-      </DungeonRoom>
+    <DungeonRoom checkpoint={areaId('r05')}>
+      <ActionsPane>
+        <ActionsPane.defaultActions
+          left={() => game.run(areaId('r04'))}
+          right={() => game.run(areaId('r06'))}
+          lookAround={() => game.run(areaId('r05.lookAround'))}
+        />
+      </ActionsPane>
 
-      <DungeonRoom checkpoint={this.id('r05')}>
-        <ActionsPane>
-          <ActionsPane.defaultActions
-            left={() => game.run(this.id('r04'))}
-            right={() => game.run(this.id('r06'))}
-            lookAround={() => game.run(this.id('r05.lookAround'))}
-          />
-        </ActionsPane>
+      <LookAround label={areaId('r05.lookAround')}>
+        {LookAround.defaultMsgs.leftCorridor}{w}<br />
+        {LookAround.defaultMsgs.rightCorridor}{w}<br />
+        {goTo(areaId('r05'))}
+      </LookAround>
+    </DungeonRoom>
 
-        <LookAround label={this.id('r05.lookAround')}>
-          {LookAround.defaultMsgs.leftCorridor}{w}<br />
-          {LookAround.defaultMsgs.rightCorridor}{w}<br />
-          {goTo(this.id('r05'))}
-        </LookAround>
-      </DungeonRoom>
+    <DungeonRoom checkpoint={areaId('r06')}>
+      <ActionsPane>
+        <ActionsPane.defaultActions
+          left={() => game.run(areaId('r04'))}
+          right={() => game.run('dungeon.lv01.a03')}
+          lookAround={() => game.run(areaId('r06.lookAround'))}
+        />
+      </ActionsPane>
 
-      <DungeonRoom checkpoint={this.id('r06')}>
-        <ActionsPane>
-          <ActionsPane.defaultActions
-            left={() => game.run(this.id('r04'))}
-            right={() => game.run('dungeon.lv01.a03')}
-            lookAround={() => game.run(this.id('r06.lookAround'))}
-          />
-        </ActionsPane>
-
-        <LookAround label={this.id('r06.lookAround')}>
-          {LookAround.defaultMsgs.leftCorridor}{w}<br />
-          {LookAround.defaultMsgs.rightCorridor}{w}<br />
-          {goTo(this.id('r06'))}
-        </LookAround>
-      </DungeonRoom>
-    </DungeonArea>
-  );
-}
+      <LookAround label={areaId('r06.lookAround')}>
+        {LookAround.defaultMsgs.leftCorridor}{w}<br />
+        {LookAround.defaultMsgs.rightCorridor}{w}<br />
+        {goTo(areaId('r06'))}
+      </LookAround>
+    </DungeonRoom>
+  </DungeonArea>
+);
 
 export default DungeonLv01A02;
