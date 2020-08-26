@@ -9,12 +9,13 @@ import label from './label';
 
 let areaId = id => `dungeon.lv01.a03${id ? `.${id}` : ''}`;
 
-// -(1)-(2)-(3)-
+let minimap = ['-[r01]-[r02]-[r03]-'];
+
 let DungeonLv01A03 = () => (
   <DungeonArea checkpoint={areaId()}>
     {goTo(areaId('r01'))}
 
-    <DungeonRoom checkpoint={areaId('r01')}>
+    <DungeonRoom checkpoint={areaId('r01')} minimap={minimap}>
       <ActionsPane>
         <ActionsPane.defaultActions
           left={() => game.run('dungeon.lv01.a02.r06')}
@@ -30,7 +31,7 @@ let DungeonLv01A03 = () => (
       </LookAround>
     </DungeonRoom>
 
-    <DungeonRoom checkpoint={areaId('r02')}>
+    <DungeonRoom checkpoint={areaId('r02')} minimap={minimap}>
       <ActionsPane>
         <ActionsPane.defaultActions
           left={() => game.run(areaId('r01'))}
@@ -46,7 +47,7 @@ let DungeonLv01A03 = () => (
       </LookAround>
     </DungeonRoom>
 
-    <DungeonRoom checkpoint={areaId('r03')}>
+    <DungeonRoom checkpoint={areaId('r03')} minimap={minimap}>
       <ActionsPane>
         <ActionsPane.defaultActions
           left={() => game.run(areaId('r02'))}

@@ -77,7 +77,10 @@ class Game extends d.Component {
       return cursor;
     }
 
-    return parent[parentKey] = val;
+    parent[parentKey] = val;
+    d.update();
+
+    return val;
   };
 
   setPane(k, ...contents) {

@@ -9,14 +9,21 @@ import label from './label';
 
 let areaId = id => `dungeon.lv01.a02${id ? `.${id}` : ''}`;
 
-// -(1)-(2)-(3)
-//       |
-//      (4)-(5)-(6)-
+let minimap = [[
+    '-[r01]-[r02]-[r03]       ',
+    '                         ',
+    '       [r04] [r05]-[r06]-',
+  ].join('\n'),
+
+  ['|', 9, 1, () => game.progressVar(areaId('r02.r04'))],
+  ['-', 12, 2, () => game.progressVar(areaId('r04.r05'))],
+];
+
 let DungeonLv01A02 = () => (
   <DungeonArea checkpoint={areaId()}>
     {goTo(areaId('r01'))}
 
-    <DungeonRoom checkpoint={areaId('r01')}>
+    <DungeonRoom checkpoint={areaId('r01')} minimap={minimap}>
       <ActionsPane>
         <ActionsPane.defaultActions
           left={() => game.run('dungeon.lv01.a01.r08')}
@@ -32,7 +39,7 @@ let DungeonLv01A02 = () => (
       </LookAround>
     </DungeonRoom>
 
-    <DungeonRoom checkpoint={areaId('r02')}>
+    <DungeonRoom checkpoint={areaId('r02')} minimap={minimap}>
       <ActionsPane>
         <ActionsPane.defaultActions
           left={() => game.run(areaId('r01'))}
@@ -52,7 +59,7 @@ let DungeonLv01A02 = () => (
       </LookAround>
     </DungeonRoom>
 
-    <DungeonRoom checkpoint={areaId('r03')}>
+    <DungeonRoom checkpoint={areaId('r03')} minimap={minimap}>
       <ActionsPane>
         {d.if(() => game.progressVar(areaId('r03.chest')), (
           <button
@@ -88,7 +95,7 @@ let DungeonLv01A02 = () => (
       </Chain.shield>
     </DungeonRoom>
 
-    <DungeonRoom checkpoint={areaId('r04')}>
+    <DungeonRoom checkpoint={areaId('r04')} minimap={minimap}>
       <ActionsPane>
         <ActionsPane.defaultActions
           up={() => game.run(areaId('r02'))}
@@ -106,7 +113,7 @@ let DungeonLv01A02 = () => (
       </LookAround>
     </DungeonRoom>
 
-    <DungeonRoom checkpoint={areaId('r05')}>
+    <DungeonRoom checkpoint={areaId('r05')} minimap={minimap}>
       <ActionsPane>
         <ActionsPane.defaultActions
           left={() => game.run(areaId('r04'))}
@@ -122,10 +129,10 @@ let DungeonLv01A02 = () => (
       </LookAround>
     </DungeonRoom>
 
-    <DungeonRoom checkpoint={areaId('r06')}>
+    <DungeonRoom checkpoint={areaId('r06')} minimap={minimap}>
       <ActionsPane>
         <ActionsPane.defaultActions
-          left={() => game.run(areaId('r04'))}
+          left={() => game.run(areaId('r05'))}
           right={() => game.run('dungeon.lv01.a03')}
           lookAround={() => game.run(areaId('r06.lookAround'))}
         />
