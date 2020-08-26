@@ -55,6 +55,8 @@ class Battle extends d.Component {
 
   render = () => (
     <div class="Battle">
+      {goTo(`${this.props.checkpoint}.end`)}
+
       {checkpoint(this.props.checkpoint)}
       {[clear, clearPanes]}
 
