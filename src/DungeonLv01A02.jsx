@@ -15,8 +15,8 @@ let minimap = [[
     '       [r04] [r05]-[r06]-',
   ].join('\n'),
 
-  ['|', 9, 1, () => game.progressVar(areaId('r02.r04'))],
-  ['-', 12, 2, () => game.progressVar(areaId('r04.r05'))],
+  ['r02.r04', '|', 9, 1],
+  ['r04.r05', '-', 12, 2],
 ];
 
 let DungeonLv01A02 = () => (

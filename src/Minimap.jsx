@@ -34,8 +34,16 @@ let Minimap = ({
 
       map = map.split('\n');
 
-      for (let [ch, x, y, pred] of hiddenCorridors) {
-        if (!pred()) {
+      for (let [rooms, ch, x, y, pred] of hiddenCorridors) {
+        let [rA, rB] = rooms.split('.');
+
+        let visitedNeither = [rA, rB].every(
+          x => !game.progressVar(`${areaId}.${x}.visited`),
+        );
+
+        let corridorFlag = game.progressVar(`${areaId}.${rA}.${rB}`);
+
+        if (visitedNeither || !corridorFlag || (pred && !pred())) {
           continue;
         }
 

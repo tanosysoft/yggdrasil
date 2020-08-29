@@ -44,10 +44,10 @@ let minimap = [[
     '-[r01]-[r02]-[r03]-[r04]-[r05]       ',
   ].join('\n'),
 
-  ['|', 21, 1, () => game.progressVar(areaId('r04.r06'))],
-  ['|', 27, 1, () => game.progressVar(areaId('r05.r07'))],
-  ['-', 24, 0, () => game.progressVar(areaId('r06.r07'))],
-  ['-', 30, 0, () => game.progressVar(areaId('r07.r08'))],
+  ['r04.r06', '|', 21, 1],
+  ['r05.r07', '|', 27, 1],
+  ['r06.r07', '-', 24, 0],
+  ['r07.r08', '-', 30, 0],
 ];
 
 let DungeonLv01A01 = () => (
@@ -152,7 +152,11 @@ let DungeonLv01A01 = () => (
         ))}
 
         <ActionsPane.defaultActions
-          right={() => game.run(areaId('r07'))}
+          right={() => {
+            game.progressVar(areaId('r07.r08'), true);
+            game.run(areaId('r07'));
+          }}
+
           down={() => game.run(areaId('r04'))}
           lookAround={() => game.run(areaId('r06.lookAround'))}
 

@@ -25,7 +25,7 @@ let DungeonLv01A03 = () => (
       </ActionsPane>
 
       <LookAround label={areaId('r01.lookAround')}>
-        {LookAround.defaultMsgs.leftDoor}{w}<br />
+        {LookAround.defaultMsgs.leftCorridor}{w}<br />
         {LookAround.defaultMsgs.rightCorridor}{w}<br />
         {goTo(areaId('r01'))}
       </LookAround>
