@@ -1,7 +1,13 @@
+import ActionsPane from './ActionsPane';
 import Battle from './Battle';
 import Chain, { clear, d, goTo, sdl, sec, w } from '@tanosysoft/chain';
+import DungeonArea from './DungeonArea';
+import DungeonRoom from './DungeonRoom';
+import LookAround from './LookAround';
 import checkpoint from './checkpoint';
-import clearPanes from './clearPanes';
+import label from './label';
+
+let areaId = id => `dungeon.lv01.a01${id ? `.${id}` : ''}`;
 
 let makeActors = () => ({
   P1: {
@@ -32,431 +38,210 @@ let makeActors = () => ({
   },
 });
 
-//              (6)-(7)-(8)-
-//               |   |
-// -(1)-(2)-(3)-(4)-(5)
-class DungeonLv01A01 extends d.Component {
-  id = id => `dungeon.lv01.a01${id ? `.${id}` : ''}`;
+let minimap = [[
+    '                   [r06] [r07] [r08]-',
+    '                                     ',
+    '-[r01]-[r02]-[r03]-[r04]-[r05]       ',
+  ].join('\n'),
 
-  lookAroundMsgs = {
-    leaveToTheLeft: `You can leave the dungeon to the left.`,
+  ['|', 21, 1, () => game.progressVar(areaId('r04.r06'))],
+  ['|', 27, 1, () => game.progressVar(areaId('r05.r07'))],
+  ['-', 24, 0, () => game.progressVar(areaId('r06.r07'))],
+  ['-', 30, 0, () => game.progressVar(areaId('r07.r08'))],
+];
 
-    upCorridor: `You see a corridor leading up.`,
-    leftCorridor: `You see a corridor leading left.`,
-    rightCorridor: `You see a corridor leading right.`,
-    downCorridor: `You see a corridor leading down.`,
+let DungeonLv01A01 = () => (
+  <DungeonArea checkpoint={areaId()}>
+    {goTo(areaId('r01'))}
 
-    upDoor: `You see a door leading up.`,
-    leftDoor: `You see a door leading left.`,
-    rightDoor: `You see a door leading right.`,
-    downDoor: `You see a door leading down.`,
-  };
+    <DungeonRoom checkpoint={areaId('r01')} minimap={minimap}>
+      <ActionsPane>
+        <ActionsPane.defaultActions
+          left={() => game.run('fyrya')}
+          right={() => game.run(areaId('r02'))}
+          lookAround={() => game.run(areaId('r01.lookAround'))}
+        />
+      </ActionsPane>
 
-  render = () => (
-    <Chain.shield>
-      {checkpoint(this.id())}
-      {[clear, clearPanes]}
-      {goTo(this.id('r01'))}
+      <LookAround label={areaId('r01.lookAround')}>
+        You can leave the dungeon to the left.{w}<br />
+        {LookAround.defaultMsgs.rightCorridor}{w}<br />
+        {goTo(areaId('r01'))}
+      </LookAround>
+    </DungeonRoom>
+
+    <DungeonRoom checkpoint={areaId('r02')} minimap={minimap}>
+      <ActionsPane>
+        <ActionsPane.defaultActions
+          left={() => game.run(areaId('r01'))}
+          right={() => game.run(areaId('r03'))}
+          lookAround={() => game.run(areaId('r02.lookAround'))}
+        />
+      </ActionsPane>
+
+      <LookAround label={areaId('r02.lookAround')}>
+        {LookAround.defaultMsgs.leftCorridor}{w}<br />
+        {LookAround.defaultMsgs.rightCorridor}{w}<br />
+        {goTo(areaId('r02'))}
+      </LookAround>
+    </DungeonRoom>
+
+    <DungeonRoom checkpoint={areaId('r03')} minimap={minimap}>
+      <ActionsPane>
+        <ActionsPane.defaultActions
+          left={() => game.run(areaId('r02'))}
+          right={() => game.run(areaId('r04'))}
+          lookAround={() => game.run(areaId('r03.lookAround'))}
+        />
+      </ActionsPane>
+
+      <LookAround label={areaId('r03.lookAround')}>
+        {LookAround.defaultMsgs.leftCorridor}{w}<br />
+        {LookAround.defaultMsgs.rightCorridor}{w}<br />
+        {goTo(areaId('r03'))}
+      </LookAround>
+    </DungeonRoom>
+
+    <DungeonRoom checkpoint={areaId('r04')} minimap={minimap}>
+      <ActionsPane>
+        <ActionsPane.defaultActions
+          up={() => game.run(areaId('r06'))}
+          left={() => game.run(areaId('r03'))}
+          right={() => game.run(areaId('r05'))}
+          lookAround={() => game.run(areaId('r04.lookAround'))}
+          hidden={() => [!game.progressVar(areaId('r04.r06')) && 'up']}
+        />
+      </ActionsPane>
+
+      <LookAround label={areaId('r04.lookAround')}>
+        {() => game.progressVar(areaId('r04.r06'), true)}
+        {LookAround.defaultMsgs.upCorridor}{w}<br />
+        {LookAround.defaultMsgs.leftCorridor}{w}<br />
+        {LookAround.defaultMsgs.rightCorridor}{w}<br />
+        {goTo(areaId('r04'))}
+      </LookAround>
+    </DungeonRoom>
+
+    <DungeonRoom checkpoint={areaId('r05')} minimap={minimap}>
+      <ActionsPane>
+        <ActionsPane.defaultActions
+          up={() => game.run(areaId('r07'))}
+          left={() => game.run(areaId('r04'))}
+          lookAround={() => game.run(areaId('r05.lookAround'))}
+          hidden={() => [!game.progressVar(areaId('r05.r07')) && 'up']}
+        />
+      </ActionsPane>
+
+      <LookAround label={areaId('r05.lookAround')}>
+        {() => game.progressVar(areaId('r05.r07'), true)}
+        {LookAround.defaultMsgs.upCorridor}{w}<br />
+        {LookAround.defaultMsgs.leftCorridor}{w}<br />
+        {goTo(areaId('r05'))}
+      </LookAround>
+    </DungeonRoom>
+
+    <DungeonRoom checkpoint={areaId('r06')} minimap={minimap}>
+      <ActionsPane>
+        {d.if(() => game.progressVar(areaId('r06.chest')), (
+          <button
+            class="ActionsPane-btn"
+            onClick={() => game.run(areaId('r06.openChest'))}
+          >
+            Open chest
+          </button>
+        ))}
+
+        <ActionsPane.defaultActions
+          right={() => game.run(areaId('r07'))}
+          down={() => game.run(areaId('r04'))}
+          lookAround={() => game.run(areaId('r06.lookAround'))}
+
+          hidden={() => [
+            !game.progressVar(areaId('r06.r07')) && 'right',
+            !game.progressVar(areaId('r04.r06')) && 'down',
+          ]}
+        />
+      </ActionsPane>
+
+      <LookAround label={areaId('r06.lookAround')}>
+        {() => game.progressVar(areaId('r06.chest'), true)}
+        You see a chest box in the corner of the room.{w}<br />
+        {() => game.progressVar(areaId('r06.r07'), true)}
+        {LookAround.defaultMsgs.rightCorridor}{w}<br />
+        {() => game.progressVar(areaId('r04.r06'), true)}
+        {LookAround.defaultMsgs.downCorridor}{w}<br />
+        {goTo(areaId('r06'))}
+      </LookAround>
 
       <Chain.shield>
-        {checkpoint(this.id('r01'))}
-        {[clear, clearPanes]}
-        {sec(0.75)}
-
-        {() => game.setPane('bottom', (
-          <div class="ActionsPane">
-            {this.renderDefaultActions({
-              left: () => game.run('fyrya'),
-              right: () => game.run(this.id('r02')),
-              lookAround: () => game.run(this.id('r01.lookAround')),
-            })}
-          </div>
-        ))}
-
-        {this.renderLookAroundScript(this.id('r01'), (
-          <>
-            {this.lookAroundMsgs.leaveToTheLeft}{w}<br />
-            {this.lookAroundMsgs.rightCorridor}{w}<br />
-          </>
-        ))}
+        {checkpoint(areaId('r06.openChest'))}
+        {() => game.setPane('bottom', null)}
+        {clear}
+        {sdl(30)}
+        You open the chest box...{w}<br />
+        {() => game.progressVar('dungeon.key01', true)}
+        You find a key inside!{w}<br />
+        {goTo(areaId('r06'))}
       </Chain.shield>
+    </DungeonRoom>
 
-      <Chain.shield>
-        {checkpoint(this.id('r02'))}
-        {[clear, clearPanes]}
+    <DungeonRoom checkpoint={areaId('r07')} minimap={minimap}>
+      <ActionsPane>
+        <ActionsPane.defaultActions
+          left={() => game.run(areaId('r06'))}
+          right={() => game.run(areaId('r08'))}
+          down={() => game.run(areaId('r04'))}
+          lookAround={() => game.run(areaId('r07.lookAround'))}
 
-        {Chain.if(() => Math.random() >= 0.7, (
-          <div>
-            <p>You're ambushed!{w}</p>
+          hidden={() => [
+            !game.progressVar(areaId('r06.r07')) && 'left',
+            !game.progressVar(areaId('r07.r08')) && 'right',
+            !game.progressVar(areaId('r04.r07')) && 'down',
+          ]}
+        />
+      </ActionsPane>
 
-            <Battle
-              checkpoint={this.id('r02.battle')}
-              actors={makeActors()}
-            />
-          </div>
-        ))}
+      <LookAround label={areaId('r07.lookAround')}>
+        {() => game.progressVar(areaId('r06.r07'), true)}
+        {LookAround.defaultMsgs.leftCorridor}{w}<br />
+        {() => game.progressVar(areaId('r07.r08'), true)}
+        {LookAround.defaultMsgs.rightCorridor}{w}<br />
+        {() => game.progressVar(areaId('r04.r07'), true)}
+        {LookAround.defaultMsgs.downCorridor}{w}<br />
+        {goTo(areaId('r07'))}
+      </LookAround>
+    </DungeonRoom>
 
-        {checkpoint(this.id('r02.afterBattle'))}
-        {[clear, clearPanes]}
-        {sec(0.75)}
+    <DungeonRoom checkpoint={areaId('r08')} minimap={minimap}>
+      <ActionsPane>
+        <ActionsPane.defaultActions
+          left={() => game.run(areaId('r07'))}
 
-        {() => game.setPane('bottom', (
-          <div class="ActionsPane">
-            {this.renderDefaultActions({
-              left: () => game.run(this.id('r01')),
-              right: () => game.run(this.id('r03')),
-
-              lookAround: () =>
-                game.run(this.id('r02.afterBattle.lookAround')),
-            })}
-          </div>
-        ))}
-
-        {this.renderLookAroundScript(this.id('r02.afterBattle'), (
-          <>
-            {this.lookAroundMsgs.leftCorridor}{w}<br />
-            {this.lookAroundMsgs.rightCorridor}{w}<br />
-          </>
-        ))}
-      </Chain.shield>
-
-      <Chain.shield>
-        {checkpoint(this.id('r03'))}
-        {[clear, clearPanes]}
-
-        {Chain.if(() => Math.random() >= 0.7, (
-          <div>
-            <p>You're ambushed!{w}</p>
-
-            <Battle
-              checkpoint={this.id('r03.battle')}
-              actors={makeActors()}
-            />
-          </div>
-        ))}
-
-        {checkpoint(this.id('r03.afterBattle'))}
-        {[clear, clearPanes]}
-        {sec(0.75)}
-
-        {() => game.setPane('bottom', (
-          <div class="ActionsPane">
-            {this.renderDefaultActions({
-              left: () => game.run(this.id('r02')),
-              right: () => game.run(this.id('r04')),
-              lookAround: () => game.run(this.id('r03.afterBattle.lookAround')),
-            })}
-          </div>
-        ))}
-
-        {this.renderLookAroundScript(this.id('r03.afterBattle'), (
-          <>
-            {this.lookAroundMsgs.leftCorridor}{w}<br />
-            {this.lookAroundMsgs.rightCorridor}{w}<br />
-          </>
-        ))}
-      </Chain.shield>
-
-      <Chain.shield>
-        {checkpoint(this.id('r04'))}
-        {[clear, clearPanes]}
-
-        {Chain.if(() => Math.random() >= 0.7, (
-          <div>
-            <p>You're ambushed!{w}</p>
-
-            <Battle
-              checkpoint={this.id('r04.battle')}
-              actors={makeActors()}
-            />
-          </div>
-        ))}
-
-        {checkpoint(this.id('r04.afterBattle'))}
-        {[clear, clearPanes]}
-        {sec(0.75)}
-
-        {() => game.setPane('bottom', (
-          <div class="ActionsPane">
-            {this.renderDefaultActions({
-              up: game.progressVar(this.id('r04.up')) && (() => {
-                game.progressVar(this.id('r06.down'), true);
-                game.run(this.id('r06'));
-              }),
-
-              left: () => game.run(this.id('r03')),
-              right: () => game.run(this.id('r05')),
-              lookAround: () => game.run(this.id('r04.afterBattle.lookAround')),
-            })}
-          </div>
-        ))}
-
-        {this.renderLookAroundScript(this.id('r04.afterBattle'), (
-          <>
-            {() => game.progressVar(this.id('r04.up'), true)}
-            {this.lookAroundMsgs.upCorridor}{w}<br />
-            {this.lookAroundMsgs.leftCorridor}{w}<br />
-            {this.lookAroundMsgs.rightCorridor}{w}<br />
-          </>
-        ))}
-      </Chain.shield>
-
-      <Chain.shield>
-        {checkpoint(this.id('r05'))}
-        {[clear, clearPanes]}
-
-        {Chain.if(() => Math.random() >= 0.7, (
-          <div>
-            <p>You're ambushed!{w}</p>
-
-            <Battle
-              checkpoint={this.id('r05.battle')}
-              actors={makeActors()}
-            />
-          </div>
-        ))}
-
-        {checkpoint(this.id('r05.afterBattle'))}
-        {[clear, clearPanes]}
-        {sec(0.75)}
-
-        {() => game.setPane('bottom', (
-          <div class="ActionsPane">
-            {this.renderDefaultActions({
-              up: game.progressVar(this.id('r05.up')) &&
-                (() => game.run(this.id('r07'))),
-
-              left: () => game.run(this.id('r04')),
-              lookAround: () => game.run(this.id('r05.afterBattle.lookAround')),
-            })}
-          </div>
-        ))}
-
-        {this.renderLookAroundScript(this.id('r05.afterBattle'), (
-          <>
-            {() => game.progressVar(this.id('r05.up'), true)}
-            {this.lookAroundMsgs.upCorridor}{w}<br />
-            {this.lookAroundMsgs.leftCorridor}{w}<br />
-          </>
-        ))}
-      </Chain.shield>
-
-      <Chain.shield>
-        {checkpoint(this.id('r06'))}
-        {[clear, clearPanes]}
-
-        {Chain.if(() => Math.random() >= 0.7, (
-          <div>
-            <p>You're ambushed!{w}</p>
-
-            <Battle
-              checkpoint={this.id('r06.battle')}
-              actors={makeActors()}
-            />
-          </div>
-        ))}
-
-        {checkpoint(this.id('r06.afterBattle'))}
-        {[clear, clearPanes]}
-        {sec(0.75)}
-
-        {() => game.setPane('bottom', (
-          <div class="ActionsPane">
-            {game.progressVar(this.id('r06.chest')) && (
-              <button
-                class="ActionsPane-btn"
-                onClick={() => game.run(this.id('r06.openChest'))}
-              >
-                Open chest
-              </button>
-            )}
-
-            {this.renderDefaultActions({
-              right: game.progressVar(this.id('r06.right')) &&
-                (() => game.run(this.id('r07'))),
-
-              down: game.progressVar(this.id('r06.down')) &&
-                (() => game.run(this.id('r04'))),
-
-              lookAround: () => game.run(this.id('r06.afterBattle.lookAround')),
-            })}
-          </div>
-        ))}
-
-        <Chain.shield>
-          {checkpoint(this.id('r06.openChest'))}
-          {() => game.setPane('bottom', null)}
-          {clear}
-          {sdl(30)}
-          You open the chest box...{w}<br />
-          {() => game.progressVar('dungeon.key01', true)}
-          You find a key inside!{w}<br />
-          {goTo(this.id('r06.afterBattle'))}
-        </Chain.shield>
-
-        {this.renderLookAroundScript(this.id('r06.afterBattle'), (
-          <>
-            {() => game.progressVar(this.id('r06.chest'), true)}
-            {() => game.progressVar(this.id('r06.right'), true)}
-            {() => game.progressVar(this.id('r06.down'), true)}
-            You see a chest box in the corner of the room.{w}<br />
-            {this.lookAroundMsgs.rightCorridor}{w}<br />
-            {this.lookAroundMsgs.downCorridor}{w}<br />
-          </>
-        ))}
-      </Chain.shield>
-
-      <Chain.shield>
-        {checkpoint(this.id('r07'))}
-        {[clear, clearPanes]}
-
-        {Chain.if(() => Math.random() >= 0.7, (
-          <div>
-            <p>You're ambushed!{w}</p>
-
-            <Battle
-              checkpoint={this.id('r07.battle')}
-              actors={makeActors()}
-            />
-          </div>
-        ))}
-
-        {checkpoint(this.id('r07.afterBattle'))}
-        {[clear, clearPanes]}
-        {sec(0.75)}
-
-        {() => game.setPane('bottom', (
-          <div class="ActionsPane">
-            {this.renderDefaultActions({
-              left: game.progressVar(this.id('r07.left')) && (() => {
-                game.progressVar(this.id('r06.right'), true);
-                game.run(this.id('r06'));
-              }),
-
-              right: game.progressVar(this.id('r07.right')) &&
-                (() => game.run(this.id('r08'))),
-
-              down: game.progressVar(this.id('r07.down')) &&
-                (() => game.run(this.id('r04'))),
-
-              lookAround: () => game.run(this.id('r07.afterBattle.lookAround')),
-            })}
-          </div>
-        ))}
-
-        {this.renderLookAroundScript(this.id('r07.afterBattle'), (
-          <>
-            {() => game.progressVar(this.id('r07.left'), true)}
-            {() => game.progressVar(this.id('r07.right'), true)}
-            {() => game.progressVar(this.id('r07.down'), true)}
-            {this.lookAroundMsgs.leftCorridor}{w}<br />
-            {this.lookAroundMsgs.rightCorridor}{w}<br />
-            {this.lookAroundMsgs.downCorridor}{w}<br />
-          </>
-        ))}
-      </Chain.shield>
-
-      <Chain.shield>
-        {checkpoint(this.id('r08'))}
-        {[clear, clearPanes]}
-
-        {Chain.if(() => Math.random() >= 0.7, (
-          <div>
-            <p>You're ambushed!{w}</p>
-
-            <Battle
-              checkpoint={this.id('r08.battle')}
-              actors={makeActors()}
-            />
-          </div>
-        ))}
-
-        {checkpoint(this.id('r08.afterBattle'))}
-        {[clear, clearPanes]}
-        {sec(0.75)}
-
-        {() => game.setPane('bottom', (
-          <div class="ActionsPane">
-            {this.renderDefaultActions({
-              left: () => game.run(this.id('r07')),
-
-              right: () => game.run(
-                !game.progressVar('dungeon.key01')
-                  ? this.id('r08.locked') : 'dungeon.lv01.a02',
-              ),
-
-              lookAround: () =>
-                game.run(this.id('r08.afterBattle.lookAround')),
-            })}
-          </div>
-        ))}
-
-        <Chain.shield>
-          {checkpoint(this.id('r08.locked'))}
-          {[clear, clearPanes]}
-          {sdl(30)}
-          You try to open the door but it's locked!{w}<br />
-          {goTo(this.id('r08.afterBattle'))}
-        </Chain.shield>
-
-        {this.renderLookAroundScript(this.id('r08.afterBattle'), (
-          <>
-            {() => game.progressVar(this.id('r08'), true)}
-            {this.lookAroundMsgs.leftCorridor}{w}<br />
-            {this.lookAroundMsgs.rightDoor}{w}<br />
-          </>
-        ))}
-      </Chain.shield>
-    </Chain.shield>
-  );
-
-  renderDefaultActions = conf => (
-    <>
-      {Boolean(conf.up) && (
-        <button class="ActionsPane-btn" onClick={conf.up}>
-          Go up
-        </button>
-      )}
-
-      {Boolean(conf.left || conf.right) && (
-        <div class="ActionsPane-row">
-          {Boolean(conf.left) && (
-            <button class="ActionsPane-btn" onClick={conf.left}>
-              Go left
-            </button>
+          right={() => game.run(
+            !game.progressVar('dungeon.key01')
+              ? areaId('r08.locked') : 'dungeon.lv01.a02',
           )}
 
-          {Boolean(conf.right) && (
-            <button class="ActionsPane-btn" onClick={conf.right}>
-              Go right
-            </button>
-          )}
-        </div>
-      )}
+          lookAround={() => game.run(areaId('r08.lookAround'))}
+        />
+      </ActionsPane>
 
-      {Boolean(conf.down) && (
-        <button class="ActionsPane-btn" onClick={conf.down}>
-          Go down
-        </button>
-      )}
+      <LookAround label={areaId('r08.lookAround')}>
+        {LookAround.defaultMsgs.leftCorridor}{w}<br />
+        {LookAround.defaultMsgs.rightDoor}{w}<br />
+        {goTo(areaId('r08'))}
+      </LookAround>
 
-      {Boolean(conf.lookAround) && (
-        <button class="ActionsPane-btn" onClick={conf.lookAround}>
-          Look around
-        </button>
-      )}
-    </>
-  );
-
-  renderLookAroundScript = (returnTo, children) => (
-    <Chain.shield>
-      {checkpoint(`${returnTo}.lookAround`)}
-      {() => game.setPane('bottom', null)}
-      {sdl(30)}
-      {children}
-      {goTo(returnTo)}
-    </Chain.shield>
-  );
-}
+      <Chain.shield>
+        {checkpoint(areaId('r08.locked'))}
+        {() => game.setPane('bottom', null)}
+        {clear}
+        {sdl(30)}
+        You try to open the door but it's locked!{w}<br />
+        {goTo(areaId('r08'))}
+      </Chain.shield>
+    </DungeonRoom>
+  </DungeonArea>
+);
 
 export default DungeonLv01A01;

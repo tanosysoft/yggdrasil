@@ -46,7 +46,7 @@ let Minimap = ({
         ].join('');
       }
 
-      map = map.map(x => x.trimEnd()).join('\n');
+      map = map.map(x => x.trimEnd()).filter(Boolean).join('\n');
 
       return map;
     })}
