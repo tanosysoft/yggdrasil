@@ -44,9 +44,7 @@ class TitleScreen extends d.Component {
         {() => game.setPane('bottom', null)}
 
         {Chain.if(() => !localStorage.getItem('chain.savedProgress'), (
-          <div>
-            {goTo('title.gameStart')}
-          </div>
+          <div>{goTo('title.gameStart')}</div>
         ))}
 
         {sdl(30)}
@@ -83,6 +81,16 @@ class TitleScreen extends d.Component {
 
         {() => {
           if (!this.loadGame) {
+            game.progress.actors = {
+              h01: {
+                name: 'Elmina',
+                hp: 200, maxHp: 200,
+                mp: 9, maxMp: 9,
+                atk: 4, def: 3,
+                active: true,
+              },
+            };
+
             return goTo('fyrya');
           }
 

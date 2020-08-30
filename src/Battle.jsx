@@ -55,14 +55,29 @@ class Battle extends d.Component {
 
   render = () => (
     <div class="Battle">
-      {goTo(`${this.props.checkpoint}.end`)}
+      {Chain.if(() => Math.random() < d.resolve(this.props.chance), (
+        <div>{goTo(`${this.props.checkpoint}.skip`)}</div>
+      ))}
 
       {checkpoint(this.props.checkpoint)}
       {[clear, clearPanes]}
 
-      {() => this.btst = this.btst || {
-        actors: cloneDeep(d.resolve(this.props.actors)),
-        turn: 'party',
+      {() => {
+        if (this.btst) {
+          return;
+        }
+
+        let actors = {};
+
+        for (let [i, x] of d.resolve(this.props.troop).entries()) {
+          actors[`E${i + 1}`] = x;
+        }
+
+        for (let [i, x] of Object.values(game.progress.actors).entries()) {
+          actors[`P${i + 1}`] = x;
+        }
+
+        this.btst = { actors, turn: 'party' };
       }}
 
       {sec(2)}
@@ -308,6 +323,8 @@ class Battle extends d.Component {
       {checkpoint(`${this.props.checkpoint}.end`)}
       {[clear, clearPanes]}
       {() => this.btst = null}
+
+      {label(`${this.props.checkpoint}.skip`)}
     </div>
   );
 }

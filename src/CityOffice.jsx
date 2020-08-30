@@ -64,7 +64,8 @@ class CityOffice extends d.Component {
             <input
               class="ActionsPane-input"
               value={d.binding({
-                set: x => game.chain.progress.playerName = x,
+                get: () => game.progress.actors.h01.name,
+                set: x => game.progress.actors.h01.name = x,
               })}
               onAttach={el => el.focus()}
               onKeyUp={ev => ev.key === 'Enter' && resolve()}

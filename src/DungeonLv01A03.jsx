@@ -6,16 +6,37 @@ import DungeonRoom from './DungeonRoom';
 import LookAround from './LookAround';
 import checkpoint from './checkpoint';
 import label from './label';
+import makeTroop from './makeTroop';
+import sample from 'lodash/sample';
 
 let areaId = id => `dungeon.lv01.a03${id ? `.${id}` : ''}`;
 
 let minimap = ['-[r01]-[r02]-[r03]-'];
+
+let troops = {
+  t01: () => sample([
+    makeTroop('orc'),
+    makeTroop('orc'),
+    makeTroop([2, 'slime']),
+    makeTroop([2, 'slime']),
+    makeTroop('slime'),
+  ]),
+};
 
 let DungeonLv01A03 = () => (
   <DungeonArea checkpoint={areaId()}>
     {goTo(areaId('r01'))}
 
     <DungeonRoom checkpoint={areaId('r01')} minimap={minimap}>
+      <Battle
+        checkpoint={areaId('r01.battle')}
+        chance={0.5}
+        troop={troops.t01}
+      />
+
+      {checkpoint(areaId('r01.afterBattle'))}
+      <DungeonRoom.topPane roomId={areaId('r01')} minimap={minimap} />
+
       <ActionsPane>
         <ActionsPane.defaultActions
           left={() => game.run('dungeon.lv01.a02.r06')}
@@ -32,6 +53,15 @@ let DungeonLv01A03 = () => (
     </DungeonRoom>
 
     <DungeonRoom checkpoint={areaId('r02')} minimap={minimap}>
+      <Battle
+        checkpoint={areaId('r02.battle')}
+        chance={0.5}
+        troop={troops.t01}
+      />
+
+      {checkpoint(areaId('r02.afterBattle'))}
+      <DungeonRoom.topPane roomId={areaId('r02')} minimap={minimap} />
+
       <ActionsPane>
         <ActionsPane.defaultActions
           left={() => game.run(areaId('r01'))}
@@ -48,6 +78,15 @@ let DungeonLv01A03 = () => (
     </DungeonRoom>
 
     <DungeonRoom checkpoint={areaId('r03')} minimap={minimap}>
+      <Battle
+        checkpoint={areaId('r03.battle')}
+        chance={0.5}
+        troop={troops.t01}
+      />
+
+      {checkpoint(areaId('r03.afterBattle'))}
+      <DungeonRoom.topPane roomId={areaId('r03')} minimap={minimap} />
+
       <ActionsPane>
         <ActionsPane.defaultActions
           left={() => game.run(areaId('r02'))}
