@@ -26,4 +26,11 @@ export default {
     mp: 0, maxMp: 0,
     atk: 3, def: 3,
   },
+
+  vampire: {
+    name: 'Vampire',
+    hp: 42, maxHp: 42,
+    mp: 0, maxMp: 0,
+    atk: 4, def: 4,
+  },
 };
