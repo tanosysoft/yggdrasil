@@ -4,6 +4,11 @@ export default {
     hp: 12, maxHp: 12,
     mp: 0, maxMp: 0,
     atk: 2, def: 3,
+
+    dropRates: {
+      batFang: 0.4,
+      batWing: 0.4,
+    },
   },
 
   slime: {
@@ -11,6 +16,10 @@ export default {
     hp: 15, maxHp: 15,
     mp: 0, maxMp: 0,
     atk: 3, def: 3,
+
+    dropRates: {
+      greenGoo: 0.4,
+    },
   },
 
   orc: {

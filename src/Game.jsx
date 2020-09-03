@@ -83,6 +83,23 @@ class Game extends d.Component {
     return val;
   };
 
+  get inventory() {
+    return this.progress.inventory ??= {};
+  }
+
+  inventoryItem(k, count) {
+    let { inventory } = this;
+
+    if (count === undefined) {
+      return inventory[k];
+    }
+
+    inventory[k] = (inventory[k] ?? 0) + count;
+    d.update();
+
+    return inventory[k];
+  }
+
   setPane(k, ...contents) {
     this.panes[k].innerHTML = '';
 

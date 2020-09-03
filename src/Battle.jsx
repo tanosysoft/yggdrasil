@@ -11,6 +11,7 @@ import Chain, {
 import checkpoint from './checkpoint';
 import clearPanes from './clearPanes';
 import cloneDeep from 'lodash/cloneDeep';
+import items from './items';
 import label from './label';
 
 class Battle extends d.Component {
@@ -51,6 +52,23 @@ class Battle extends d.Component {
   get targetLabel() {
     let { btst, targetActor } = this;
     return targetActor && `${targetActor.name}[${btst.targetActorId}]`;
+  }
+
+  collectLoot() {
+    let loot = {};
+
+    for (let x of this.actors('E')) {
+      for (let [k, rate] of Object.entries(x.dropRates || {})) {
+        if (Math.random() <= rate) {
+          game.inventoryItem(k, 1);
+
+          loot[k] ??= 0;
+          loot[k]++;
+        }
+      }
+    }
+
+    return Object.entries(loot);
   }
 
   render = () => (
@@ -129,7 +147,7 @@ class Battle extends d.Component {
           return (
             <div>
               <p>Victory!{w}</p>
-              {goTo(`${this.props.checkpoint}.end`)}
+              {goTo(`${this.props.checkpoint}.collectLoot`)}
             </div>
           );
         }
@@ -156,8 +174,8 @@ class Battle extends d.Component {
           let loop = btst.partyLoop = btst.partyLoop || {};
 
           while (true) {
-            loop.i = (loop.i ?? -1) + 1;
-            let actor = party[loop.i];
+            loop.i ??= 0;
+            let actor = party[loop.i++];
 
             if (!actor) {
               delete btst.partyLoop;
@@ -239,8 +257,8 @@ class Battle extends d.Component {
           let loop = btst.enemyLoop = btst.enemyLoop || {};
 
           while (true) {
-            loop.i = (loop.i ?? -1) + 1;
-            let actor = enemies[loop.i];
+            loop.i ??= 0;
+            let actor = enemies[loop.i++];
 
             if (!actor) {
               delete btst.enemyLoop;
@@ -320,9 +338,26 @@ class Battle extends d.Component {
 
       {Chain.halt}
 
-      {checkpoint(`${this.props.checkpoint}.end`)}
+      {checkpoint(`${this.props.checkpoint}.collectLoot`)}
+
+      {() => {
+        this.btst.loot = this.collectLoot();
+        game.chain.autoSave && game.chain.saveGame();
+      }}
+
+      {checkpoint(`${this.props.checkpoint}.reportLoot`)}
+
+      {() => this.btst.loot.flatMap(([k, i]) => (
+        <>{i} {items[k].name} acquired!{w}<br /></>
+      ))}
+
+      {checkpoint(`${this.props.checkpoint}.cleanUp`)}
       {[clear, clearPanes]}
-      {() => this.btst = null}
+
+      {() => {
+        this.btst = null;
+        game.chain.autoSave && game.chain.saveGame();
+      }}
 
       {label(`${this.props.checkpoint}.skip`)}
     </div>
