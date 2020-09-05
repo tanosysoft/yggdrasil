@@ -1,4 +1,5 @@
 import Chain, { d } from '@tanosysoft/chain';
+import items from './items.jsx';
 
 let ActionsPane = ({ class: classes = [], ...props }) => {
   let el = <div class={['ActionsPane', ...classes]} {...props} />;
@@ -6,42 +7,91 @@ let ActionsPane = ({ class: classes = [], ...props }) => {
 };
 
 ActionsPane.defaultActions = conf => {
-  let hidden = k => !conf[k] || (d.resolve(conf.hidden) || []).includes(k);
+  let hidden = k => {
+    let baseCondition = !conf[k] || (d.resolve(conf.hidden) || []).includes(k);
+
+    if (!baseCondition && k === 'gather') {
+      console.log(d.resolve(conf.gatherables));
+      return Object.values(d.resolve(conf.gatherables) || {}).every(x => !x);
+    }
+
+    return baseCondition;
+  };
+
+  let submenu = null;
 
   return (
     <>
-      {d.if(() => !hidden('up'), (
-        <button class="ActionsPane-btn" onClick={conf.up}>
-          Go up
-        </button>
-      ))}
-
-      {d.if(() => !hidden('left') || !hidden('right'), (
-        <div class="ActionsPane-row">
-          {d.if(() => !hidden('left'), (
-            <button class="ActionsPane-btn" onClick={conf.left}>
-              Go left
+      {d.if(() => !submenu, (
+        <>
+          {d.if(() => !hidden('up'), (
+            <button class="ActionsPane-btn" onClick={conf.up}>
+              Go up
             </button>
           ))}
 
-          {d.if(() => !hidden('right'), (
-            <button class="ActionsPane-btn" onClick={conf.right}>
-              Go right
+          {d.if(() => !hidden('left') || !hidden('right'), (
+            <div class="ActionsPane-row">
+              {d.if(() => !hidden('left'), (
+                <button class="ActionsPane-btn" onClick={conf.left}>
+                  Go left
+                </button>
+              ))}
+
+              {d.if(() => !hidden('right'), (
+                <button class="ActionsPane-btn" onClick={conf.right}>
+                  Go right
+                </button>
+              ))}
+            </div>
+          ))}
+
+          {d.if(() => !hidden('down'), (
+            <button class="ActionsPane-btn" onClick={conf.down}>
+              Go down
             </button>
           ))}
-        </div>
+
+          {d.if(() => !hidden('lookAround') || !hidden('gather'), (
+            <div class="ActionsPane-row">
+              {d.if(() => !hidden('lookAround'), (
+                <button class="ActionsPane-btn" onClick={conf.lookAround}>
+                  Look around
+                </button>
+              ))}
+
+              {d.if(() => !hidden('gather'), (
+                <button class="ActionsPane-btn" onClick={() => submenu = 'gather'}>
+                  Gather
+                </button>
+              ))}
+            </div>
+          ))}
+        </>
       ))}
 
-      {d.if(() => !hidden('down'), (
-        <button class="ActionsPane-btn" onClick={conf.down}>
-          Go down
-        </button>
-      ))}
+      {d.if(() => submenu === 'gather', (
+        <>
+          {d.map(
+            () => Object.entries(d.resolve(conf.gatherables) || {}).flatMap(
+              ([k, gatherable]) => gatherable ? k : [],
+            ), k => (
+              <button
+                class="ActionsPane-btn"
+                onClick={() => {
+                  submenu = null;
+                  conf.gather(k);
+                }}
+              >
+                Gather {items[k].name}
+              </button>
+            ),
+          )}
 
-      {d.if(() => !hidden('lookAround'), (
-        <button class="ActionsPane-btn" onClick={conf.lookAround}>
-          Look around
-        </button>
+          <button class="ActionsPane-btn" onClick={() => submenu = null}>
+            Back
+          </button>
+        </>
       ))}
     </>
   );

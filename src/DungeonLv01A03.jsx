@@ -42,14 +42,41 @@ let DungeonLv01A03 = () => (
           left={() => game.run('dungeon.lv01.a02.r06')}
           right={() => game.run(areaId('r02'))}
           lookAround={() => game.run(areaId('r01.lookAround'))}
+          gatherables={() => game.progressVar(areaId('r01.gatherables'))}
+          gather={k => game.run(areaId(`r01.gather.${k}`))}
         />
       </ActionsPane>
 
       <LookAround label={areaId('r01.lookAround')}>
+        {Chain.if(() => !game.progressVar(areaId('r01.gathered.moss')), (
+          <div>
+            {() => game.progressVar(areaId('r01.gatherables.moss'), true)}
+            {LookAround.defaultMsgs.moss}{w}<br />
+          </div>
+        ))}
+
         {LookAround.defaultMsgs.leftCorridor}{w}<br />
         {LookAround.defaultMsgs.rightCorridor}{w}<br />
         {goTo(areaId('r01'))}
       </LookAround>
+
+      <Chain.shield>
+        {label(areaId('r01.gather.moss'))}
+
+        {() => {
+          game.inventoryItem('moss', 1);
+          game.progressVar(areaId('r01.gathered.moss'), true);
+          game.progressVar(areaId('r01.gatherables.moss'), false);
+        }}
+
+        {() => game.setPane('bottom', null)}
+        {clear}
+        {sdl(30)}
+        You scrape one of the walls...{w}<br />
+        {sdl(10)}
+        1 Moss acquired!{w}<br />
+        {goTo(areaId('r01.afterBattle'))}
+      </Chain.shield>
     </DungeonRoom>
 
     <DungeonRoom checkpoint={areaId('r02')} minimap={minimap}>

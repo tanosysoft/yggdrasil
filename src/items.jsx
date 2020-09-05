@@ -10,4 +10,8 @@ export default {
   greenGoo: {
     name: 'Green Goo',
   },
+
+  moss: {
+    name: 'Moss',
+  },
 };

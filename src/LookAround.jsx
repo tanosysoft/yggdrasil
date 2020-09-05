@@ -29,6 +29,8 @@ LookAround.defaultMsgs = {
   leftDoor: `You see a door leading left.`,
   rightDoor: `You see a door leading right.`,
   downDoor: `You see a door leading down.`,
+
+  moss: `You see moss on the walls.`,
 };
 
 export default LookAround;
