@@ -57,7 +57,7 @@ let DungeonLv01A03 = () => (
 
         {LookAround.defaultMsgs.leftCorridor}{w}<br />
         {LookAround.defaultMsgs.rightCorridor}{w}<br />
-        {goTo(areaId('r01'))}
+        {goTo(areaId('r01.afterBattle'))}
       </LookAround>
 
       <Chain.shield>
@@ -100,7 +100,7 @@ let DungeonLv01A03 = () => (
       <LookAround label={areaId('r02.lookAround')}>
         {LookAround.defaultMsgs.leftCorridor}{w}<br />
         {LookAround.defaultMsgs.rightCorridor}{w}<br />
-        {goTo(areaId('r02'))}
+        {goTo(areaId('r02.afterBattle'))}
       </LookAround>
     </DungeonRoom>
 
@@ -130,7 +130,7 @@ let DungeonLv01A03 = () => (
       <LookAround label={areaId('r03.lookAround')}>
         {LookAround.defaultMsgs.leftCorridor}{w}<br />
         {LookAround.defaultMsgs.rightDoor}{w}<br />
-        {goTo(areaId('r03'))}
+        {goTo(areaId('r03.afterBattle'))}
       </LookAround>
 
       <Chain.shield>
@@ -139,7 +139,7 @@ let DungeonLv01A03 = () => (
         {clear}
         {sdl(30)}
         You try to open the door but it's locked!{w}<br />
-        {goTo('r03')}
+        {goTo('r03.afterBattle')}
       </Chain.shield>
     </DungeonRoom>
   </DungeonArea>

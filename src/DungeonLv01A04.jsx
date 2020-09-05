@@ -54,7 +54,7 @@ let DungeonLv01A04 = () => (
       <LookAround label={areaId('r01.lookAround')}>
         {LookAround.defaultMsgs.leftCorridor}{w}<br />
         {LookAround.defaultMsgs.rightCorridor}{w}<br />
-        {goTo(areaId('r01'))}
+        {goTo(areaId('r01.afterBattle'))}
       </LookAround>
     </DungeonRoom>
 
@@ -79,7 +79,7 @@ let DungeonLv01A04 = () => (
       <LookAround label={areaId('r02.lookAround')}>
         {LookAround.defaultMsgs.leftCorridor}{w}<br />
         {LookAround.defaultMsgs.rightCorridor}{w}<br />
-        {goTo(areaId('r02'))}
+        {goTo(areaId('r02.afterBattle'))}
       </LookAround>
     </DungeonRoom>
 
@@ -104,7 +104,7 @@ let DungeonLv01A04 = () => (
       <LookAround label={areaId('r03.lookAround')}>
         {LookAround.defaultMsgs.leftCorridor}{w}<br />
         {LookAround.defaultMsgs.rightCorridor}{w}<br />
-        {goTo(areaId('r03'))}
+        {goTo(areaId('r03.afterBattle'))}
       </LookAround>
     </DungeonRoom>
 
@@ -129,7 +129,7 @@ let DungeonLv01A04 = () => (
       <LookAround label={areaId('r04.lookAround')}>
         {LookAround.defaultMsgs.leftCorridor}{w}<br />
         {LookAround.defaultMsgs.rightCorridor}{w}<br />
-        {goTo(areaId('r04'))}
+        {goTo(areaId('r04.afterBattle'))}
       </LookAround>
     </DungeonRoom>
   </DungeonArea>
