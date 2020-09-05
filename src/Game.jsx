@@ -3,6 +3,7 @@ import './animate.css';
 import Chain, { d, goTo } from '@tanosysoft/chain';
 import Fyrya from './Fyrya';
 import TitleScreen from './TitleScreen';
+import UseItem from './UseItem';
 import label from './label';
 import { nanoid } from 'nanoid';
 
@@ -32,12 +33,23 @@ class Game extends d.Component {
           {goTo('title')}
           <TitleScreen />
           <Fyrya />
+          <UseItem />
         </Chain>
       )}
 
       {this.panes.bottom = <div class="Game-bottomPane"></div>}
     </div>
   );
+
+  setPane(k, ...contents) {
+    this.panes[k].innerHTML = '';
+
+    contents = contents.flat(10).filter(Boolean);
+
+    if (contents.length) {
+      this.panes[k].append(...contents);
+    }
+  }
 
   get chain() {
     return this.panes.main.model;
@@ -94,20 +106,23 @@ class Game extends d.Component {
       return inventory[k];
     }
 
-    inventory[k] = (inventory[k] ?? 0) + count;
+    let val = inventory[k] ?? 0;
+    let newVal = val + count;
+
+    if (newVal < 0) {
+      console.warn(`Subtracting ${-count} from ${val} ${k}.`);
+      newVal = 0;
+    }
+
+    inventory[k] = newVal;
     d.update();
 
-    return inventory[k];
+    return newVal;
   }
 
-  setPane(k, ...contents) {
-    this.panes[k].innerHTML = '';
-
-    contents = contents.flat(10).filter(Boolean);
-
-    if (contents.length) {
-      this.panes[k].append(...contents);
-    }
+  useItem(key, req = {}) {
+    this.progress.latestUseItemRequest = { key, ...req };
+    this.run('useItem');
   }
 }
 

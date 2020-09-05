@@ -11,7 +11,7 @@ import Chain, {
 import checkpoint from './checkpoint';
 import clearPanes from './clearPanes';
 import cloneDeep from 'lodash/cloneDeep';
-import items from './items';
+import items from './items.jsx';
 import label from './label';
 
 class Battle extends d.Component {
