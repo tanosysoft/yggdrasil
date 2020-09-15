@@ -6,7 +6,7 @@ class TitleScreen extends d.Component {
   loadGame = false;
 
   render = () => (
-    <Chain.shield class="TitleScreen">
+    <Chain.shield>
       {label('title')}
       {[clear, clearPanes]}
       {sec(2)}

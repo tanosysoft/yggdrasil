@@ -3,7 +3,7 @@ import DungeonLv01 from './DungeonLv01.jsx';
 import checkpoint from './checkpoint';
 
 let Dungeon = () => (
-  <Chain.shield class="Dungeon">
+  <Chain.shield>
     {checkpoint('dungeon')}
     {() => game.setPane('top', null)}
     {() => game.setPane('bottom', null)}

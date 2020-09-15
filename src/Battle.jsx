@@ -72,7 +72,7 @@ class Battle extends d.Component {
   }
 
   render = () => (
-    <div class="Battle">
+    <div>
       {Chain.if(() => Math.random() < d.resolve(this.props.chance), (
         <div>{goTo(`${this.props.checkpoint}.skip`)}</div>
       ))}
