@@ -19,6 +19,11 @@ class Battle extends d.Component {
     this.props = props;
   }
 
+  shouldSkip = () => (
+    Math.random() < d.resolve(this.props.chance) ||
+    localStorage.getItem('yggdrasil.skipBattles')
+  );
+
   get btst() {
     return game.progressVar('battle');
   }
@@ -72,7 +77,7 @@ class Battle extends d.Component {
 
   render = () => (
     <div>
-      {Chain.if(() => Math.random() < d.resolve(this.props.chance), (
+      {Chain.if(this.shouldSkip, (
         <div>{goTo(`${this.props.checkpoint}.skip`)}</div>
       ))}
 
