@@ -4,14 +4,27 @@ import Chain, { clear, d, goTo, sdl, w } from '@tanosysoft/chain';
 import DungeonArea from './DungeonArea';
 import DungeonRoom from './DungeonRoom';
 import LookAround from './LookAround';
+import SkillMenu from './SkillMenu';
 import checkpoint from './checkpoint';
 import label from './label';
 import makeTroop from './makeTroop';
 import sample from 'lodash/sample';
+import skills from './skills';
 
 let areaId = id => `dungeon.lv01.a04${id ? `.${id}` : ''}`;
 
-let minimap = ['-[r01]-[r02]-[r03]-[r04]-'];
+let minimap = [[
+    '             [r05]       ',
+    '                         ',
+    '-[r01]-[r02]-[r03]-[r04]-',
+    '                         ',
+    '       [r06] [r07]       ',
+  ].join('\n'),
+
+  ['r03.r05', '|', 15, 1],
+  ['r02.r06', '|', 9, 3],
+  ['r06.r07', '-', 13, 4],
+];
 
 let troops = {
   t01: () => sample([
@@ -72,15 +85,66 @@ let DungeonLv01A04 = () => (
         <ActionsPane.defaultActions
           left={() => game.run(areaId('r01'))}
           right={() => game.run(areaId('r03'))}
+          down={() => game.run(areaId('r06'))}
           lookAround={() => game.run(areaId('r02.lookAround'))}
+          useSkill={() => game.run(areaId('r02.skillMenu'))}
+          hidden={() => [!game.progressVar(areaId('r02.r06')) && 'down']}
         />
       </ActionsPane>
 
       <LookAround label={areaId('r02.lookAround')}>
         {LookAround.defaultMsgs.leftCorridor}{w}<br />
         {LookAround.defaultMsgs.rightCorridor}{w}<br />
+
+        {Chain.if(() => !game.progressVar(areaId('r02.r06')), (
+          <div>{LookAround.defaultMsgs.downCorridorVegBlocked}{w}</div>
+        ), (
+          <div>{LookAround.defaultMsgs.downCorridor}{w}</div>
+        ))}
+
         {goTo(areaId('r02.afterBattle'))}
       </LookAround>
+
+      <Chain.shield>
+        {label(areaId('r02.skillMenu'))}
+
+        {() => game.setPane('bottom', (
+          <SkillMenu
+            otherTargets={{
+              downCorridorVeg:
+                !game.progressVar(areaId('r02.r06')) && 'Vegetation (down)',
+            }}
+            onBack={() => game.run(areaId('r02.afterBattle'))}
+            onSelectOther={(kSkill, kTarget) => {
+              game.progressVar(areaId('r02.useSkill'), { kSkill, kTarget });
+              game.run(areaId('r02.useSkill'));
+            }}
+          />
+        ))}
+      </Chain.shield>
+
+      <Chain.shield>
+        {label(areaId('r02.useSkill'))}
+        {() => game.setPane('bottom', null)}
+        {clear}
+        {sdl(30)}
+        {() => game.progressVar('actors.h01.name')} uses{' '}
+        {() => skills[game.progressVar(areaId('r02.useSkill.kSkill'))].name}.
+        {w}<br />
+
+        {Chain.if(
+          () => game.progressVar(areaId('r02.useSkill.kSkill')) === 'fire', (
+            <div>
+              {() => game.progressVar(areaId('r02.r06'), true)}
+              The vegetation burns to ashes.{w}<br />
+            </div>
+          ), (
+            <div>It has no effect!{w}<br /></div>
+          )
+        )}
+
+        {goTo(areaId('r02.afterBattle'))}
+      </Chain.shield>
     </DungeonRoom>
 
     <DungeonRoom checkpoint={areaId('r03')} minimap={minimap}>

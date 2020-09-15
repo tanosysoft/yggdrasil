@@ -124,6 +124,14 @@ class Game extends d.Component {
     this.progress.latestUseItemRequest = { key, ...req };
     this.run('useItem');
   }
+
+  get knownSkills() {
+    return game.progress.knownSkills ??= [];
+  }
+
+  set knownSkills(x) {
+    return game.progress.knownSkills = x;
+  }
 }
 
 export default Game;

@@ -25,6 +25,11 @@ LookAround.defaultMsgs = {
   rightCorridor: `You see a corridor leading right.`,
   downCorridor: `You see a corridor leading down.`,
 
+  upCorridorVegBlocked: `You see a corridor leading up, but it's blocked by dense vegetation.`,
+  leftCorridorVegBlocked: `You see a corridor leading left, but it's blocked by dense vegetation.`,
+  rightCorridorVegBlocked: `You see a corridor leading right, but it's blocked by dense vegetation.`,
+  downCorridorVegBlocked: `You see a corridor leading down, but it's blocked by dense vegetation.`,
+
   upDoor: `You see a door leading up.`,
   leftDoor: `You see a door leading left.`,
   rightDoor: `You see a door leading right.`,

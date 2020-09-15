@@ -10,6 +10,10 @@ ActionsPane.defaultActions = conf => {
   let hidden = k => {
     let baseCondition = !conf[k] || (d.resolve(conf.hidden) || []).includes(k);
 
+    if (!baseCondition && k === 'useSkill') {
+      return !game.knownSkills.length;
+    }
+
     if (!baseCondition && k === 'gather') {
       console.log(d.resolve(conf.gatherables));
       return Object.values(d.resolve(conf.gatherables) || {}).every(x => !x);
@@ -18,11 +22,11 @@ ActionsPane.defaultActions = conf => {
     return baseCondition;
   };
 
-  let submenu = null;
+  let submenu = 'main';
 
   return (
     <>
-      {d.if(() => !submenu, (
+      {d.if(() => submenu === 'main', (
         <>
           {d.if(() => !hidden('up'), (
             <button class="ActionsPane-btn" onClick={conf.up}>
@@ -60,6 +64,12 @@ ActionsPane.defaultActions = conf => {
                 </button>
               ))}
 
+              {d.if(() => !hidden('useSkill'), (
+                <button class="ActionsPane-btn" onClick={conf.useSkill}>
+                  Use Skill
+                </button>
+              ))}
+
               {d.if(() => !hidden('gather'), (
                 <button class="ActionsPane-btn" onClick={() => submenu = 'gather'}>
                   Gather
@@ -88,7 +98,7 @@ ActionsPane.defaultActions = conf => {
             ),
           )}
 
-          <button class="ActionsPane-btn" onClick={() => submenu = null}>
+          <button class="ActionsPane-btn" onClick={() => submenu = 'main'}>
             Back
           </button>
         </>
