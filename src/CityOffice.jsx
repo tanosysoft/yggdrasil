@@ -7,8 +7,7 @@ let areaId = k => `cityOffice${k ? `.${k}` : ''}`;
 let CityOffice = () => (
   <Chain.shield>
     {checkpoint('cityOffice')}
-    {() => game.setPane('top', null)}
-    {() => game.setPane('bottom', null)}
+    {() => game.setPanes({ top: null, bottom: null })}
     {clear}
     {sec(2)}
     {sdl(80)}

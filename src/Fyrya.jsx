@@ -9,8 +9,7 @@ let areaId = k => `fyrya${k ? `.${k}` : ''}`;
 let Fyrya = () => (
   <Chain.shield>
     {checkpoint(areaId())}
-    {() => game.setPane('top', null)}
-    {() => game.setPane('bottom', null)}
+    {() => game.setPanes({ top: null, bottom: null })}
     {clear}
     {sec(2)}
     {sdl(80)}

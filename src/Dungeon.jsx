@@ -5,8 +5,7 @@ import checkpoint from './checkpoint';
 let Dungeon = () => (
   <Chain.shield>
     {checkpoint('dungeon')}
-    {() => game.setPane('top', null)}
-    {() => game.setPane('bottom', null)}
+    {() => game.setPanes({ top: null, bottom: null })}
     {clear}
     {goTo('dungeon.lv01')}
 

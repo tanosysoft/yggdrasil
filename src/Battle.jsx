@@ -9,7 +9,6 @@ import Chain, {
 } from '@tanosysoft/chain';
 
 import checkpoint from './checkpoint';
-import clearPanes from './clearPanes';
 import cloneDeep from 'lodash/cloneDeep';
 import items from './items.jsx';
 import label from './label';
@@ -78,7 +77,8 @@ class Battle extends d.Component {
       ))}
 
       {checkpoint(this.props.checkpoint)}
-      {[clear, clearPanes]}
+      {() => game.setPanes({ top: null, bottom: null })}
+      {clear}
 
       {() => {
         if (this.btst) {
@@ -352,7 +352,8 @@ class Battle extends d.Component {
       ))}
 
       {checkpoint(`${this.props.checkpoint}.cleanUp`)}
-      {[clear, clearPanes]}
+      {() => game.setPanes({ top: null, bottom: null })}
+      {clear}
 
       {() => {
         this.btst = null;

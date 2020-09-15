@@ -5,12 +5,12 @@ import DungeonLv01A03 from './DungeonLv01A03.jsx';
 import DungeonLv01A04 from './DungeonLv01A04.jsx';
 import DungeonLv01A05 from './DungeonLv01A05.jsx';
 import checkpoint from './checkpoint';
-import clearPanes from './clearPanes';
 
 let DungeonLv01 = () => (
   <Chain.shield>
     {checkpoint('dungeon.lv01')}
-    {[clear, clearPanes]}
+    {() => game.setPanes({ top: null, bottom: null })}
+    {clear}
     {goTo('dungeon.lv01.a01')}
 
     <DungeonLv01A01 />

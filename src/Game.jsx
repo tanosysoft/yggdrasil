@@ -51,6 +51,12 @@ class Game extends d.Component {
     }
   }
 
+  setPanes(panes) {
+    for (let [k, v] of Object.entries(panes)) {
+      this.setPane(k, v);
+    }
+  }
+
   get chain() {
     return this.panes.main.model;
   }
