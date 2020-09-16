@@ -226,10 +226,16 @@ let DungeonLv01A01 = () => (
         {clear}
         {sdl(30)}
 
-        {Chain.if(() => !game.inventoryItem('dungeonKey01'), (
+        {Chain.if(() => !game.progressVar(areaId('r06.openChest')), (
           <div>
             You open the chest box...{w}<br />
-            {() => game.inventoryItem('dungeonKey01', 1)}
+
+            {() => {
+              game.inventoryItem('dgKey01', 1);
+              game.progressVar(areaId('r06.openChest'), true);
+              game.chain.saveGame();
+            }}
+
             You find a key inside!{w}
           </div>
         ), (
@@ -254,7 +260,7 @@ let DungeonLv01A01 = () => (
         <ActionsPane.defaultActions
           left={() => game.run(areaId('r06'))}
           right={() => game.run(areaId('r08'))}
-          down={() => game.run(areaId('r04'))}
+          down={() => game.run(areaId('r05'))}
           lookAround={() => game.run(areaId('r07.lookAround'))}
 
           hidden={() => [
