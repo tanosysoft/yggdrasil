@@ -1,4 +1,8 @@
+import Chain, { goTo, w } from '@tanosysoft/chain';
+
 export default {
+  dgKey01: { name: 'Dungeon Key' },
+
   batFang: {
     name: 'Bat Fang',
   },

@@ -10,6 +10,10 @@ ActionsPane.defaultActions = conf => {
   let hidden = k => {
     let baseCondition = !conf[k] || (d.resolve(conf.hidden) || []).includes(k);
 
+    if (!baseCondition && k === 'useItem') {
+      return !Object.keys(game.inventory).length;
+    }
+
     if (!baseCondition && k === 'useSkill') {
       return !game.knownSkills.length;
     }
@@ -61,6 +65,12 @@ ActionsPane.defaultActions = conf => {
               {d.if(() => !hidden('lookAround'), (
                 <button class="ActionsPane-btn" onClick={conf.lookAround}>
                   Look around
+                </button>
+              ))}
+
+              {d.if(() => !hidden('useItem'), (
+                <button class="ActionsPane-btn" onClick={conf.useItem}>
+                  Use Item
                 </button>
               ))}
 

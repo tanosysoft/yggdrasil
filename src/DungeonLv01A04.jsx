@@ -128,14 +128,18 @@ let DungeonLv01A04 = () => (
         {() => game.setPane('bottom', null)}
         {clear}
         {sdl(30)}
-        {() => game.progressVar('actors.h01.name')} uses{' '}
+        {() => game.progress.actors.h01.name} uses{' '}
         {() => skills[game.progressVar(areaId('r02.useSkill.kSkill'))].name}.
         {w}<br />
 
         {Chain.if(
           () => game.progressVar(areaId('r02.useSkill.kSkill')) === 'fire', (
             <div>
-              {() => game.progressVar(areaId('r02.r06'), true)}
+              {() => {
+                game.progressVar(areaId('r02.r06'), true);
+                game.chain.saveGame();
+              }}
+
               The vegetation burns to ashes.{w}<br />
             </div>
           ), (
