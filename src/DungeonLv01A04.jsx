@@ -58,7 +58,7 @@ let DungeonLv01A04 = () => (
 
       <ActionsPane>
         <ActionsPane.defaultActions
-          left={() => game.run('dungeon.lv01.a02.r06')}
+          left={() => game.run('dungeon.lv01.a03.r03')}
           right={() => game.run(areaId('r02'))}
           lookAround={() => game.run(areaId('r01.lookAround'))}
         />

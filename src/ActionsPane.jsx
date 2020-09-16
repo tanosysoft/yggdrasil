@@ -11,7 +11,7 @@ ActionsPane.defaultActions = conf => {
     let baseCondition = !conf[k] || (d.resolve(conf.hidden) || []).includes(k);
 
     if (!baseCondition && k === 'useItem') {
-      return !Object.keys(game.inventory).length;
+      return !Object.values(game.inventory).filter(Boolean).length;
     }
 
     if (!baseCondition && k === 'useSkill') {

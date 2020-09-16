@@ -3,8 +3,10 @@ import Battle from './Battle';
 import Chain, { clear, d, goTo, sdl, w } from '@tanosysoft/chain';
 import DungeonArea from './DungeonArea';
 import DungeonRoom from './DungeonRoom';
+import ItemMenu from './ItemMenu';
 import LookAround from './LookAround';
 import checkpoint from './checkpoint';
+import items from './items';
 import label from './label';
 import makeTroop from './makeTroop';
 import sample from 'lodash/sample';
@@ -117,13 +119,9 @@ let DungeonLv01A03 = () => (
       <ActionsPane>
         <ActionsPane.defaultActions
           left={() => game.run(areaId('r02'))}
-
-          right={() => game.run(
-            !game.progressVar('dungeon.key02')
-              ? areaId('r03-a04.locked') : 'dungeon.lv01.a04',
-          )}
-
+          right={() => game.run(areaId('r03.rightDoor'))}
           lookAround={() => game.run(areaId('r03.lookAround'))}
+          useItem={() => game.run(areaId('r03.itemMenu'))}
         />
       </ActionsPane>
 
@@ -134,12 +132,69 @@ let DungeonLv01A03 = () => (
       </LookAround>
 
       <Chain.shield>
-        {label(areaId('r03-a04.locked'))}
+        {label(areaId('r03.rightDoor'))}
         {() => game.setPane('bottom', null)}
         {clear}
         {sdl(30)}
-        You try to open the door but it's locked!{w}<br />
-        {goTo('r03.afterBattle')}
+
+        {Chain.if(() => !game.progressVar(areaId('r03.rightDoorUnlocked')), (
+          <div>
+            You try to open the door but it's locked!{w}
+            {goTo(areaId('r03.afterBattle'))}
+          </div>
+        ), (
+          <div>{goTo('dungeon.lv01.a04')}</div>
+        ))}
+      </Chain.shield>
+
+      <Chain.shield>
+        {label(areaId('r03.itemMenu'))}
+        {() => game.setPane('bottom', null)}
+        {clear}
+        {sdl(30)}
+
+        {() => game.setPane('bottom', (
+          <ItemMenu
+            otherTargets={{
+              rightDoor:
+                !game.progressVar(areaId('r03.rightDoorUnlocked')) &&
+                'Door (right)',
+            }}
+            onBack={() => game.run(areaId('r03.afterBattle'))}
+            onSelectOther={(kItem, kTarget) => {
+              game.progressVar(areaId('r03.useItem'), { kItem, kTarget });
+              game.run(areaId('r03.useItem'));
+            }}
+          />
+        ))}
+      </Chain.shield>
+
+      <Chain.shield>
+        {label(areaId('r03.useItem'))}
+        {() => game.setPane('bottom', null)}
+        {clear}
+        {sdl(30)}
+        {() => game.progress.actors.h01.name} uses{' '}
+        {() => items[game.progressVar(areaId('r03.useItem.kItem'))].name}.
+        {w}<br />
+
+        {Chain.if(
+          () => game.progressVar(areaId('r03.useItem.kItem')) === 'dgKey01', (
+            <div>
+              {() => {
+                game.progressVar(areaId('r03.rightDoorUnlocked'), true);
+                game.inventoryItem('dgKey01', -1);
+                game.chain.saveGame();
+              }}
+
+              You unlock the door and discard the key.{w}
+            </div>
+          ), (
+            <div>It's of no use here.{w}</div>
+          ),
+        )}
+
+        {goTo(areaId('r03.afterBattle'))}
       </Chain.shield>
     </DungeonRoom>
   </DungeonArea>

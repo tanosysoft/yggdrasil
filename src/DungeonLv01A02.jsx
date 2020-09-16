@@ -127,9 +127,23 @@ let DungeonLv01A02 = () => (
         {() => game.setPane('bottom', null)}
         {clear}
         {sdl(30)}
-        You open the chest box...{w}<br />
-        {() => game.progressVar('dungeon.key02', true)}
-        You find a key inside!{w}<br />
+
+        {Chain.if(() => !game.progressVar(areaId('r03.openChest')), (
+          <div>
+            You open the chest box...{w}<br />
+
+            {() => {
+              game.inventoryItem('dgKey01', 1);
+              game.progressVar(areaId('r03.openChest'), true);
+              game.chain.saveGame();
+            }}
+
+            You find a key inside!{w}<br />
+          </div>
+        ), (
+          <div>It's empty.{w}</div>
+        ))}
+
         {goTo(areaId('r03.afterBattle'))}
       </Chain.shield>
     </DungeonRoom>
