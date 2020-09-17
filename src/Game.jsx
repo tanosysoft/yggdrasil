@@ -2,6 +2,7 @@ import './Game.css';
 import './animate.css';
 import Chain, { d, goTo } from '@tanosysoft/chain';
 import Fyrya from './Fyrya';
+import Gather from './Gather';
 import TitleScreen from './TitleScreen';
 import UseItem from './UseItem';
 import label from './label';
@@ -31,8 +32,10 @@ class Game extends d.Component {
       {this.panes.main = (
         <Chain class="Game-mainPane" autoSave>
           {goTo('title')}
+
           <TitleScreen />
           <Fyrya />
+          <Gather />
           <UseItem />
         </Chain>
       )}

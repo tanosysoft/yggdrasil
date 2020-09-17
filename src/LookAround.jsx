@@ -41,17 +41,18 @@ LookAround.defaultMsgs = {
 
 LookAround.gatherables = ({ room }) => () => {
   let pg = game.progressVar(`${room}.gatherables`) || {};
-  let spawned = pg.spawned ??= [];
+  let spawned = pg.spawned ?? [];
   let seen = pg.seen ??= [];
+  let gathered = pg.gathered ?? [];
 
-  return spawned.flatMap(k => (
+  return spawned.filter(k => !gathered.includes(k)).flatMap(k => (
     <>
       {() => {
         !seen.includes(k) && seen.push(k);
         game.chain.saveGame();
       }}
 
-      You see {items[k].name}.{w}<br />
+      You see {() => items[k].name}.{w}<br />
     </>
   ));
 };

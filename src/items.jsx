@@ -19,19 +19,9 @@ export default {
     ),
   },
 
-  batFang: {
-    name: 'Bat Fang',
-  },
-
-  batWing: {
-    name: 'Bat Wing',
-  },
-
-  greenGoo: {
-    name: 'Green Goo',
-  },
-
-  moss: {
-    name: 'Moss',
-  },
+  stone: { name: 'Stone' },
+  batFang: { name: 'Bat Fang' },
+  batWing: { name: 'Bat Wing' },
+  greenGoo: { name: 'Green Goo' },
+  moss: { name: 'Moss' },
 };

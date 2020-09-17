@@ -7,22 +7,23 @@ let ActionsPane = ({ class: classes = [], ...props }) => {
 };
 
 ActionsPane.defaultActions = conf => {
+  let gatherableOptions = () => {
+    let { seen = [], gathered = [] } =
+      game.progressVar(`${conf.room}.gatherables`) || {};
+
+    return seen.filter(k => !gathered.includes(k));
+  };
+
   let hidden = k => {
     switch (k) {
-      case 'lookAround': return conf.lookAround === false;
+      case 'lookAround': return conf.lookAround === false || !conf.room;
 
       case 'useItem':
         return conf.useItem === false ||
           !Object.values(game.inventory).filter(Boolean).length;
 
-      case 'gather': {
-        if (conf.gather === false) { return false }
-
-        let { seen = [], gathered = [] } =
-          game.progressVar(`${conf.room}.gatherables`) || {};
-
-        return seen.length - gathered.length <= 0;
-      }
+      case 'gather':
+        return conf.gather === false || !gatherableOptions().length;
     }
 
     let baseCondition = !conf[k] || (d.resolve(conf.hidden) || []).includes(k);
@@ -32,13 +33,6 @@ ActionsPane.defaultActions = conf => {
     }
 
     return baseCondition;
-  };
-
-  let gatherableOptions = () => {
-    let { seen = [], gathered = [] } =
-      game.progressVar(`${conf.room}.gatherables`) || {};
-
-    return seen.filter(k => !gathered.includes(k));
   };
 
   let submenu = 'main';
@@ -99,7 +93,10 @@ ActionsPane.defaultActions = conf => {
               ))}
 
               {d.if(() => !hidden('gather'), (
-                <button class="ActionsPane-btn" onClick={() => submenu = 'gather'}>
+                <button
+                  class="ActionsPane-btn"
+                  onClick={() => submenu = 'gather'}
+                >
                   Gather
                 </button>
               ))}
@@ -114,8 +111,28 @@ ActionsPane.defaultActions = conf => {
             <button
               class="ActionsPane-btn"
               onClick={() => {
-                submenu = null;
-                game.run(`${conf.room}.gather.${k}`);
+                submenu = 'main';
+
+                game.progressVar('gather', {
+                  k,
+                  room: conf.room,
+
+                  returnTo: [`${conf.room}.afterBattle`, conf.room]
+                    .find(game.chain.labelExists),
+                });
+
+                for (let label of [
+                  `${conf.room}.gather.${k}`,
+                  `${conf.room}.gather`,
+                  `gather.${k}`,
+                ]) {
+                  if (game.chain.labelExists(label)) {
+                    game.run(label);
+                    return;
+                  }
+                }
+
+                game.run('gather');
               }}
             >
               Gather {items[k].name}
