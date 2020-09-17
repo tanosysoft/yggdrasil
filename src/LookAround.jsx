@@ -1,5 +1,6 @@
-import Chain, { clear, sdl } from '@tanosysoft/chain';
+import Chain, { clear, sdl, w } from '@tanosysoft/chain';
 import checkpoint from './checkpoint';
+import items from './items';
 import label from './label';
 
 let LookAround = ({
@@ -36,6 +37,23 @@ LookAround.defaultMsgs = {
   downDoor: `You see a door leading down.`,
 
   moss: `You see moss on the walls.`,
+};
+
+LookAround.gatherables = ({ room }) => () => {
+  let pg = game.progressVar(`${room}.gatherables`) || {};
+  let spawned = pg.spawned ??= [];
+  let seen = pg.seen ??= [];
+
+  return spawned.flatMap(k => (
+    <>
+      {() => {
+        !seen.includes(k) && seen.push(k);
+        game.chain.saveGame();
+      }}
+
+      You see {items[k].name}.{w}<br />
+    </>
+  ));
 };
 
 export default LookAround;

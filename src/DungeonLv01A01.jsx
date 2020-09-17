@@ -55,13 +55,14 @@ let DungeonLv01A01 = () => (
 
       <ActionsPane>
         <ActionsPane.defaultActions
+          room={areaId('r01')}
           left={() => game.run('fyrya')}
           right={() => game.run(areaId('r02'))}
-          lookAround={() => game.run(areaId('r01.lookAround'))}
         />
       </ActionsPane>
 
       <LookAround label={areaId('r01.lookAround')}>
+        <LookAround.gatherables room={areaId('r01')} />
         You can leave the dungeon to the left.{w}<br />
         {LookAround.defaultMsgs.rightCorridor}{w}<br />
         {goTo(areaId('r01.afterBattle'))}

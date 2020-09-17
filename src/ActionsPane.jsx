@@ -8,22 +8,37 @@ let ActionsPane = ({ class: classes = [], ...props }) => {
 
 ActionsPane.defaultActions = conf => {
   let hidden = k => {
-    let baseCondition = !conf[k] || (d.resolve(conf.hidden) || []).includes(k);
+    switch (k) {
+      case 'lookAround': return conf.lookAround === false;
 
-    if (!baseCondition && k === 'useItem') {
-      return !Object.values(game.inventory).filter(Boolean).length;
+      case 'useItem':
+        return conf.useItem === false ||
+          !Object.values(game.inventory).filter(Boolean).length;
+
+      case 'gather': {
+        if (conf.gather === false) { return false }
+
+        let { seen = [], gathered = [] } =
+          game.progressVar(`${conf.room}.gatherables`) || {};
+
+        return seen.length - gathered.length <= 0;
+      }
     }
+
+    let baseCondition = !conf[k] || (d.resolve(conf.hidden) || []).includes(k);
 
     if (!baseCondition && k === 'useSkill') {
       return !game.knownSkills.length;
     }
 
-    if (!baseCondition && k === 'gather') {
-      console.log(d.resolve(conf.gatherables));
-      return Object.values(d.resolve(conf.gatherables) || {}).every(x => !x);
-    }
-
     return baseCondition;
+  };
+
+  let gatherableOptions = () => {
+    let { seen = [], gathered = [] } =
+      game.progressVar(`${conf.room}.gatherables`) || {};
+
+    return seen.filter(k => !gathered.includes(k));
   };
 
   let submenu = 'main';
@@ -63,7 +78,10 @@ ActionsPane.defaultActions = conf => {
           {d.if(() => !hidden('lookAround') || !hidden('gather'), (
             <div class="ActionsPane-row">
               {d.if(() => !hidden('lookAround'), (
-                <button class="ActionsPane-btn" onClick={conf.lookAround}>
+                <button
+                  class="ActionsPane-btn"
+                  onClick={() => game.run(`${conf.room}.lookAround`)}
+                >
                   Look around
                 </button>
               ))}
@@ -92,21 +110,17 @@ ActionsPane.defaultActions = conf => {
 
       {d.if(() => submenu === 'gather', (
         <>
-          {d.map(
-            () => Object.entries(d.resolve(conf.gatherables) || {}).flatMap(
-              ([k, gatherable]) => gatherable ? k : [],
-            ), k => (
-              <button
-                class="ActionsPane-btn"
-                onClick={() => {
-                  submenu = null;
-                  conf.gather(k);
-                }}
-              >
-                Gather {items[k].name}
-              </button>
-            ),
-          )}
+          {d.map(gatherableOptions, k => (
+            <button
+              class="ActionsPane-btn"
+              onClick={() => {
+                submenu = null;
+                game.run(`${conf.room}.gather.${k}`);
+              }}
+            >
+              Gather {items[k].name}
+            </button>
+          ))}
 
           <button class="ActionsPane-btn" onClick={() => submenu = 'main'}>
             Back
