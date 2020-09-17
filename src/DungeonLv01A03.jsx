@@ -37,7 +37,7 @@ let DungeonLv01A03 = () => (
       />
 
       {checkpoint(areaId('r01.afterBattle'))}
-      <DungeonRoom.topPane roomId={areaId('r01')} minimap={minimap} />
+      <DungeonRoom.topPane minimap={minimap} room={areaId('r01')} />
 
       <ActionsPane>
         <ActionsPane.defaultActions
@@ -89,7 +89,7 @@ let DungeonLv01A03 = () => (
       />
 
       {checkpoint(areaId('r02.afterBattle'))}
-      <DungeonRoom.topPane roomId={areaId('r02')} minimap={minimap} />
+      <DungeonRoom.topPane minimap={minimap} room={areaId('r02')} />
 
       <ActionsPane>
         <ActionsPane.defaultActions
@@ -114,7 +114,7 @@ let DungeonLv01A03 = () => (
       />
 
       {checkpoint(areaId('r03.afterBattle'))}
-      <DungeonRoom.topPane roomId={areaId('r03')} minimap={minimap} />
+      <DungeonRoom.topPane minimap={minimap} room={areaId('r03')} />
 
       <ActionsPane>
         <ActionsPane.defaultActions

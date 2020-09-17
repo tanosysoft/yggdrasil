@@ -15,14 +15,14 @@ let DungeonRoom = ({
     {clear}
     {sec(0.75)}
     {() => game.progressVar(`${checkpointId}.visited`, true)}
-    <DungeonRoom.topPane roomId={checkpointId} minimap={minimap} />
+    <DungeonRoom.topPane minimap={minimap} room={checkpointId} />
     {children}
   </Chain.shield>
 );
 
-DungeonRoom.topPane = ({ roomId, minimap }) => (
+DungeonRoom.topPane = ({ minimap, room }) => (
   minimap && (() => game.setPane('top', (
-    <Minimap roomId={roomId} spec={minimap} />
+    <Minimap spec={minimap} room={room} />
   )))
 );
 
