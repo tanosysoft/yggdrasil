@@ -41,21 +41,21 @@ let DungeonLv01A03 = () => (
 
       <ActionsPane>
         <ActionsPane.defaultActions
+          room={areaId('r01')}
           left={() => game.run('dungeon.lv01.a02.r06')}
           right={() => game.run(areaId('r02'))}
-          lookAround={() => game.run(areaId('r01.lookAround'))}
-          gatherables={() => game.progressVar(areaId('r01.gatherables'))}
-          gather={k => game.run(areaId(`r01.gather.${k}`))}
         />
       </ActionsPane>
 
       <LookAround label={areaId('r01.lookAround')}>
-        {Chain.if(() => !game.progressVar(areaId('r01.gathered.moss')), (
-          <div>
-            {() => game.progressVar(areaId('r01.gatherables.moss'), true)}
-            {LookAround.defaultMsgs.moss}{w}<br />
-          </div>
-        ))}
+        {Chain.if(() =>
+          !game.progressVar(areaId('r01.gatherables.gathered'))?.includes('moss'), (
+            <div>
+              {() => game.progressVar(areaId('r01.gatherables.moss'), true)}
+              {LookAround.defaultMsgs.moss}{w}<br />
+            </div>
+          ),
+        )}
 
         {LookAround.defaultMsgs.leftCorridor}{w}<br />
         {LookAround.defaultMsgs.rightCorridor}{w}<br />
@@ -93,9 +93,9 @@ let DungeonLv01A03 = () => (
 
       <ActionsPane>
         <ActionsPane.defaultActions
+          room={areaId('r02')}
           left={() => game.run(areaId('r01'))}
           right={() => game.run(areaId('r03'))}
-          lookAround={() => game.run(areaId('r02.lookAround'))}
         />
       </ActionsPane>
 
@@ -118,10 +118,14 @@ let DungeonLv01A03 = () => (
 
       <ActionsPane>
         <ActionsPane.defaultActions
+          room={areaId('r03')}
           left={() => game.run(areaId('r02'))}
           right={() => game.run(areaId('r03.rightDoor'))}
-          lookAround={() => game.run(areaId('r03.lookAround'))}
-          useItem={() => game.run(areaId('r03.itemMenu'))}
+          otherTargets={() => ({
+            rightDoor:
+              !game.progressVar(areaId('r03.rightDoorUnlocked')) &&
+              'Locked Door (right)',
+          })}
         />
       </ActionsPane>
 
@@ -148,52 +152,20 @@ let DungeonLv01A03 = () => (
       </Chain.shield>
 
       <Chain.shield>
-        {label(areaId('r03.itemMenu'))}
+        {label(areaId('r03.useItem.dgKey01.on.rightDoor'))}
         {() => game.setPane('bottom', null)}
         {clear}
         {sdl(30)}
-
-        {() => game.setPane('bottom', (
-          <ItemMenu
-            otherTargets={{
-              rightDoor:
-                !game.progressVar(areaId('r03.rightDoorUnlocked')) &&
-                'Door (right)',
-            }}
-            onBack={() => game.run(areaId('r03.afterBattle'))}
-            onSelectOther={(kItem, kTarget) => {
-              game.progressVar(areaId('r03.useItem'), { kItem, kTarget });
-              game.run(areaId('r03.useItem'));
-            }}
-          />
-        ))}
-      </Chain.shield>
-
-      <Chain.shield>
-        {label(areaId('r03.useItem'))}
-        {() => game.setPane('bottom', null)}
-        {clear}
-        {sdl(30)}
-        {() => game.progress.actors.h01.name} uses{' '}
-        {() => items[game.progressVar(areaId('r03.useItem.kItem'))].name}.
+        {() => game.progress.actors.h01.name} uses {() => items.dgKey01.name}.
         {w}<br />
 
-        {Chain.if(
-          () => game.progressVar(areaId('r03.useItem.kItem')) === 'dgKey01', (
-            <div>
-              {() => {
-                game.progressVar(areaId('r03.rightDoorUnlocked'), true);
-                game.inventoryItem('dgKey01', -1);
-                game.chain.saveGame();
-              }}
+        {() => {
+          game.progressVar(areaId('r03.rightDoorUnlocked'), true);
+          game.inventoryItem('dgKey01', -1);
+          game.chain.saveGame();
+        }}
 
-              You unlock the door and discard the key.{w}
-            </div>
-          ), (
-            <div>It's of no use here.{w}</div>
-          ),
-        )}
-
+        You unlock the door and discard the key.{w}
         {goTo(areaId('r03.afterBattle'))}
       </Chain.shield>
     </DungeonRoom>

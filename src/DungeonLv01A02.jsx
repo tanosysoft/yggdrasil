@@ -47,9 +47,9 @@ let DungeonLv01A02 = () => (
 
       <ActionsPane>
         <ActionsPane.defaultActions
+          room={areaId('r01')}
           left={() => game.run('dungeon.lv01.a01.r08')}
           right={() => game.run(areaId('r02'))}
-          lookAround={() => game.run(areaId('r01.lookAround'))}
         />
       </ActionsPane>
 
@@ -72,10 +72,10 @@ let DungeonLv01A02 = () => (
 
       <ActionsPane>
         <ActionsPane.defaultActions
+          room={areaId('r02')}
           left={() => game.run(areaId('r01'))}
           right={() => game.run(areaId('r03'))}
           down={() => game.run(areaId('r04'))}
-          lookAround={() => game.run(areaId('r02.lookAround'))}
           hidden={() => [!game.progressVar(areaId('r02.r04')) && 'down']}
         />
       </ActionsPane>
@@ -110,8 +110,8 @@ let DungeonLv01A02 = () => (
         ))}
 
         <ActionsPane.defaultActions
+          room={areaId('r03')}
           left={() => game.run(areaId('r02'))}
-          lookAround={() => game.run(areaId('r03.lookAround'))}
         />
       </ActionsPane>
 
@@ -160,9 +160,9 @@ let DungeonLv01A02 = () => (
 
       <ActionsPane>
         <ActionsPane.defaultActions
+          room={areaId('r04')}
           up={() => game.run(areaId('r02'))}
           right={() => game.run(areaId('r05'))}
-          lookAround={() => game.run(areaId('r04.lookAround'))}
           hidden={() => [!game.progressVar(areaId('r04.r05')) && 'right']}
         />
       </ActionsPane>
@@ -187,9 +187,9 @@ let DungeonLv01A02 = () => (
 
       <ActionsPane>
         <ActionsPane.defaultActions
+          room={areaId('r05')}
           left={() => game.run(areaId('r04'))}
           right={() => game.run(areaId('r06'))}
-          lookAround={() => game.run(areaId('r05.lookAround'))}
         />
       </ActionsPane>
 
@@ -212,9 +212,9 @@ let DungeonLv01A02 = () => (
 
       <ActionsPane>
         <ActionsPane.defaultActions
+          room={areaId('r06')}
           left={() => game.run(areaId('r05'))}
           right={() => game.run('dungeon.lv01.a03')}
-          lookAround={() => game.run(areaId('r06.lookAround'))}
         />
       </ActionsPane>
 

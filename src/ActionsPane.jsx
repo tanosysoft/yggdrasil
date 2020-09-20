@@ -22,17 +22,14 @@ ActionsPane.defaultActions = conf => {
         return conf.useItem === false ||
           !Object.values(game.inventory).filter(Boolean).length;
 
+      case 'useSkill':
+        return conf.useSkill === false || !game.knownSkills.length;
+
       case 'gather':
         return conf.gather === false || !gatherableOptions().length;
     }
 
-    let baseCondition = !conf[k] || (d.resolve(conf.hidden) || []).includes(k);
-
-    if (!baseCondition && k === 'useSkill') {
-      return !game.knownSkills.length;
-    }
-
-    return baseCondition;
+    return !conf[k] || (d.resolve(conf.hidden) || []).includes(k);
   };
 
   let submenu = 'main';
@@ -41,6 +38,7 @@ ActionsPane.defaultActions = conf => {
     .flatMap(k => game.inventory[k] > 0 ? [k] : []);
 
   let kSelectedItem = null;
+  let kSelectedSkill = null;
 
   let onUseItem = (kItem, kTarget) => {
     submenu = 'main';
@@ -65,6 +63,31 @@ ActionsPane.defaultActions = conf => {
     }
 
     game.run('useItem');
+  };
+
+  let onUseSkill = (kSkill, kTarget) => {
+    submenu = 'main';
+
+    game.progressVar('useSkill', {
+      kSkill,
+      kTarget,
+
+      returnTo: [`${conf.room}.afterBattle`, conf.room]
+        .find(game.chain.labelExists),
+    });
+
+    for (let label of [
+      `${conf.room}.useSkill.${kSkill}.on.${kTarget}`,
+      `${conf.room}.useSkill.${kSkill}`,
+      `${conf.room}.useSkill`,
+    ]) {
+      if (game.chain.labelExists(label)) {
+        game.run(label);
+        return;
+      }
+    }
+
+    game.run('useSkill');
   };
 
   return (
@@ -120,7 +143,10 @@ ActionsPane.defaultActions = conf => {
               ))}
 
               {d.if(() => !hidden('useSkill'), (
-                <button class="ActionsPane-btn" onClick={conf.useSkill}>
+                <button
+                  class="ActionsPane-btn"
+                  onClick={() => submenu = 'skill'}
+                >
                   Use Skill
                 </button>
               ))}
@@ -179,6 +205,52 @@ ActionsPane.defaultActions = conf => {
           ))}
 
           <button class="ActionsPane-btn" onClick={() => submenu = 'item'}>
+            Back
+          </button>
+        </>
+      ))}
+
+      {d.if(() => submenu === 'skill', (
+        <>
+          {d.map(() => game.knownSkills, k => (
+            <button
+              class="ActionsPane-btn"
+              onClick={() => {
+                submenu = 'skillTarget';
+                kSelectedSkill = k;
+              }}
+            >
+              Use {skills[k].name}
+            </button>
+          ))}
+
+          <button class="ActionsPane-btn" onClick={() => submenu = 'main'}>
+            Back
+          </button>
+        </>
+      ))}
+
+      {d.if(() => submenu === 'skillTarget', (
+        <>
+          {d.map(() => Object.keys(game.progress.actors), k => (
+            <button
+              class="ActionsPane-btn"
+              onClick={() => onUseSkill(kSelectedSkill, k)}
+            >
+              On {d.text(() => game.progress.actors[k].name)}
+            </button>
+          ))}
+
+          {d.map(() => Object.keys(d.resolve(conf.otherTargets) || {}), k => (
+            <button
+              class="ActionsPane-btn"
+              onClick={() => onUseSkill(kSelectedSkill, k)}
+            >
+              On {d.text(() => d.resolve(conf.otherTargets)[k])}
+            </button>
+          ))}
+
+          <button class="ActionsPane-btn" onClick={() => submenu = 'skill'}>
             Back
           </button>
         </>

@@ -5,6 +5,7 @@ import Fyrya from './Fyrya';
 import Gather from './Gather';
 import TitleScreen from './TitleScreen';
 import UseItem from './UseItem';
+import UseSkill from './UseSkill';
 import label from './label';
 import { nanoid } from 'nanoid';
 
@@ -37,6 +38,7 @@ class Game extends d.Component {
           <Fyrya />
           <Gather />
           <UseItem />
+          <UseSkill />
         </Chain>
       )}
 
