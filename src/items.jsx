@@ -7,14 +7,12 @@ export default {
     type: 'playerItem',
     name: 'Potion',
 
-    use: ({ returnTo }) => (
+    use: () => (
       <>
         Elmina drinks a Potion...{w}<br />
 
         {() => void(game.inventoryItem('potion', -1))}
         Elmina recovers 10 HP!{w}<br />
-
-        {goTo(returnTo)}
       </>
     ),
   },

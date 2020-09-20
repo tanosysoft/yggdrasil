@@ -37,6 +37,36 @@ ActionsPane.defaultActions = conf => {
 
   let submenu = 'main';
 
+  let availableItems = () => Object.keys(game.inventory)
+    .flatMap(k => game.inventory[k] > 0 ? [k] : []);
+
+  let kSelectedItem = null;
+
+  let onUseItem = (kItem, kTarget) => {
+    submenu = 'main';
+
+    game.progressVar('useItem', {
+      kItem,
+      kTarget,
+
+      returnTo: [`${conf.room}.afterBattle`, conf.room]
+        .find(game.chain.labelExists),
+    });
+
+    for (let label of [
+      `${conf.room}.useItem.${kItem}.on.${kTarget}`,
+      `${conf.room}.useItem.${kItem}`,
+      `${conf.room}.useItem`,
+    ]) {
+      if (game.chain.labelExists(label)) {
+        game.run(label);
+        return;
+      }
+    }
+
+    game.run('useItem');
+  };
+
   return (
     <>
       {d.if(() => submenu === 'main', (
@@ -81,7 +111,10 @@ ActionsPane.defaultActions = conf => {
               ))}
 
               {d.if(() => !hidden('useItem'), (
-                <button class="ActionsPane-btn" onClick={conf.useItem}>
+                <button
+                  class="ActionsPane-btn"
+                  onClick={() => submenu = 'item'}
+                >
                   Use Item
                 </button>
               ))}
@@ -102,6 +135,52 @@ ActionsPane.defaultActions = conf => {
               ))}
             </div>
           ))}
+        </>
+      ))}
+
+      {d.if(() => submenu === 'item', (
+        <>
+          {d.map(availableItems, k => (
+            <button
+              class="ActionsPane-btn"
+              onClick={() => {
+                submenu = 'itemTarget';
+                kSelectedItem = k;
+              }}
+            >
+              Use {items[k].name}
+            </button>
+          ))}
+
+          <button class="ActionsPane-btn" onClick={() => submenu = 'main'}>
+            Back
+          </button>
+        </>
+      ))}
+
+      {d.if(() => submenu === 'itemTarget', (
+        <>
+          {d.map(() => Object.keys(game.progress.actors), k => (
+            <button
+              class="ActionsPane-btn"
+              onClick={() => onUseItem(kSelectedItem, k)}
+            >
+              On {d.text(() => game.progress.actors[k].name)}
+            </button>
+          ))}
+
+          {d.map(() => Object.keys(d.resolve(conf.otherTargets) || {}), k => (
+            <button
+              class="ActionsPane-btn"
+              onClick={() => onUseItem(kSelectedItem, k)}
+            >
+              On {d.text(() => d.resolve(conf.otherTargets)[k])}
+            </button>
+          ))}
+
+          <button class="ActionsPane-btn" onClick={() => submenu = 'item'}>
+            Back
+          </button>
         </>
       ))}
 
