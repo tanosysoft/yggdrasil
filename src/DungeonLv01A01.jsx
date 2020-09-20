@@ -81,9 +81,9 @@ let DungeonLv01A01 = () => (
 
       <ActionsPane>
         <ActionsPane.defaultActions
+          room={areaId('r02')}
           left={() => game.run(areaId('r01'))}
           right={() => game.run(areaId('r03'))}
-          lookAround={() => game.run(areaId('r02.lookAround'))}
         />
       </ActionsPane>
 
@@ -106,9 +106,9 @@ let DungeonLv01A01 = () => (
 
       <ActionsPane>
         <ActionsPane.defaultActions
+          room={areaId('r03')}
           left={() => game.run(areaId('r02'))}
           right={() => game.run(areaId('r04'))}
-          lookAround={() => game.run(areaId('r03.lookAround'))}
         />
       </ActionsPane>
 
@@ -131,10 +131,10 @@ let DungeonLv01A01 = () => (
 
       <ActionsPane>
         <ActionsPane.defaultActions
+          room={areaId('r04')}
           up={() => game.run(areaId('r06'))}
           left={() => game.run(areaId('r03'))}
           right={() => game.run(areaId('r05'))}
-          lookAround={() => game.run(areaId('r04.lookAround'))}
           hidden={() => [!game.progressVar(areaId('r04.r06')) && 'up']}
         />
       </ActionsPane>
@@ -160,9 +160,9 @@ let DungeonLv01A01 = () => (
 
       <ActionsPane>
         <ActionsPane.defaultActions
+          room={areaId('r05')}
           up={() => game.run(areaId('r07'))}
           left={() => game.run(areaId('r04'))}
-          lookAround={() => game.run(areaId('r05.lookAround'))}
           hidden={() => [!game.progressVar(areaId('r05.r07')) && 'up']}
         />
       </ActionsPane>
@@ -196,13 +196,14 @@ let DungeonLv01A01 = () => (
         ))}
 
         <ActionsPane.defaultActions
+          room={areaId('r06')}
+
           right={() => {
             game.progressVar(areaId('r07.r08'), true);
             game.run(areaId('r07'));
           }}
 
           down={() => game.run(areaId('r04'))}
-          lookAround={() => game.run(areaId('r06.lookAround'))}
 
           hidden={() => [
             !game.progressVar(areaId('r06.r07')) && 'right',
@@ -259,10 +260,10 @@ let DungeonLv01A01 = () => (
 
       <ActionsPane>
         <ActionsPane.defaultActions
+          room={areaId('r07')}
           left={() => game.run(areaId('r06'))}
           right={() => game.run(areaId('r08'))}
           down={() => game.run(areaId('r05'))}
-          lookAround={() => game.run(areaId('r07.lookAround'))}
 
           hidden={() => [
             !game.progressVar(areaId('r06.r07')) && 'left',
@@ -295,10 +296,14 @@ let DungeonLv01A01 = () => (
 
       <ActionsPane>
         <ActionsPane.defaultActions
+          room={areaId('r08')}
           left={() => game.run(areaId('r07'))}
           right={() => game.run(areaId('r08.rightDoor'))}
-          lookAround={() => game.run(areaId('r08.lookAround'))}
-          useItem={() => game.run(areaId('r08.itemMenu'))}
+          otherTargets={() => ({
+            rightDoor:
+              !game.progressVar(areaId('r08.rightDoorUnlocked')) &&
+              'Locked Door (right)',
+          })}
         />
       </ActionsPane>
 
@@ -324,52 +329,18 @@ let DungeonLv01A01 = () => (
       </Chain.shield>
 
       <Chain.shield>
-        {label(areaId('r08.itemMenu'))}
+        {label(areaId('r08.useItem.dgKey01.on.rightDoor'))}
         {() => game.setPane('bottom', null)}
         {clear}
         {sdl(30)}
 
-        {() => game.setPane('bottom', (
-          <ItemMenu
-            otherTargets={{
-              rightDoor:
-                !game.progressVar(areaId('r08.rightDoorUnlocked')) &&
-                'Door (right)',
-            }}
-            onBack={() => game.run(areaId('r08.afterBattle'))}
-            onSelectOther={(kItem, kTarget) => {
-              game.progressVar(areaId('r08.useItem'), { kItem, kTarget });
-              game.run(areaId('r08.useItem'));
-            }}
-          />
-        ))}
-      </Chain.shield>
+        {() => {
+          game.progressVar(areaId('r08.rightDoorUnlocked'), true);
+          game.inventoryItem('dgKey01', -1);
+          game.chain.saveGame();
+        }}
 
-      <Chain.shield>
-        {label(areaId('r08.useItem'))}
-        {() => game.setPane('bottom', null)}
-        {clear}
-        {sdl(30)}
-        {() => game.progress.actors.h01.name} uses{' '}
-        {() => items[game.progressVar(areaId('r08.useItem.kItem'))].name}.
-        {w}<br />
-
-        {Chain.if(
-          () => game.progressVar(areaId('r08.useItem.kItem')) === 'dgKey01', (
-            <div>
-              {() => {
-                game.progressVar(areaId('r08.rightDoorUnlocked'), true);
-                game.inventoryItem('dgKey01', -1);
-                game.chain.saveGame();
-              }}
-
-              You unlock the door and discard the key.{w}
-            </div>
-          ), (
-            <div>It's of no use here.{w}</div>
-          ),
-        )}
-
+        You unlock the door and discard the key.{w}
         {goTo(areaId('r08.afterBattle'))}
       </Chain.shield>
     </DungeonRoom>
