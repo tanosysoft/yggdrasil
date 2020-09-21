@@ -23,4 +23,6 @@ export default {
   greenGoo: { name: 'Green Goo' },
   moss: { name: 'Moss' },
   stone: { name: 'Stone' },
+  twig: { name: 'Twig' },
+  weed: { name: 'Weed' },
 };

@@ -38,14 +38,18 @@ let DungeonLv01 = () => (
             x => x && Number(x.slice(1)),
           );
 
-          for (let i = rStart; i <= rEnd ?? rStart; i++) {
+          for (let i = rStart; i <= (rEnd ?? rStart); i++) {
             if (Math.random() > chance) {
               continue;
             }
 
+            let gatherablesPath =
+              lvId(`${area}.r${String(i).padStart(2, 0)}.gatherables`);
+
             let gatherables = game.progressVar(
-              lvId(`${area}.r${String(i).padStart(2, 0)}.gatherables`),
-              { spawned: [], seen: [], gathered: [] },
+              gatherablesPath, game.progressVar(gatherablesPath) || {
+                spawned: [], seen: [], gathered: [],
+              },
             );
 
             gatherables.spawned.push(k);
