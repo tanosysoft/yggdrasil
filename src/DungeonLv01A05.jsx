@@ -45,16 +45,15 @@ let DungeonLv01A05 = () => (
 
       <ActionsPane>
         <ActionsPane.defaultActions
+          room={areaId('r01')}
           left={() => game.run('dungeon.lv01.a02.r06')}
           right={() => game.run(areaId('r02'))}
-          lookAround={() => game.run(areaId('r01.lookAround'))}
         />
       </ActionsPane>
 
-      <LookAround label={areaId('r01.lookAround')}>
-        {LookAround.defaultMsgs.leftCorridor}{w}<br />
-        {LookAround.defaultMsgs.rightCorridor}{w}<br />
-        {goTo(areaId('r01.afterBattle'))}
+      <LookAround room={areaId('r01')}>
+        <LookAround.gatherables room={areaId('r01')} />
+        <LookAround.defaultMsgs leftCorridor rightCorridor />
       </LookAround>
     </DungeonRoom>
 
@@ -70,16 +69,15 @@ let DungeonLv01A05 = () => (
 
       <ActionsPane>
         <ActionsPane.defaultActions
+          room={areaId('r02')}
           left={() => game.run(areaId('r01'))}
           right={() => game.run(areaId('r03'))}
-          lookAround={() => game.run(areaId('r02.lookAround'))}
         />
       </ActionsPane>
 
-      <LookAround label={areaId('r02.lookAround')}>
-        {LookAround.defaultMsgs.leftCorridor}{w}<br />
-        {LookAround.defaultMsgs.rightCorridor}{w}<br />
-        {goTo(areaId('r02.afterBattle'))}
+      <LookAround room={areaId('r02')}>
+        <LookAround.gatherables room={areaId('r02')} />
+        <LookAround.defaultMsgs leftCorridor rightCorridor />
       </LookAround>
     </DungeonRoom>
 
@@ -95,16 +93,15 @@ let DungeonLv01A05 = () => (
 
       <ActionsPane>
         <ActionsPane.defaultActions
+          room={areaId('r03')}
           left={() => game.run(areaId('r02'))}
           right={() => game.run(areaId('r04'))}
-          lookAround={() => game.run(areaId('r03.lookAround'))}
         />
       </ActionsPane>
 
-      <LookAround label={areaId('r03.lookAround')}>
-        {LookAround.defaultMsgs.leftCorridor}{w}<br />
-        {LookAround.defaultMsgs.rightCorridor}{w}<br />
-        {goTo(areaId('r03.afterBattle'))}
+      <LookAround room={areaId('r03')}>
+        <LookAround.gatherables room={areaId('r03')} />
+        <LookAround.defaultMsgs leftCorridor rightCorridor />
       </LookAround>
     </DungeonRoom>
 
@@ -120,16 +117,15 @@ let DungeonLv01A05 = () => (
 
       <ActionsPane>
         <ActionsPane.defaultActions
+          room={areaId('r04')}
           left={() => game.run(areaId('r03'))}
           right={() => game.run('dungeon.lv01.a05')}
-          lookAround={() => game.run(areaId('r04.lookAround'))}
         />
       </ActionsPane>
 
-      <LookAround label={areaId('r04.lookAround')}>
-        {LookAround.defaultMsgs.leftCorridor}{w}<br />
-        {LookAround.defaultMsgs.rightCorridor}{w}<br />
-        {goTo(areaId('r04.afterBattle'))}
+      <LookAround room={areaId('r04')}>
+        <LookAround.gatherables room={areaId('r04')} />
+        <LookAround.defaultMsgs leftCorridor rightCorridor />
       </LookAround>
     </DungeonRoom>
   </DungeonArea>

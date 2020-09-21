@@ -61,11 +61,10 @@ let DungeonLv01A01 = () => (
         />
       </ActionsPane>
 
-      <LookAround label={areaId('r01.lookAround')}>
+      <LookAround room={areaId('r01')}>
         <LookAround.gatherables room={areaId('r01')} />
         You can leave the dungeon to the left.{w}<br />
-        {LookAround.defaultMsgs.rightCorridor}{w}<br />
-        {goTo(areaId('r01.afterBattle'))}
+        <LookAround.defaultMsgs rightCorridor />
       </LookAround>
     </DungeonRoom>
 
@@ -87,10 +86,9 @@ let DungeonLv01A01 = () => (
         />
       </ActionsPane>
 
-      <LookAround label={areaId('r02.lookAround')}>
-        {LookAround.defaultMsgs.leftCorridor}{w}<br />
-        {LookAround.defaultMsgs.rightCorridor}{w}<br />
-        {goTo(areaId('r02.afterBattle'))}
+      <LookAround room={areaId('r02')}>
+        <LookAround.gatherables room={areaId('r02')} />
+        <LookAround.defaultMsgs leftCorridor rightCorridor />
       </LookAround>
     </DungeonRoom>
 
@@ -112,10 +110,9 @@ let DungeonLv01A01 = () => (
         />
       </ActionsPane>
 
-      <LookAround label={areaId('r03.lookAround')}>
-        {LookAround.defaultMsgs.leftCorridor}{w}<br />
-        {LookAround.defaultMsgs.rightCorridor}{w}<br />
-        {goTo(areaId('r03.afterBattle'))}
+      <LookAround room={areaId('r03')}>
+        <LookAround.gatherables room={areaId('r03')} />
+        <LookAround.defaultMsgs leftCorridor rightCorridor />
       </LookAround>
     </DungeonRoom>
 
@@ -139,12 +136,10 @@ let DungeonLv01A01 = () => (
         />
       </ActionsPane>
 
-      <LookAround label={areaId('r04.lookAround')}>
+      <LookAround room={areaId('r04')}>
+        <LookAround.gatherables room={areaId('r04')} />
         {() => game.progressVar(areaId('r04.r06'), true)}
-        {LookAround.defaultMsgs.upCorridor}{w}<br />
-        {LookAround.defaultMsgs.leftCorridor}{w}<br />
-        {LookAround.defaultMsgs.rightCorridor}{w}<br />
-        {goTo(areaId('r04.afterBattle'))}
+        <LookAround.defaultMsgs upCorridor leftCorridor rightCorridor />
       </LookAround>
     </DungeonRoom>
 
@@ -167,11 +162,10 @@ let DungeonLv01A01 = () => (
         />
       </ActionsPane>
 
-      <LookAround label={areaId('r05.lookAround')}>
+      <LookAround room={areaId('r05')}>
+        <LookAround.gatherables room={areaId('r05')} />
         {() => game.progressVar(areaId('r05.r07'), true)}
-        {LookAround.defaultMsgs.upCorridor}{w}<br />
-        {LookAround.defaultMsgs.leftCorridor}{w}<br />
-        {goTo(areaId('r05.afterBattle'))}
+        <LookAround.defaultMsgs upCorridor leftCorridor />
       </LookAround>
     </DungeonRoom>
 
@@ -212,14 +206,14 @@ let DungeonLv01A01 = () => (
         />
       </ActionsPane>
 
-      <LookAround label={areaId('r06.lookAround')}>
+      <LookAround room={areaId('r06')}>
+        <LookAround.gatherables room={areaId('r06')} />
         {() => game.progressVar(areaId('r06.chest'), true)}
         You see a chest box in the corner of the room.{w}<br />
         {() => game.progressVar(areaId('r06.r07'), true)}
-        {LookAround.defaultMsgs.rightCorridor}{w}<br />
+        <LookAround.defaultMsgs rightCorridor />
         {() => game.progressVar(areaId('r04.r06'), true)}
-        {LookAround.defaultMsgs.downCorridor}{w}<br />
-        {goTo(areaId('r06.afterBattle'))}
+        <LookAround.defaultMsgs downCorridor />
       </LookAround>
 
       <Chain.shield>
@@ -268,19 +262,19 @@ let DungeonLv01A01 = () => (
           hidden={() => [
             !game.progressVar(areaId('r06.r07')) && 'left',
             !game.progressVar(areaId('r07.r08')) && 'right',
-            !game.progressVar(areaId('r04.r07')) && 'down',
+            !game.progressVar(areaId('r05.r07')) && 'down',
           ]}
         />
       </ActionsPane>
 
-      <LookAround label={areaId('r07.lookAround')}>
+      <LookAround room={areaId('r07')}>
+        <LookAround.gatherables room={areaId('r07')} />
         {() => game.progressVar(areaId('r06.r07'), true)}
-        {LookAround.defaultMsgs.leftCorridor}{w}<br />
+        <LookAround.defaultMsgs leftCorridor />
         {() => game.progressVar(areaId('r07.r08'), true)}
-        {LookAround.defaultMsgs.rightCorridor}{w}<br />
-        {() => game.progressVar(areaId('r04.r07'), true)}
-        {LookAround.defaultMsgs.downCorridor}{w}<br />
-        {goTo(areaId('r07.afterBattle'))}
+        <LookAround.defaultMsgs rightCorridor />
+        {() => game.progressVar(areaId('r05.r07'), true)}
+        <LookAround.defaultMsgs downCorridor />
       </LookAround>
     </DungeonRoom>
 
@@ -307,10 +301,9 @@ let DungeonLv01A01 = () => (
         />
       </ActionsPane>
 
-      <LookAround label={areaId('r08.lookAround')}>
-        {LookAround.defaultMsgs.leftCorridor}{w}<br />
-        {LookAround.defaultMsgs.rightDoor}{w}<br />
-        {goTo(areaId('r08.afterBattle'))}
+      <LookAround room={areaId('r08')}>
+        <LookAround.gatherables room={areaId('r08')} />
+        <LookAround.defaultMsgs leftCorridor rightDoor />
       </LookAround>
 
       <Chain.shield>

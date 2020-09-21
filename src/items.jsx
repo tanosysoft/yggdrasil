@@ -17,9 +17,10 @@ export default {
     ),
   },
 
-  stone: { name: 'Stone' },
+  advSkull: { name: 'Adventurer Skull' },
   batFang: { name: 'Bat Fang' },
   batWing: { name: 'Bat Wing' },
   greenGoo: { name: 'Green Goo' },
   moss: { name: 'Moss' },
+  stone: { name: 'Stone' },
 };

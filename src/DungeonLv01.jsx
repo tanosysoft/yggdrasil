@@ -45,7 +45,7 @@ let DungeonLv01 = () => (
 
             let gatherables = game.progressVar(
               lvId(`${area}.r${String(i).padStart(2, 0)}.gatherables`),
-              { spawned: [] },
+              { spawned: [], seen: [], gathered: [] },
             );
 
             gatherables.spawned.push(k);

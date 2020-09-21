@@ -47,38 +47,10 @@ let DungeonLv01A03 = () => (
         />
       </ActionsPane>
 
-      <LookAround label={areaId('r01.lookAround')}>
-        {Chain.if(() =>
-          !game.progressVar(areaId('r01.gatherables.gathered'))?.includes('moss'), (
-            <div>
-              {() => game.progressVar(areaId('r01.gatherables.moss'), true)}
-              {LookAround.defaultMsgs.moss}{w}<br />
-            </div>
-          ),
-        )}
-
-        {LookAround.defaultMsgs.leftCorridor}{w}<br />
-        {LookAround.defaultMsgs.rightCorridor}{w}<br />
-        {goTo(areaId('r01.afterBattle'))}
+      <LookAround room={areaId('r01')}>
+        <LookAround.gatherables room={areaId('r01')} />
+        <LookAround.defaultMsgs leftCorridor rightCorridor />
       </LookAround>
-
-      <Chain.shield>
-        {label(areaId('r01.gather.moss'))}
-
-        {() => {
-          game.inventoryItem('moss', 1);
-          game.progressVar(areaId('r01.gathered.moss'), true);
-          game.progressVar(areaId('r01.gatherables.moss'), false);
-        }}
-
-        {() => game.setPane('bottom', null)}
-        {clear}
-        {sdl(30)}
-        You scrape one of the walls...{w}<br />
-        {sdl(10)}
-        1 Moss acquired!{w}<br />
-        {goTo(areaId('r01.afterBattle'))}
-      </Chain.shield>
     </DungeonRoom>
 
     <DungeonRoom checkpoint={areaId('r02')} minimap={minimap}>
@@ -99,10 +71,9 @@ let DungeonLv01A03 = () => (
         />
       </ActionsPane>
 
-      <LookAround label={areaId('r02.lookAround')}>
-        {LookAround.defaultMsgs.leftCorridor}{w}<br />
-        {LookAround.defaultMsgs.rightCorridor}{w}<br />
-        {goTo(areaId('r02.afterBattle'))}
+      <LookAround room={areaId('r02')}>
+        <LookAround.gatherables room={areaId('r02')} />
+        <LookAround.defaultMsgs leftCorridor rightCorridor />
       </LookAround>
     </DungeonRoom>
 
@@ -129,10 +100,9 @@ let DungeonLv01A03 = () => (
         />
       </ActionsPane>
 
-      <LookAround label={areaId('r03.lookAround')}>
-        {LookAround.defaultMsgs.leftCorridor}{w}<br />
-        {LookAround.defaultMsgs.rightDoor}{w}<br />
-        {goTo(areaId('r03.afterBattle'))}
+      <LookAround room={areaId('r03')}>
+        <LookAround.gatherables room={areaId('r03')} />
+        <LookAround.defaultMsgs leftCorridor rightDoor />
       </LookAround>
 
       <Chain.shield>
