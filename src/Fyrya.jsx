@@ -1,6 +1,7 @@
 import Chain, { clear, d, goTo, sdl, sec, w } from '@tanosysoft/chain';
 import CityOffice from './CityOffice';
 import Dungeon from './Dungeon';
+import Pub from './Pub';
 import checkpoint from './checkpoint';
 import label from './label';
 
@@ -69,7 +70,7 @@ let Fyrya = () => (
         </div>
 
         <div class="ActionsPane-row">
-          <button class="ActionsPane-btn">
+          <button class="ActionsPane-btn" onClick={() => game.run('pub')}>
             To the pub
           </button>
         </div>
@@ -92,6 +93,7 @@ let Fyrya = () => (
     ))}
 
     <CityOffice />
+    <Pub />
     <Dungeon />
   </Chain.shield>
 );

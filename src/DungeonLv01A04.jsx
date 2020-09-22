@@ -23,7 +23,7 @@ let minimap = [[
 
   ['r03.r05', '|', 15, 1],
   ['r02.r06', '|', 9, 3],
-  ['r06.r07', '-', 13, 4],
+  ['r06.r07', '-', 12, 4],
 ];
 
 let troops = {
@@ -87,6 +87,10 @@ let DungeonLv01A04 = () => (
           right={() => game.run(areaId('r03'))}
           down={() => game.run(areaId('r06'))}
           hidden={() => [!game.progressVar(areaId('r02.r06')) && 'down']}
+          otherTargets={() => ({
+            downCorridorVeg:
+              !game.progressVar(areaId('r02.r06')) && 'Vegetation (down)',
+          })}
         />
       </ActionsPane>
 
@@ -102,47 +106,19 @@ let DungeonLv01A04 = () => (
       </LookAround>
 
       <Chain.shield>
-        {label(areaId('r02.skillMenu'))}
-
-        {() => game.setPane('bottom', (
-          <SkillMenu
-            otherTargets={{
-              downCorridorVeg:
-                !game.progressVar(areaId('r02.r06')) && 'Vegetation (down)',
-            }}
-            onBack={() => game.run(areaId('r02.afterBattle'))}
-            onSelectOther={(kSkill, kTarget) => {
-              game.progressVar(areaId('r02.useSkill'), { kSkill, kTarget });
-              game.run(areaId('r02.useSkill'));
-            }}
-          />
-        ))}
-      </Chain.shield>
-
-      <Chain.shield>
-        {label(areaId('r02.useSkill'))}
+        {label(areaId('r02.useSkill.fire.on.downCorridorVeg'))}
         {() => game.setPane('bottom', null)}
         {clear}
         {sdl(30)}
-        {() => game.progress.actors.h01.name} uses{' '}
-        {() => skills[game.progressVar(areaId('r02.useSkill.kSkill'))].name}.
+        {() => game.progress.actors.h01.name} uses {() => skills.fire.name}.
         {w}<br />
 
-        {Chain.if(
-          () => game.progressVar(areaId('r02.useSkill.kSkill')) === 'fire', (
-            <div>
-              {() => {
-                game.progressVar(areaId('r02.r06'), true);
-                game.chain.saveGame();
-              }}
+        {() => {
+          game.progressVar(areaId('r02.r06'), true);
+          game.chain.saveGame();
+        }}
 
-              The vegetation burns to ashes.{w}<br />
-            </div>
-          ), (
-            <div>It has no effect!{w}<br /></div>
-          )
-        )}
-
+        The vegetation burns to ashes.{w}<br />
         {goTo(areaId('r02.afterBattle'))}
       </Chain.shield>
     </DungeonRoom>
@@ -160,15 +136,45 @@ let DungeonLv01A04 = () => (
       <ActionsPane>
         <ActionsPane.defaultActions
           room={areaId('r03')}
+          up={() => game.run(areaId('r05'))}
           left={() => game.run(areaId('r02'))}
           right={() => game.run(areaId('r04'))}
+          hidden={() => [!game.progressVar(areaId('r03.r05')) && 'up']}
+          otherTargets={() => ({
+            upCorridorVeg:
+              !game.progressVar(areaId('r03.r05')) && 'Vegetation (up)',
+          })}
         />
       </ActionsPane>
 
       <LookAround room={areaId('r03')}>
         <LookAround.gatherables room={areaId('r03')} />
+
+        {Chain.if(() => !game.progressVar(areaId('r03.r05')), (
+          <span><LookAround.defaultMsgs upCorridorVegBlocked /></span>
+        ), (
+          <span><LookAround.defaultMsgs upCorridor /></span>
+        ))}
+
         <LookAround.defaultMsgs leftCorridor rightCorridor />
       </LookAround>
+
+      <Chain.shield>
+        {label(areaId('r03.useSkill.fire.on.upCorridorVeg'))}
+        {() => game.setPane('bottom', null)}
+        {clear}
+        {sdl(30)}
+        {() => game.progress.actors.h01.name} uses {() => skills.fire.name}.
+        {w}<br />
+
+        {() => {
+          game.progressVar(areaId('r03.r05'), true);
+          game.chain.saveGame();
+        }}
+
+        The vegetation burns to ashes.{w}<br />
+        {goTo(areaId('r03.afterBattle'))}
+      </Chain.shield>
     </DungeonRoom>
 
     <DungeonRoom checkpoint={areaId('r04')} minimap={minimap}>
@@ -192,6 +198,79 @@ let DungeonLv01A04 = () => (
       <LookAround room={areaId('r04')}>
         <LookAround.gatherables room={areaId('r04')} />
         <LookAround.defaultMsgs leftCorridor rightCorridor />
+      </LookAround>
+    </DungeonRoom>
+
+    <DungeonRoom checkpoint={areaId('r05')} minimap={minimap}>
+      <Battle
+        checkpoint={areaId('r05.battle')}
+        chance={0.5}
+        troop={troops.t02}
+      />
+
+      {checkpoint(areaId('r05.afterBattle'))}
+      <DungeonRoom.topPane minimap={minimap} room={areaId('r05')} />
+
+      <ActionsPane>
+        <ActionsPane.defaultActions
+          room={areaId('r05')}
+          down={() => game.run(areaId('r03'))}
+        />
+      </ActionsPane>
+
+      <LookAround room={areaId('r05')}>
+        <LookAround.gatherables room={areaId('r05')} />
+        <LookAround.defaultMsgs downCorridor />
+      </LookAround>
+    </DungeonRoom>
+
+    <DungeonRoom checkpoint={areaId('r06')} minimap={minimap}>
+      <Battle
+        checkpoint={areaId('r06.battle')}
+        chance={0.5}
+        troop={troops.t02}
+      />
+
+      {checkpoint(areaId('r06.afterBattle'))}
+      <DungeonRoom.topPane minimap={minimap} room={areaId('r06')} />
+
+      <ActionsPane>
+        <ActionsPane.defaultActions
+          room={areaId('r06')}
+          up={() => game.run(areaId('r02'))}
+          right={() => game.run(areaId('r07'))}
+          hidden={() => [!game.progressVar(areaId('r06.r07')) && 'right']}
+        />
+      </ActionsPane>
+
+      <LookAround room={areaId('r06')}>
+        <LookAround.gatherables room={areaId('r06')} />
+        <LookAround.defaultMsgs upCorridor />
+        {() => game.progressVar(areaId('r06.r07'), true)}
+        <LookAround.defaultMsgs rightCorridor />
+      </LookAround>
+    </DungeonRoom>
+
+    <DungeonRoom checkpoint={areaId('r07')} minimap={minimap}>
+      <Battle
+        checkpoint={areaId('r07.battle')}
+        chance={0.5}
+        troop={troops.t02}
+      />
+
+      {checkpoint(areaId('r07.afterBattle'))}
+      <DungeonRoom.topPane minimap={minimap} room={areaId('r07')} />
+
+      <ActionsPane>
+        <ActionsPane.defaultActions
+          room={areaId('r07')}
+          left={() => game.run(areaId('r06'))}
+        />
+      </ActionsPane>
+
+      <LookAround room={areaId('r07')}>
+        <LookAround.gatherables room={areaId('r07')} />
+        <LookAround.defaultMsgs leftCorridor />
       </LookAround>
     </DungeonRoom>
   </DungeonArea>

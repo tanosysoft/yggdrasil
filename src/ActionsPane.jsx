@@ -1,5 +1,6 @@
 import Chain, { d } from '@tanosysoft/chain';
 import items from './items.jsx';
+import skills from './skills.jsx';
 
 let ActionsPane = ({ class: classes = [], ...props }) => {
   let el = <div class={['ActionsPane', ...classes]} {...props} />;
