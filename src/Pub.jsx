@@ -2,23 +2,32 @@ import ActionsPane from './ActionsPane';
 import Chain, { clear, d, goTo, sdl, sec, w } from '@tanosysoft/chain';
 import checkpoint from './checkpoint';
 import label from './label';
+import quests from './quests';
+
+let checkQuest = kQuest => {
+  let { active, done } = game.progress.quests;
+  let { prerequisites, items } = quests[kQuest];
+
+  if (active !== kQuest || (
+    prerequisites && prerequisites.some(k => !done.includes(k))
+  )) {
+    return false;
+  }
+
+  for (let [count, kItem] of items) {
+    if (game.inventoryItem(kItem) < count) {
+      return false;
+    }
+  }
+
+  return true;
+};
 
 let areaId = k => `pub${k ? `.${k}` : ''}`;
 
-let PubQuestBtn = ({ quest, name, prerequisites }) => d.if(() => {
-  let { done } = game.progress.quests;
-
-  return (!prerequisites || prerequisites.every(x => done.includes(x))) &&
-    !done.includes(quest);
-}, (
-    <button class="ActionsPane-btn" onClick={() => game.run(areaId(quest))}>
-      {name}
-    </button>
-));
-
 let Pub = () => (
   <Chain.shield>
-    {checkpoint('pub')}
+    {checkpoint(areaId())}
     {() => game.setPanes({ top: null, bottom: null })}
     {clear}
     {sec(2)}
@@ -30,54 +39,30 @@ let Pub = () => (
     May I interest you in some quests?{w}<br />
 
     {() => {
-      game.progress.quests ??= { active: [], done: [] };
+      game.progress.quests ??= { active: null, done: [] };
       game.chain.saveGame();
     }}
 
     <ActionsPane>
-      <PubQuestBtn quest="batFangs" name="Collect Bat Fangs" />
+      {d.map(() => Object.keys(quests).filter(k => {
+        let { active, done } = game.progress.quests;
+        let { prerequisites } = quests[k];
 
-      <PubQuestBtn
-        quest="greenGoo"
-        name="Collect Green Goo"
-        prerequisites={['batFangs']}
-      />
-
-      <PubQuestBtn
-        quest="moss"
-        name="Gather Moss"
-        prerequisites={['greenGoo']}
-      />
-
-      <PubQuestBtn
-        quest="weed"
-        name="Gather Weed"
-        prerequisites={['moss']}
-      />
-
-      <PubQuestBtn
-        quest="twig"
-        name="Gather Twig and Stone"
-        prerequisites={['weed']}
-      />
-
-      <PubQuestBtn
-        quest="flowerBuds"
-        name="Gather Flower Buds and Tiny Petals"
-        prerequisites={['twig']}
-      />
-
-      <PubQuestBtn
-        quest="vampireFangs"
-        name="Collect Vampire Fangs"
-        prerequisites={['flowerBuds']}
-      />
-
-      <PubQuestBtn
-        quest="advSkulls"
-        name="Gather Adventurer Skulls"
-        prerequisites={['vampireFangs']}
-      />
+        return k === active || (
+          (!prerequisites || prerequisites.every(x => done.includes(x))) &&
+          !done.includes(k)
+        );
+      }), k => (
+        <button
+          class="ActionsPane-btn"
+          onClick={() => {
+            game.progressVar(areaId('quest.k'), k);
+            game.run(areaId('quest'));
+          }}
+        >
+          {d.text(() => quests[k].name)}
+        </button>
+      ))}
 
       <button class="ActionsPane-btn" onClick={() => game.run('fyrya')}>
         Leave
@@ -85,77 +70,40 @@ let Pub = () => (
     </ActionsPane>
 
     <Chain.shield>
-      {label(areaId('batFangs'))}
+      {label(areaId('quest'))}
       {() => game.setPane('bottom', null)}
       {clear}
       {sdl(30)}
 
-      {Chain.if(() =>
-        !game.progress.quests.active.includes('batFangs') ||
-        (game.inventory.batFangs ?? 0) < 3, (
-          <div>
-            {() => {
-              let { active } = game.progress.quests;
+      {Chain.if(() => !checkQuest(game.progress.pub.quest.k), (
+        <div>
+          {() => void(game.progress.quests.active = game.progress.pub.quest.k)}
+          {() => quests[game.progress.quests.active].description}
+        </div>
+      ), (
+        <div>
+          {() => {
+            let { active } = game.progress.quests;
 
-              !active.includes('batFangs') && active.push('batFangs');
-              game.chain.saveGame();
-            }}
+            for (let [count, kItem] of quests[active].items) {
+              game.inventoryItem(kItem, -count);
+            }
 
-            Please find and bring me 3 Bat Fangs.{w}
-          </div>
-        ), (
-          <div>
-            {() => {
-              let { active, done } = game.progress.quests;
+            {
+              let { quests } = game.progress;
 
-              done.push('batFangs');
-              active.splice(active.indexOf('batFangs'), 1);
-              game.chain.saveGame();
-            }}
+              quests.active = null;
+              quests.done.push(active);
+            }
 
-            Thank you!{w}
-          </div>
-        )
-      )}
+            game.chain.saveGame();
+          }}
 
-      {goTo('pub')}
-    </Chain.shield>
+          Thank you!{w}
+        </div>
+      ))}
 
-    <Chain.shield>
-      {label(areaId('greenGoo'))}
-      {() => game.setPane('bottom', null)}
-      {clear}
-      {sdl(30)}
-
-      {Chain.if(() =>
-        !game.progress.quests.active.includes('greenGoo') ||
-        (game.inventory.greenGoo ?? 0) < 3, (
-          <div>
-            {() => {
-              let { active } = game.progress.quests;
-
-              !active.includes('greenGoo') && active.push('greenGoo');
-              game.chain.saveGame();
-            }}
-
-            Please find and bring me 4 Green Goo.{w}
-          </div>
-        ), (
-          <div>
-            {() => {
-              let { active, done } = game.progress.quests;
-
-              done.push('greenGoo');
-              active.splice(active.indexOf('greenGoo'), 1);
-              game.chain.saveGame();
-            }}
-
-            Thank you!{w}
-          </div>
-        )
-      )}
-
-      {goTo('pub')}
+      {goTo(areaId())}
     </Chain.shield>
   </Chain.shield>
 );

@@ -114,7 +114,7 @@ class Game extends d.Component {
     let { inventory } = this;
 
     if (count === undefined) {
-      return inventory[k];
+      return inventory[k] ?? 0;
     }
 
     let val = inventory[k] ?? 0;
