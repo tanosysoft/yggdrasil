@@ -11,7 +11,13 @@ export default {
       <>
         Elmina drinks a Potion...{w}<br />
 
-        {() => void(game.inventoryItem('potion', -1))}
+        {() => {
+          let { h01 } = game.progress.actors;
+
+          h01.hp = Math.min(h01.hp + 10, h01.maxHp);
+          game.inventoryItem('potion', -1);
+        }}
+
         Elmina recovers 10 HP!{w}<br />
       </>
     ),
@@ -24,5 +30,6 @@ export default {
   moss: { name: 'Moss' },
   stone: { name: 'Stone' },
   twig: { name: 'Twig' },
+  vampireFang: { name: 'Vampire Fang' },
   weed: { name: 'Weed' },
 };

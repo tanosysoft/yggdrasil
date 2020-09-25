@@ -41,5 +41,9 @@ export default {
     hp: 42, maxHp: 42,
     mp: 0, maxMp: 0,
     atk: 4, def: 4,
+
+    dropRates: {
+      vampireFang: 0.5,
+    },
   },
 };
