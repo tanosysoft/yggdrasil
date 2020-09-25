@@ -15,6 +15,10 @@ let DungeonLv01 = () => (
     {clear}
 
     {() => {
+      if (!game.progress.quests?.done?.includes('greenGoo')) {
+        return;
+      }
+
       for (let [k, xs] of Object.entries({
         stone: [
           [0.2, 'a01.r01-r08'], [0.2, 'a02.r01-r06'], [0.2, 'a03.r01-r03'],
