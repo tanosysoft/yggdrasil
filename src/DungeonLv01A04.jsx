@@ -4,7 +4,6 @@ import Chain, { clear, d, goTo, sdl, w } from '@tanosysoft/chain';
 import DungeonArea from './DungeonArea';
 import DungeonRoom from './DungeonRoom';
 import LookAround from './LookAround';
-import SkillMenu from './SkillMenu';
 import checkpoint from './checkpoint';
 import label from './label';
 import makeTroop from './makeTroop';

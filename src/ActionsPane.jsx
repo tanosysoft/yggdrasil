@@ -8,6 +8,18 @@ let ActionsPane = ({ class: classes = [], ...props }) => {
 };
 
 ActionsPane.defaultActions = conf => {
+  let otherTargetOptions = () => {
+    let targets = d.resolve(conf.otherTargets);
+
+    for (let [k, v] of Object.entries(targets)) {
+      if (!v) {
+        delete targets[k];
+      }
+    }
+
+    return targets;
+  };
+
   let gatherableOptions = () => {
     let { seen = [], gathered = [] } =
       game.progressVar(`${conf.room}.gatherables`) || {};
@@ -196,7 +208,7 @@ ActionsPane.defaultActions = conf => {
             </button>
           ))}
 
-          {d.map(() => Object.keys(d.resolve(conf.otherTargets) || {}), k => (
+          {d.map(() => Object.keys(otherTargetOptions()), k => (
             <button
               class="ActionsPane-btn"
               onClick={() => onUseItem(kSelectedItem, k)}
@@ -242,7 +254,7 @@ ActionsPane.defaultActions = conf => {
             </button>
           ))}
 
-          {d.map(() => Object.keys(d.resolve(conf.otherTargets) || {}), k => (
+          {d.map(() => Object.keys(otherTargetOptions()), k => (
             <button
               class="ActionsPane-btn"
               onClick={() => onUseSkill(kSelectedSkill, k)}

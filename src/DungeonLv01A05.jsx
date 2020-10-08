@@ -119,7 +119,7 @@ let DungeonLv01A05 = () => (
         <ActionsPane.defaultActions
           room={areaId('r04')}
           left={() => game.run(areaId('r03'))}
-          right={() => game.run('dungeon.lv01.a05')}
+          right={() => game.run('dungeon.lv02')}
         />
       </ActionsPane>
 

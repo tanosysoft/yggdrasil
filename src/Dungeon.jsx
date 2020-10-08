@@ -1,5 +1,6 @@
 import Chain, { clear, goTo } from '@tanosysoft/chain';
 import DungeonLv01 from './DungeonLv01.jsx';
+import DungeonLv02 from './DungeonLv02.jsx';
 import checkpoint from './checkpoint';
 
 let Dungeon = () => (
@@ -10,6 +11,7 @@ let Dungeon = () => (
     {goTo('dungeon.lv01')}
 
     <DungeonLv01 />
+    <DungeonLv02 />
   </Chain.shield>
 );
 
