@@ -45,6 +45,45 @@ let troops = {
   ]),
 };
 
+let Candle = {
+  look: ({ room }) => (
+    <>
+      {() => game.progressVar(`${room}.candle.seen`, true)}
+      You see a candle in the corner of the room.{w}<br />
+
+      {Chain.if(() => game.progressVar(`${room}.candle.lit`), (
+        <div>It's lit.{w}</div>
+      ))}
+    </>
+  ),
+
+  lightUp: ({ room }) => (
+    <Chain.shield>
+      {label(areaId(`${room}.useSkill.fire.on.candle`))}
+      {() => game.setPanes({ bottom: null })}
+      {clear}
+      {sdl(30)}
+      {() => game.progress.actors.h01.name} uses {() => skills.fire.name}.
+      {w}<br />
+
+      {Chain.if(() => !game.progressVar(areaId(`${room}.candle.lit`)), (
+        <div>
+          {() => {
+            game.progressVar(areaId(`${room}.candle.lit`), true);
+            game.chain.saveGame();
+          }}
+
+          The candle lights up.{w}<br />
+        </div>
+      ), (
+        <div>The candle is lit.{w}</div>
+      ))}
+
+      {goTo(areaId(`${room}.afterBattle`))}
+    </Chain.shield>
+  ),
+};
+
 let DungeonLv01A01 = () => (
   <DungeonArea checkpoint={areaId()}>
     {goTo(areaId('r01'))}
@@ -221,40 +260,12 @@ let DungeonLv01A01 = () => (
       </ActionsPane>
 
       <LookAround room={areaId('r06')}>
-        {() => game.progressVar(areaId('r06.candle.seen'), true)}
-        You see a candle in the corner of the room.{w}<br />
-
-        {Chain.if(() => game.progressVar(areaId('r06.candle.lit')), (
-          <div>It's lit.{w}</div>
-        ))}
-
+        <Candle.look room={areaId('r06')} />
         <LookAround.gatherables room={areaId('r06')} />
         <LookAround.defaultMsgs rightCorridor />
       </LookAround>
 
-      <Chain.shield>
-        {label(areaId('r06.useSkill.fire.on.candle'))}
-        {() => game.setPanes({ bottom: null })}
-        {clear}
-        {sdl(30)}
-        {() => game.progress.actors.h01.name} uses {() => skills.fire.name}.
-        {w}<br />
-
-        {Chain.if(() => !game.progressVar(areaId('r06.candle.lit')), (
-          <div>
-            {() => {
-              game.progressVar(areaId('r06.candle.lit'), true);
-              game.chain.saveGame();
-            }}
-
-            The candle lights up.{w}<br />
-          </div>
-        ), (
-          <div>The candle is lit.{w}</div>
-        ))}
-
-        {goTo(areaId('r06.afterBattle'))}
-      </Chain.shield>
+      <Candle.lightUp room="r06" />
     </DungeonRoom>
 
     <DungeonRoom checkpoint={areaId('r07')} minimap={minimap}>
@@ -310,40 +321,12 @@ let DungeonLv01A01 = () => (
       </ActionsPane>
 
       <LookAround room={areaId('r08')}>
-        {() => game.progressVar(areaId('r08.candle.seen'), true)}
-        You see a candle in the corner of the room.{w}<br />
-
-        {Chain.if(() => game.progressVar(areaId('r08.candle.lit')), (
-          <div>It's lit.{w}</div>
-        ))}
-
+        <Candle.look room={areaId('r08')} />
         <LookAround.gatherables room={areaId('r08')} />
         <LookAround.defaultMsgs leftCorridor />
       </LookAround>
 
-      <Chain.shield>
-        {label(areaId('r08.useSkill.fire.on.candle'))}
-        {() => game.setPanes({ bottom: null })}
-        {clear}
-        {sdl(30)}
-        {() => game.progress.actors.h01.name} uses {() => skills.fire.name}.
-        {w}<br />
-
-        {Chain.if(() => !game.progressVar(areaId('r08.candle.lit')), (
-          <div>
-            {() => {
-              game.progressVar(areaId('r08.candle.lit'), true);
-              game.chain.saveGame();
-            }}
-
-            The candle lights up.{w}<br />
-          </div>
-        ), (
-          <div>The candle is lit.{w}</div>
-        ))}
-
-        {goTo(areaId('r08.afterBattle'))}
-      </Chain.shield>
+      <Candle.lightUp room="r08" />
     </DungeonRoom>
 
     <DungeonRoom checkpoint={areaId('r09')} minimap={minimap}>
@@ -367,40 +350,12 @@ let DungeonLv01A01 = () => (
       </ActionsPane>
 
       <LookAround room={areaId('r09')}>
-        {() => game.progressVar(areaId('r09.candle.seen'), true)}
-        You see a candle in the corner of the room.{w}<br />
-
-        {Chain.if(() => game.progressVar(areaId('r09.candle.lit')), (
-          <div>It's lit.{w}</div>
-        ))}
-
+        <Candle.look room={areaId('r09')} />
         <LookAround.gatherables room={areaId('r09')} />
         <LookAround.defaultMsgs rightCorridor />
       </LookAround>
 
-      <Chain.shield>
-        {label(areaId('r09.useSkill.fire.on.candle'))}
-        {() => game.setPanes({ bottom: null })}
-        {clear}
-        {sdl(30)}
-        {() => game.progress.actors.h01.name} uses {() => skills.fire.name}.
-        {w}<br />
-
-        {Chain.if(() => !game.progressVar(areaId('r09.candle.lit')), (
-          <div>
-            {() => {
-              game.progressVar(areaId('r09.candle.lit'), true);
-              game.chain.saveGame();
-            }}
-
-            The candle lights up.{w}<br />
-          </div>
-        ), (
-          <div>The candle is lit.{w}</div>
-        ))}
-
-        {goTo(areaId('r09.afterBattle'))}
-      </Chain.shield>
+      <Candle.lightUp room="r09" />
     </DungeonRoom>
 
     <DungeonRoom checkpoint={areaId('r10')} minimap={minimap}>
@@ -457,39 +412,12 @@ let DungeonLv01A01 = () => (
       </ActionsPane>
 
       <LookAround room={areaId('r11')}>
-        {() => game.progressVar(areaId('r11.candle.seen'), true)}
-        You see a candle in the corner of the room.{w}<br />
-
-        {Chain.if(() => game.progressVar(areaId('r11.candle.lit')), (
-          <div>It's lit.{w}</div>
-        ))}
+        <Candle.look room={areaId('r11')} />
         <LookAround.gatherables room={areaId('r11')} />
         <LookAround.defaultMsgs leftCorridor />
       </LookAround>
 
-      <Chain.shield>
-        {label(areaId('r11.useSkill.fire.on.candle'))}
-        {() => game.setPanes({ bottom: null })}
-        {clear}
-        {sdl(30)}
-        {() => game.progress.actors.h01.name} uses {() => skills.fire.name}.
-        {w}<br />
-
-        {Chain.if(() => !game.progressVar(areaId('r11.candle.lit')), (
-          <div>
-            {() => {
-              game.progressVar(areaId('r11.candle.lit'), true);
-              game.chain.saveGame();
-            }}
-
-            The candle lights up.{w}<br />
-          </div>
-        ), (
-          <div>The candle is lit.{w}</div>
-        ))}
-
-        {goTo(areaId('r11.afterBattle'))}
-      </Chain.shield>
+      <Candle.lightUp room="r11" />
     </DungeonRoom>
   </DungeonArea>
 );
